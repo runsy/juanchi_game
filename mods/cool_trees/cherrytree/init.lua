@@ -79,7 +79,6 @@ end
 minetest.register_node("cherrytree:sapling", {
 	description = S("Cherrytree Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"cherrytree_sapling.png"},
 	inventory_image = "cherrytree_sapling.png",
 	wield_image = "cherrytree_sapling.png",
@@ -142,7 +141,6 @@ minetest.register_node("cherrytree:wood", {
 minetest.register_node("cherrytree:blossom_leaves", {
 	description = S("Cherrytree Blossom Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"cherrytree_blossom_leaves.png"},
 	inventory_image = "cherrytree_blossom_leaves.png",
 	wield_image = "cherrytree_blossom_leaves.png",
@@ -165,7 +163,6 @@ minetest.register_node("cherrytree:blossom_leaves", {
 minetest.register_node("cherrytree:leaves", {
 	description = S("Cherrytree Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"cherrytree_leaves.png"},
 	inventory_image = "cherrytree_leaves.png",
 	wield_image = "cherrytree_leaves.png",
@@ -227,7 +224,7 @@ default.register_leafdecay({
 
 --Stairs
 
-if minetest.get_modpath("stairs") ~= nil then	
+if minetest.get_modpath("stairs") ~= nil then
 	stairs.register_stair_and_slab(
 		"cherrytree_trunk",
 		"cherrytree:trunk",
@@ -245,7 +242,7 @@ minetest.register_abm({
     neighbors = {},
     interval = 600.0, -- Run every 10 minuts
     chance = 50, -- Select every 1 in 50 nodes
-    action = function(pos, node, active_object_count, active_object_count_wider)		
+    action = function(pos, node, active_object_count, active_object_count_wider)
 		if node.param2 == 1 then -- ignore manually placed leaves
 			return
 		end

@@ -235,3 +235,40 @@ if minetest.global_exists("dungeon_loot") then
 		name = "vessels:glass_fragments", chance = 0.35, count = {1, 4}
 	})
 end
+
+-- Rose Vase
+
+if minetest.get_modpath("flowers") ~= nil then
+
+	minetest.register_node("vessels:rose_vase", {
+		description = S("Rose on a vase"),
+		drawtype = "plantlike",
+		tiles = {"vessels_rose_vase.png"},
+		walkable = false,
+		groups = {cracky = 2, attached_node = 1},
+		drop = "vessels:rose_vase",
+		--paramtype = "light",
+		sunlight_propagates = false,
+		--light_source = LIGHT_MAX - 1,
+		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "vessels_rose_vase.png",
+		selection_box = {
+			type = "fixed",
+			fixed = { -0.25, -0.5, -0.25, 0.25, 0.4, 0.25 },
+		},
+
+		after_place_node = function(pos, placer, itemstack)
+			minetest.set_node(pos, {name = "vessels:rose_vase", param2 = 1})
+		end,
+	})
+
+	minetest.register_craft({
+		type = "shaped",
+		output = "vessels:rose_vase",
+		recipe = {
+			{"", "", ""},
+			{"", "flowers:rose", ""},
+			{"", "vessels:glass_bottle", ""},
+		}
+	})
+end

@@ -56,7 +56,6 @@ end
 minetest.register_node("mahogany:sapling", {
 	description = S("Mahogany Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"mahogany_sapling.png"},
 	inventory_image = "mahogany_sapling.png",
 	wield_image = "mahogany_sapling.png",
@@ -119,7 +118,6 @@ minetest.register_node("mahogany:wood", {
 minetest.register_node("mahogany:leaves", {
 	description = S("Mahogany Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"mahogany_leaves.png"},
 	inventory_image = "mahogany_leaves.png",
 	wield_image = "mahogany_leaves.png",
@@ -241,7 +239,7 @@ default.register_leafdecay({
 
 --Stairs
 
-if minetest.get_modpath("stairs") ~= nil then	
+if minetest.get_modpath("stairs") ~= nil then
 	stairs.register_stair_and_slab(
 		"mahogany_trunk",
 		"mahogany:trunk",
@@ -255,7 +253,7 @@ end
 
 --Support for bonemeal
 
-if minetest.get_modpath("bonemeal") ~= nil then	
+if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"mahogany:sapling", grow_new_mahogany_tree, "soil"},
 	})

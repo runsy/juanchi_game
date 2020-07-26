@@ -79,7 +79,6 @@ end
 minetest.register_node("lemontree:sapling", {
 	description = S("Lemon Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"lemontree_sapling.png"},
 	inventory_image = "lemontree_sapling.png",
 	wield_image = "lemontree_sapling.png",
@@ -141,7 +140,6 @@ minetest.register_node("lemontree:wood", {
 minetest.register_node("lemontree:leaves", {
 	description = S("Lemon Tree Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"lemontree_leaves.png"},
 	inventory_image = "lemontree_leaves.png",
 	wield_image = "lemontree_leaves.png",
@@ -201,7 +199,7 @@ default.register_leafdecay({
 
 --Stairs
 
-if minetest.get_modpath("stairs") ~= nil then	
+if minetest.get_modpath("stairs") ~= nil then
 	stairs.register_stair_and_slab(
 		"lemontree_trunk",
 		"lemontree:trunk",
@@ -213,7 +211,7 @@ if minetest.get_modpath("stairs") ~= nil then
 	)
 end
 
-if minetest.get_modpath("bonemeal") ~= nil then	
+if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"lemontree:sapling", grow_new_lemontree_tree, "soil"},
 	})

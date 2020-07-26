@@ -38,7 +38,7 @@ minetest.register_node("chestnuttree:bur", {
 
 minetest.register_craftitem("chestnuttree:fruit", {
 	description = S("Chestnut"),
-	inventory_image = "chestnuttree_fruit.png",	
+	inventory_image = "chestnuttree_fruit.png",
 	on_use = minetest.item_eat(2),
 	groups = {flammable = 2, food = 2},
 })
@@ -96,7 +96,6 @@ end
 minetest.register_node("chestnuttree:sapling", {
 	description = S("Chestnut Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"chestnuttree_sapling.png"},
 	inventory_image = "chestnuttree_sapling.png",
 	wield_image = "chestnuttree_sapling.png",
@@ -156,7 +155,6 @@ minetest.register_node("chestnuttree:wood", {
 minetest.register_node("chestnuttree:leaves", {
 	description = S("Chestnut Tree Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"chestnuttree_leaves.png"},
 	inventory_image = "chestnuttree_leaves.png",
 	wield_image = "chestnuttree_leaves.png",
@@ -229,7 +227,7 @@ if minetest.get_modpath("stairs") ~= nil then
 	)
 end
 
-if minetest.get_modpath("bonemeal") ~= nil then	
+if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"chestnuttree:sapling", grow_new_chestnuttree_tree, "soil"},
 	})

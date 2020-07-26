@@ -55,7 +55,6 @@ end
 minetest.register_node("ebony:sapling", {
 	description = S("Ebony Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"ebony_sapling.png"},
 	inventory_image = "ebony_sapling.png",
 	wield_image = "ebony_sapling.png",
@@ -118,7 +117,6 @@ minetest.register_node("ebony:wood", {
 minetest.register_node("ebony:leaves", {
 	description = S("Ebony Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"ebony_leaves.png"},
 	inventory_image = "ebony_leaves.png",
 	wield_image = "ebony_leaves.png",

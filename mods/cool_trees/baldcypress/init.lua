@@ -54,7 +54,6 @@ end
 minetest.register_node("baldcypress:sapling", {
 	description = S("Bald Cypress Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"baldcypress_sapling.png"},
 	inventory_image = "baldcypress_sapling.png",
 	wield_image = "baldcypress_sapling.png",
@@ -117,7 +116,6 @@ minetest.register_node("baldcypress:wood", {
 minetest.register_node("baldcypress:leaves", {
 	description = S("Bald Cypress Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"baldcypress_leaves.png"},
 	inventory_image = "baldcypress_leaves.png",
 	wield_image = "baldcypress_leaves.png",

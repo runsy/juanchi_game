@@ -114,7 +114,6 @@ minetest.register_decoration({
 minetest.register_node("birch:sapling", {
 	description = S("Birch Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"birch_sapling.png"},
 	inventory_image = "birch_sapling.png",
 	wield_image = "birch_sapling.png",
@@ -176,7 +175,6 @@ minetest.register_node("birch:wood", {
 minetest.register_node("birch:leaves", {
 	description = S("Birch Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"birch_leaves.png"},
 	inventory_image = "birch_leaves.png",
 	wield_image = "birch_leaves.png",
@@ -237,7 +235,7 @@ default.register_leafdecay({
 
 --Stairs
 
-if minetest.get_modpath("stairs") ~= nil then	
+if minetest.get_modpath("stairs") ~= nil then
 	stairs.register_stair_and_slab(
 		"birch_trunk",
 		"birch:trunk",
@@ -249,7 +247,7 @@ if minetest.get_modpath("stairs") ~= nil then
 	)
 end
 
-if minetest.get_modpath("bonemeal") ~= nil then	
+if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"birch:sapling", grow_new_birch_tree, "soil"},
 	})

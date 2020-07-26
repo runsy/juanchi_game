@@ -77,7 +77,6 @@ end
 minetest.register_node("clementinetree:sapling", {
 	description = S("Clementine Tree Sapling"),
 	drawtype = "plantlike",
-	visual_scale = 1.0,
 	tiles = {"clementinetree_sapling.png"},
 	inventory_image = "clementinetree_sapling.png",
 	wield_image = "clementinetree_sapling.png",
@@ -137,7 +136,6 @@ minetest.register_node("clementinetree:wood", {
 minetest.register_node("clementinetree:leaves", {
 	description = S("Clementine Tree Leaves"),
 	drawtype = "allfaces_optional",
-	visual_scale = 1.2,
 	tiles = {"clementinetree_leaves.png"},
 	inventory_image = "clementinetree_leaves.png",
 	wield_image = "clementinetree_leaves.png",
@@ -210,7 +208,7 @@ if minetest.get_modpath("stairs") ~= nil then
 	)
 end
 
-if minetest.get_modpath("bonemeal") ~= nil then	
+if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"clementinetree:sapling", grow_new_clementinetree_tree, "soil"},
 	})
