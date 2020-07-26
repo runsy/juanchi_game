@@ -1,0 +1,40 @@
+local actor
+local lines = {}
+
+actor = ""
+
+lines[id] = {
+	conditions = {
+		name("name"),
+		at(pos, radius),
+		has_item("item", amount),
+		biome("biome"),
+		night,
+		hp(points),
+		node("name"),
+		light(level)
+	},
+	text = "",
+	choices = { --max 4
+		{	text = "",
+			actions = {},
+			next = id,
+			end_conversation, --default, overriden by next	
+		}
+	},
+	},
+	actions = {
+		add_item("item", amount),		
+		remove_item("item", amount),
+		teleport(pos),
+		health(points),
+		damage(points),
+		kill,
+		ban,
+		play_sound("sound"),
+	},
+	next = id, --overriden by choices,
+	end_conversation, --default, overriden by choices and next
+}
+
+dlg.register_dialogue(actor, dlg.register_lines(lines))

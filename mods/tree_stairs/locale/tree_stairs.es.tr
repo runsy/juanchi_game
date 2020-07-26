@@ -1,0 +1,23 @@
+# textdomain: tree_stairs
+Inner=Interior:
+Outer=Exterior: 
+Acacia Tree Stair=Escalera de madera de acacia
+Acacia Tree Slab=Losa de madera de acacia
+Acacia Tree Inner Stair=Escalera interior de madera de acacia
+Acacia Tree Outer Stair=Escalera exterior de madera de acacia
+Apple Tree Stair=Escalera de madera de manzano
+Apple Tree Slab=Losa de madera de manzano
+Apple Tree Inner Stair=Escalera interior de madera de manzano
+Apple Tree Outer Stair=Escalera exterior de madera de manzano
+Aspen Tree Stair=Escalera de madera de álamo
+Aspen Tree Slab=Losa de madera de álamo
+Aspen Tree Inner Stair=Escalera interior de madera de álamo
+Aspen Tree Outer Stair=Escalera exterior de madera de álamo
+Jungletree Stair=Escalera de madera tropical
+Jungletree Slab=Losa de madera tropical
+Jungletree Inner Stair=Escalera interior de madera tropical
+Jungletree Outer Stair=Escalera exterior de madera tropical
+Pine Tree Stair=Escalera de madera de pino
+Pine Tree Slab=Losa de madera de pino
+Pine Tree Inner Stair=Escalera interior de pino
+Pine Tree Outer Stair=Escalera exterior de pino

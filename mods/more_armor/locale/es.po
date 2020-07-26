@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-14 08:34+0200\n"
+"PO-Revision-Date: 2018-12-11 23:40+0100\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: init.lua
+msgid "Leather Helmet"
+msgstr "Casco de cuero"
+
+#: init.lua
+msgid "Leather Chestplate"
+msgstr "Peto de cuero"
+
+#: init.lua
+msgid "Padded Leather Chestplate"
+msgstr "Peto acolchado de cuero"
+
+#: init.lua
+msgid "Chainmail & Leather Chestplate"
+msgstr "Peto y cota de malla y de cuero"
+
+#: init.lua
+msgid "Leather Leggings"
+msgstr "Polainas de cuero"
+
+#: init.lua
+msgid "Chainmail & Leather Leggings"
+msgstr "Cota de malla y polainas de cuero"
+
+#: init.lua
+msgid "Leather Boots"
+msgstr "Botas de cuero"
+

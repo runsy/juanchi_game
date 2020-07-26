@@ -1,0 +1,9 @@
+# textdomain: boost_cart
+Cart=Vagoneta
+(Sneak+Click to pick up)=(Agacharse+Clic para recoger)
+Rail=Raíl
+Powered rail=Raíl energizado
+Brake rail=Raíl de frenado
+Detector rail=Rail detector
+Cupper rail=Raíl de cobre
+Start-stop rail=Raíl de comienzo-fin

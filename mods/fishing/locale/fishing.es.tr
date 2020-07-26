@@ -1,0 +1,21 @@
+# textdomain: fishing
+Worm=Gusano
+Fishing Rod=Caña de pescar
+Baited Fishing Rod=Caña de pescar con cebo
+Raw Fish=Pescado crudo
+Salmon=Salmón
+Salmon Cooked=Salmón cocinado
+Pufferfish=Pez globo
+Pufferfish Cooked=Pez globo cocinado
+Clownfish=Pez payaso
+Clownfish Cooked=Pez payaso cocinado
+Trout=Trucha
+Trout Cooked=Trucha cocinada
+Gilt Head Bream=Dorada
+Gilt Head Bream Cooked=Dorada cocinada
+Snapper=Pargo
+Snapper Cooked=Pargo cocinado
+Sole=Lenguado
+Sole Cooked=Lenguado cocinado
+Diamond Ring=Anillo con diamante
+Inventory full, Fish Got Away!=¡Tienes el inventario lleno, el pez se escapó!

@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-14 08:34+0200\n"
+"PO-Revision-Date: 2018-10-29 18:01+0100\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: nodes.lua
+msgid "Darkened"
+msgstr "Oscurecido"
+
+#: nodes.lua
+msgid "Cyan"
+msgstr "azul claro"
+
+#: nodes.lua
+msgid "Magenta"
+msgstr "rosa fucsia"
+
+#: nodes.lua
+msgid "Purple"
+msgstr "violeta"
+
+#: nodes.lua
+msgid "Yellow"
+msgstr "amarillo"
+
+#: nodes.lua
+msgid "Blue"
+msgstr "azul"
+
+#: nodes.lua
+msgid "Green"
+msgstr "verde"
+
+#: nodes.lua
+msgid "Orange"
+msgstr "naranja"
+
+#: nodes.lua
+msgid "Red"
+msgstr "rojo"
+
+#: nodes.lua
+msgid "Frosted"
+msgstr "mate"
+
+#: nodes.lua
+msgid "Glass "
+msgstr "Vidrio "
+
+#: nodes.lua
+msgid "Glass Light "
+msgstr "Vidrio luminoso "
+
+#: nodes.lua
+msgid "Clear Glass"
+msgstr "Vidrio incoloro"
+
+#: nodes.lua
+msgid "Porthole"
+msgstr "Mirilla"
+
+#: nodes.lua
+msgid "Stained Glass"
+msgstr "Vidriera de colores"
+
+#: nodes.lua
+msgid "Cage Glass"
+msgstr "Vidrio de jaula"
+
+#: nodes.lua
+msgid "Stained Glass Cross"
+msgstr "Cruz de vitral"
+
+#: nodes.lua
+msgid "Dark"
+msgstr "oscuro"
+
+#: nodes.lua
+msgid "White"
+msgstr "blanco"
+
+#: nodes.lua
+msgid "Desert Brick"
+msgstr "de ladrillo del desierto"
+
+#: nodes.lua
+msgid "Stone Brick"
+msgstr "de ladrillo cerámico"
+
+#: nodes.lua
+msgid "Sandstone Brick"
+msgstr "de ladrillo de arenisca"
+
+#: nodes.lua
+msgid "White"
+msgstr "blanco"
+
+#: nodes.lua
+msgid "Stained Glass Cross"
+msgstr "Cruz de vitral"
+
+#: nodes.lua
+msgid "Dark Block"
+msgstr "Bloque oscuro"
+
+#: nodes.lua
+msgid "Pale Block"
+msgstr "Bloque pálido"
+
+#: nodes.lua
+msgid "Ghost Crystal"
+msgstr "Cristal fantasmal"
+
+#: nodes.lua
+msgid "One-Way Glass "
+msgstr "Vidrio unidireccional "

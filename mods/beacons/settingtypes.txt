@@ -1,0 +1,1 @@
+beacon_height (Beacon height) int 0 0 61840
