@@ -136,7 +136,7 @@ flowers.datas = {
 	{
 		"calendula",
 		S("Pink Calendula"),
-		{-2 / 16, -0.5, -2 / 16, 2 / 16, 3 / 16, 2 / 16},
+		{-5 / 16, -0.5, -5 / 16, 5 / 16, -2 / 16, 5 / 16},
 		{color_pink = 1, flammable = 1}
 	},
 }
@@ -479,13 +479,12 @@ local function add_hedge(name, desc, recipe_items)
 
 	minetest.register_node(node_name, {
 		description = S("@1 Hedge", desc),
-		drawtype = "normal",
+		drawtype = "allfaces_optional",
 		tiles = {"flowers_" .. name .. "_hedge" .. ".png"},
 		wield_image =  "flowers_" .. name .. "_hedge" .. ".png",
 		sunlight_propagates = true,
 		paramtype = "light",
-		walkable = false,
-		buildable_to = true,
+		is_ground_content = false,
 		groups = {snappy = 3, flammable = 2, flower = 1, flora = 1},
 		sounds = default.node_sound_leaves_defaults(),
 		drop = {
