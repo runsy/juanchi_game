@@ -1402,27 +1402,6 @@ minetest.register_node("default:papyrus", {
 	end,
 })
 
-minetest.register_node("default:reed", {
-	description = S("Reed"),
-	drawtype = "plantlike",
-	tiles = {"default_reed.png"},
-	inventory_image = "default_reed.png",
-	wield_image = "default_reed.png",
-	paramtype = "light",
-	sunlight_propagates = true,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
-	},
-	groups = {snappy = 3, flammable = 2},
-	sounds = default.node_sound_leaves_defaults(),
-
-	after_dig_node = function(pos, node, metadata, digger)
-		default.dig_up(pos, node, digger)
-	end,
-})
-
 minetest.register_node("default:dry_shrub", {
 	description = S("Dry Shrub"),
 	drawtype = "plantlike",

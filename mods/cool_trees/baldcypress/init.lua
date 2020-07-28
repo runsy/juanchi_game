@@ -134,6 +134,45 @@ minetest.register_node("baldcypress:leaves", {
 	after_place_node = default.after_place_leaves,
 })
 
+minetest.register_node("baldcypress:dry_branches", {
+	description = S("Bald Cypress Dry Branches"),
+	drawtype = "nodebox",
+	walkable = true,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"baldcypress_dry_branches.png"},
+	inventory_image = "baldcypress_dry_branches.png",
+	wield_image = "baldcypress_dry_branches.png",
+	node_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, 0.49, 0.5, 0.5, 0.5}
+	},
+	groups = {
+		snappy = 2, flammable = 3, oddly_breakable_by_hand = 3, choppy = 2, carpet = 1, leafdecay = 3, leaves = 1
+	},
+	sounds = default.node_sound_leaves_defaults(),
+})
+
+minetest.register_node("baldcypress:liana", {
+	description = S("Bald Cypress Liana"),
+	drawtype = "nodebox",
+	walkable = false,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"baldcypress_liana.png"},
+	inventory_image = "baldcypress_liana.png",
+	wield_image = "baldcypress_liana.png",
+	is_ground_content = false,
+	node_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, 0.0, 0.25, 0.5, 0.0}
+	},
+	groups = {
+		snappy = 2, flammable = 3, oddly_breakable_by_hand = 3, choppy = 2, carpet = 1, leafdecay = 3, leaves = 1,
+	},
+	sounds = default.node_sound_leaves_defaults(),
+})
+
 --
 -- Craftitems
 --
