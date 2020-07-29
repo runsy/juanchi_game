@@ -116,7 +116,7 @@ minetest.register_ore({
 	clust_scarcity = 7*7*7,
 	clust_num_ores = 5,
 	clust_size = 3,
-	height_min = -31000,
+	height_min = -512,
 	height_max = -265,
 	flags = "absheight",
 })

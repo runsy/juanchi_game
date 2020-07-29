@@ -77,7 +77,7 @@ minetest.register_node("crops:corn_base_seed", {
 	walkable = false,
 	sunlight_propagates = true,
 	paramtype = "light",
-	groups = { snappy=3,flammable=3,flora=1,attached_node=1,not_in_creative_inventory=1 },
+	groups = { snappy=3,flammable=3,flora=1,attached_node=1,not_in_creative_inventory=1},
 	drop = {},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {

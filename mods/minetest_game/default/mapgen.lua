@@ -892,6 +892,42 @@ end
 
 function default.register_biomes()
 
+	minetest.register_biome({
+		name = "underground",
+		node_cave_liquid = {"default:water_source", "default:lava_source"},
+		node_dungeon = "default:cobble",
+		node_dungeon_alt = "default:mossycobble",
+		node_dungeon_stair = "stairs:stair_cobble",
+		y_max = -128,
+		y_min = -255,
+		heat_point = 85,
+		humidity_point = 65,
+	})
+
+	minetest.register_biome({
+		name = "the_depths",
+		node_cave_liquid = {"default:water_source", "default:lava_source"},
+		node_dungeon = "default:cobble",
+		node_dungeon_alt = "default:mossycobble",
+		node_dungeon_stair = "stairs:stair_cobble",
+		y_max = -256,
+		y_min = -512,
+		heat_point = 90,
+		humidity_point = 23,
+	})
+
+	minetest.register_biome({
+		name = "the_unknown",
+		node_cave_liquid = {"default:water_source", "default:lava_source"},
+		node_dungeon = "default:cobble",
+		node_dungeon_alt = "default:mossycobble",
+		node_dungeon_stair = "stairs:stair_cobble",
+		y_max = -512,
+		y_min = -31000,
+		heat_point = 50,
+		humidity_point = 35,
+	})
+
 	-- Icesheet
 
 	minetest.register_biome({
@@ -929,19 +965,7 @@ function default.register_biomes()
 		node_dungeon_alt = "default:mossycobble",
 		node_dungeon_stair = "stairs:stair_cobble",
 		y_max = -9,
-		y_min = -255,
-		heat_point = 0,
-		humidity_point = 73,
-	})
-
-	minetest.register_biome({
-		name = "icesheet_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
+		y_min = -128,
 		heat_point = 0,
 		humidity_point = 73,
 	})
@@ -1012,19 +1036,7 @@ function default.register_biomes()
 		node_dungeon_stair = "stairs:stair_cobble",
 		vertical_blend = 1,
 		y_max = -4,
-		y_min = -255,
-		heat_point = 0,
-		humidity_point = 40,
-	})
-
-	minetest.register_biome({
-		name = "tundra_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
+		y_min = -128,
 		heat_point = 0,
 		humidity_point = 40,
 	})
@@ -1064,19 +1076,7 @@ function default.register_biomes()
 		node_dungeon_stair = "stairs:stair_cobble",
 		vertical_blend = 1,
 		y_max = 3,
-		y_min = -255,
-		heat_point = 25,
-		humidity_point = 70,
-	})
-
-	minetest.register_biome({
-		name = "taiga_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
+		y_min = -128,
 		heat_point = 25,
 		humidity_point = 70,
 	})
@@ -1117,18 +1117,6 @@ function default.register_biomes()
 		vertical_blend = 1,
 		y_max = 3,
 		y_min = -255,
-		heat_point = 20,
-		humidity_point = 35,
-	})
-
-	minetest.register_biome({
-		name = "snowy_grassland_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
 		heat_point = 20,
 		humidity_point = 35,
 	})
@@ -1188,18 +1176,6 @@ function default.register_biomes()
 		humidity_point = 35,
 	})
 
-	minetest.register_biome({
-		name = "grassland_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
-		heat_point = 50,
-		humidity_point = 35,
-	})
-
 	-- Coniferous forest
 
 	minetest.register_biome({
@@ -1251,18 +1227,6 @@ function default.register_biomes()
 		node_dungeon_stair = "stairs:stair_cobble",
 		y_max = 3,
 		y_min = -255,
-		heat_point = 45,
-		humidity_point = 70,
-	})
-
-	minetest.register_biome({
-		name = "coniferous_forest_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
 		heat_point = 45,
 		humidity_point = 70,
 	})
@@ -1322,18 +1286,6 @@ function default.register_biomes()
 		humidity_point = 68,
 	})
 
-	minetest.register_biome({
-		name = "deciduous_forest_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
-		heat_point = 60,
-		humidity_point = 68,
-	})
-
 	-- Desert
 
 	minetest.register_biome({
@@ -1368,18 +1320,6 @@ function default.register_biomes()
 		vertical_blend = 1,
 		y_max = 3,
 		y_min = -255,
-		heat_point = 92,
-		humidity_point = 16,
-	})
-
-	minetest.register_biome({
-		name = "desert_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
 		heat_point = 92,
 		humidity_point = 16,
 	})
@@ -1421,18 +1361,6 @@ function default.register_biomes()
 		humidity_point = 0,
 	})
 
-	minetest.register_biome({
-		name = "sandstone_desert_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
-		heat_point = 60,
-		humidity_point = 0,
-	})
-
 	-- Cold desert
 
 	minetest.register_biome({
@@ -1467,18 +1395,6 @@ function default.register_biomes()
 		vertical_blend = 1,
 		y_max = 3,
 		y_min = -255,
-		heat_point = 40,
-		humidity_point = 0,
-	})
-
-	minetest.register_biome({
-		name = "cold_desert_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
 		heat_point = 40,
 		humidity_point = 0,
 	})
@@ -1538,18 +1454,6 @@ function default.register_biomes()
 		humidity_point = 42,
 	})
 
-	minetest.register_biome({
-		name = "savanna_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
-		heat_point = 89,
-		humidity_point = 42,
-	})
-
 	-- Rainforest
 
 	minetest.register_biome({
@@ -1604,20 +1508,7 @@ function default.register_biomes()
 		heat_point = 86,
 		humidity_point = 65,
 	})
-
-	minetest.register_biome({
-		name = "rainforest_under",
-		node_cave_liquid = {"default:water_source", "default:lava_source"},
-		node_dungeon = "default:cobble",
-		node_dungeon_alt = "default:mossycobble",
-		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -256,
-		y_min = -31000,
-		heat_point = 86,
-		humidity_point = 65,
-	})
 end
-
 
 --
 -- Register decorations
@@ -2390,6 +2281,7 @@ function default.register_decorations()
 
 	minetest.register_decoration({
 		name = "default:rose_bush",
+		decoration = "default:rose_bush",
 		deco_type = "simple",
 		place_on = {"default:dirt_with_grass"},
 		sidelen = 16,
@@ -2404,7 +2296,25 @@ function default.register_decorations()
 		biomes = {"deciduous_forest"},
 		y_max = 31000,
 		y_min = 2,
-		decoration = "default:rose_bush"
+	})
+
+	minetest.register_decoration({
+		name = "default:bioluminiscent_plant",
+		decoration = "default:bioluminiscent_plant",
+		deco_type = "simple",
+		biomes = {"underground"},
+		place_on = {"default:stone"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.1,
+			scale = 0.1,
+			spread = {x = 20, y = 20, z = 20},
+			seed = 569,
+			octaves = 3,
+			persist = 0.7
+		},
+		y_max = -128,
+		y_min = -255,
 	})
 
 	-- Sunflower

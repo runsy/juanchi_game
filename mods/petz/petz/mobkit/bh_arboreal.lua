@@ -84,8 +84,12 @@ function mobkit.lq_climb(self)
 				local climb_pos
 				for i =1, 8 do
 					pos.y = pos.y + 1.1
-					local node_name = minetest.get_node_or_nil(pos).name
-					if node_name == "air" then
+					local node = minetest.get_node_or_nil(pos)
+					if not node then
+						climb = false
+						break
+					end
+					if node.name == "air" then
 						climb = true
 						pos.y = pos.y + 0.5
 						climb_pos = pos

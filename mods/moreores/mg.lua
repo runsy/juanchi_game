@@ -44,7 +44,7 @@ mg.register_ore({
 	wherein = "default:stone",
 	seeddiff = 10,
 	maxvdistance = 10.5,
-	maxheight = -512,
+	maxheight = -384,
 	seglenghtn = 2,
 	seglenghtdev = 4,
 	sizen = 12,

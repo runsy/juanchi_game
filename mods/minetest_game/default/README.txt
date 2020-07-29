@@ -386,3 +386,7 @@ TumeniNodes (CC BY-SA 3.0):
 
 random-geek (CC BY-SA 3.0):
   blueberry_bush.mts
+
+smallmak (CC BY-SA 4.0):
+ https://steamcommunity.com/sharedfiles/filedetails/?id=1741320866
+

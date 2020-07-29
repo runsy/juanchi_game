@@ -1431,8 +1431,6 @@ minetest.register_node("default:rose_bush", {
 	inventory_image = "default_rose_bush.png",
 	wield_image = "default_rose_bush.png",
 	paramtype = "light",
-	--paramtype2 = "meshoptions",
-	--place_param2 = 4,
 	sunlight_propagates = true,
 	walkable = false,
 	buildable_to = true,
@@ -1441,6 +1439,25 @@ minetest.register_node("default:rose_bush", {
 	selection_box = {
 		type = "fixed",
 		fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 4 / 16, 6 / 16},
+	},
+})
+
+minetest.register_node("default:bioluminiscent_plant", {
+	description = S("Bioluminiscent Plant"),
+	drawtype = "plantlike",
+	tiles = {"default_bioluminiscent_plant.png"},
+	inventory_image = "default_bioluminiscent_plant.png",
+	wield_image = "default_bioluminiscent_plant.png",
+	paramtype = "light",
+	sunlight_propagates = true,
+	light_source = minetest.LIGHT_MAX - 10,
+	walkable = false,
+	buildable_to = true,
+	groups = {snappy = 3, flammable = 3, flower =1, flora=1,  attached_node = 1},
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 3.5 / 16, 4 / 16},
 	},
 })
 

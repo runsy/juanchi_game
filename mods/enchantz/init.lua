@@ -55,6 +55,8 @@ function enchantz.formspec(pos, num)
 	local formspec = "size[9,9;]"..
 			"bgcolor[#080808BB;true]"..
 			"background[0,0;9,9;enchantz_ui.png]"..
+			"label[0.9,2.5;"..S("Item").."]"..
+			"label[2,2.5;"..S("Mese").."]"..
 			"list[context;tool;0.9,2.9;1,1;]"..
 			"list[context;mese;2,2.9;1,1;]"..
 			"list[current_player;main;0.5,4.5;8,4;]"..

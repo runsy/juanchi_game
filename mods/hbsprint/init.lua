@@ -66,7 +66,7 @@ local function stop_sprint(player)
 end
 
 local function drain_stamina(player)
-  local player_stamina = tonumber(player:get_meta():get("hbsprint:stamina"))
+  local player_stamina = player:get_meta():get_float("hbsprint:stamina") or 20
   if player_stamina > 0 then
     player:get_meta():set_float("hbsprint:stamina", player_stamina - stamina_drain)
   end
@@ -77,7 +77,7 @@ local function drain_stamina(player)
 end
 
 local function replenish_stamina(player)
-	local stamina = player:get_meta():get("hbsprint:stamina")
+	local stamina = player:get_meta():get_float("hbsprint:stamina") or 20
 	if not stamina then
 		return
 	end
@@ -182,7 +182,7 @@ minetest.register_globalstep(function(dtime)
         local pos = player:get_pos()
         local ground = minetest.get_node_or_nil({x=pos.x, y=pos.y-1, z=pos.z})
         local walkable = false
-        local player_stamina = tonumber(player:get_meta():get("hbsprint:stamina"))
+        local player_stamina = player:get_meta():get_float("hbsprint:stamina") or 20
         if starve == "hbhunger" then
           hunger = tonumber(hbhunger.hunger[name])
         elseif starve == "hunger_ng" then
