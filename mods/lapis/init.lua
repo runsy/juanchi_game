@@ -2,12 +2,14 @@ screwdriver = screwdriver or {}
 
 --dofile(minetest.get_modpath("lapis").."/columns.lua")
 
+local S = minetest.get_translator(minetest.get_current_modname())
+
 ----------
 --Nodes
 ----------
 
-minetest.register_node( "lapis:lapis_block",  {
-   description = "Lapislázuli con calcita",
+minetest.register_node("lapis:lapis_block",  {
+   description = S("Lapis with Calcite"),
    tiles = {"lapis_block.png"},
    paramtype = "light",
    is_ground_content = true,
@@ -22,8 +24,8 @@ minetest.register_node( "lapis:lapis_block",  {
    sounds = default.node_sound_stone_defaults()
 })
 
-minetest.register_node( "lapis:lapis_brick",  {
-   description = "Ladrillo de lapislázuli",
+minetest.register_node("lapis:lapis_brick",  {
+   description = S("Lapis Brick"),
    tiles = {
    "lapis_brick_top.png",
    "lapis_brick_top.png^[transformFXR90",
@@ -41,8 +43,8 @@ minetest.register_node( "lapis:lapis_brick",  {
    sounds = default.node_sound_stone_defaults()
 })
 
-minetest.register_node( "lapis:lapis_cobble",  {
-   description = "Bloque de lapislázuli",
+minetest.register_node("lapis:lapis_cobble",  {
+   description = S("Cobbled Lapis"),
    tiles = {
    "lapis_cobble.png",
    "lapis_cobble.png^[transformFY",
@@ -58,7 +60,7 @@ minetest.register_node( "lapis:lapis_cobble",  {
 })
 
 minetest.register_node( "lapis:lazurite_block",  {
-   description = "Lazurita",
+   description = S("Lazurite"),
    tiles = {"lapis_lazurite_block.png"},
    paramtype = "light",
    is_ground_content = true,
@@ -67,7 +69,7 @@ minetest.register_node( "lapis:lazurite_block",  {
 })
 
 minetest.register_node( "lapis:lazurite_brick",  {
-   description = "Ladrillo de lazurita",
+   description = S("Lazurite Brick"),
    tiles = {
    "lapis_lazurite_brick_top.png",
    "lapis_lazurite_brick_top.png^[transformFXR90",
@@ -86,7 +88,7 @@ minetest.register_node( "lapis:lazurite_brick",  {
 })
 
 minetest.register_node( "lapis:lapis_tile",  {
-   description = "Mosaico de lapislázuli",
+   description = S("Lapis Floor Tile"),
    tiles = {"lapis_tile.png" },
    is_ground_content = false,
    paramtype = 'light',
@@ -95,7 +97,7 @@ minetest.register_node( "lapis:lapis_tile",  {
    })
 
 minetest.register_node( "lapis:pyrite_ore",  {
-   description = "Mineral de pirita",
+   description = S("Pyrite Ore"),
    tiles = {"default_stone.png^lapis_mineral_pyrite.png" },
    paramtype = "light",
    is_ground_content = true,
@@ -105,7 +107,7 @@ minetest.register_node( "lapis:pyrite_ore",  {
 })
 
 minetest.register_node( "lapis:pyrite_block",  {
-   description = "Bloque de pirita",
+   description = S("Pyrite Block"),
    tiles = {
    "lapis_pyrite_sacred.png",
    "lapis_pyrite_sacred.png",
@@ -123,7 +125,7 @@ minetest.register_node( "lapis:pyrite_block",  {
 })
 --Unused Rosace Stone from Darkage mod
 minetest.register_node("lapis:rosace", {
-	description = "Piedra rosa",
+	description = S("Rose Stone"),
 	tiles = {"lapis_rosace_front.png",
 	"lapis_rosace_front.png",
 	"lapis_rosace_side.png^[transformFX",
@@ -144,14 +146,14 @@ minetest.register_node("lapis:rosace", {
 	if minetest.get_modpath("moreblocks") then
 
 	stairsplus:register_all("lapis", "lapis_block", "lapis:lapis_block", {
-	description = ("Lapislázuli con calcita"),
+	description = S("Lapis with Calcite"),
 	tiles = {"lapis_block.png"},
 	groups = {cracky = 3},
 	sounds = default.node_sound_stone_defaults(),
 	})
 
 	stairsplus:register_all("lapis", "lapis_brick", "lapis:lapis_brick", {
-	description = ("Ladrillo de lapislázuli"),
+	description = S("Lapis Brick"),
 	tiles = {"lapis_brick_top.png",
    "lapis_brick_top.png^[transformFXR90",
    "lapis_brick_side.png",
@@ -163,7 +165,7 @@ minetest.register_node("lapis:rosace", {
 	})
 
 	stairsplus:register_all("lapis", "lapis_cobble", "lapis:lapis_cobble", {
-	description = ("Bloque de lapislázuli"),
+	description = S("Cobbled Lapis"),
 	tiles = {"lapis_cobble.png",
    "lapis_cobble.png^[transformFY",
    "lapis_cobble.png^[transformFX",
@@ -175,14 +177,14 @@ minetest.register_node("lapis:rosace", {
 	})
 
 	stairsplus:register_all("lapis", "lapis_lazurite_block", "lapis:lazurite_block", {
-	description = ("Lazurita"),
+	description = S("Lazurite"),
 	tiles = {"lapis_lazurite_block.png"},
 	groups = {cracky = 3},
 	sounds = default.node_sound_stone_defaults(),
 	})
 
 	stairsplus:register_all("lapis", "lapis_lazurite_brick", "lapis:lazurite_brick", {
-	description = ("Ladrillo de lazurita"),
+	description = S("Lazurite Brick"),
 	tiles = {"lapis_lazurite_brick_top.png",
    "lapis_lazurite_brick_top.png^[transformFXR90",
    "lapis_lazurite_brick_side.png",
@@ -194,14 +196,14 @@ minetest.register_node("lapis:rosace", {
 	})
 
 	stairsplus:register_all("lapis", "lapis_tile", "lapis:lapis_tile", {
-	description = ("Mosaico de lapislázuli"),
+	description = S("Lapis Floor Tile"),
 	tiles = {"lapis_tile.png"},
 	groups = {cracky = 3},
 	sounds = default.node_sound_stone_defaults(),
 	})
 
 	stairsplus:register_all("lapis", "pyrite_block", "lapis:pyrite_block", {
-	description = ("Bloque de pirita"),
+	description = S("Pyrite Block"),
 	tiles = {"lapis_pyrite_block.png"},
 	groups = {cracky = 2},
 	sounds = default.node_sound_metal_defaults({
@@ -215,36 +217,36 @@ minetest.register_node("lapis:rosace", {
 	stairs.register_stair_and_slab("lapis_block", "lapis:lapis_block",
 	{cracky = 3},
 	{"lapis_block.png"},
-	"Escalera de lapislázuli",
-	"Losa de lapislázuli",
+	S("Lapis Stair"),
+	S("Lapis Slab"),
 	default.node_sound_stone_defaults())
 
 	stairs.register_stair_and_slab("lapis_brick", "lapis:lapis_brick",
 	{cracky = 3},
 	{"lapis_brick.png"},
-	"Escalera de ladrillo de lapislázuli",
-	"Losa de ladrillo de lapislázuli",
+	S("Lapis Brick Stair"),
+	S("Lapis Brick Slab"),
 	default.node_sound_stone_defaults())
-	
+
 	stairs.register_stair_and_slab("lapis_cobble", "lapis:lapis_cobble",
 	{cracky = 3},
 	{"lapis_cobble.png"},
-	"Escalera de bloques de lapislázuli",
-	"Losa de bloques de lapislázuli",
+	S("Lapis Cobble Stair"),
+	S("Lapis Cobble Slab"),
 	default.node_sound_stone_defaults())
-	
+
 	stairs.register_stair_and_slab("lazurite", "lapis:lazurite_block",
 	{cracky = 3},
 	{"lapis_lazurite_block.png"},
-	"Escalera de lazurita",
-	"Losa de lazurita",
+	S("Lazurite Stair"),
+	S("Lazurite Slab"),
 	default.node_sound_stone_defaults())
 
 	stairs.register_stair_and_slab("lazurite_brick", "lapis:lazurite_brick",
 	{cracky = 3},
 	{"lapis_lazurite_brick.png"},
-	"Escalera de ladrillo de lazurita",
-	"Losa de ladrillo de lazurita",
+	S("Lazurite Brick Stair"),
+	S("Lazurite Brick Slab"),
 	default.node_sound_stone_defaults())
 	end
 
@@ -253,17 +255,17 @@ minetest.register_node("lapis:rosace", {
 ---------------
 
 minetest.register_craftitem("lapis:lapis_stone", {
-	description = "Lapislázuli",
+	description = S("Lapis Gemstone"),
 	inventory_image = "lapis_stone.png",
 })
 
 minetest.register_craftitem("lapis:pyrite_ingot", {
-	description = "Lingote de pirita",
+	description = S("Pyrite Ingot"),
 	inventory_image = "lapis_pyrite_ingot.png",
 })
 
 minetest.register_craftitem("lapis:pyrite_lump", {
-	description = "Pepita de pirita",
+	description = S("Fool's Gold"),
 	inventory_image = "lapis_pyrite_nugget.png",
 })
 
@@ -373,7 +375,7 @@ minetest.register_ore({
 		column_height_max = 3,
 		column_midpoint_factor = 0.5,
 		y_min = -500,
-		y_max = 200,
+		y_max = -20,
 		noise_threshhold = 1.25,
 		noise_params = {offset=0, scale=2, spread={x=20, y=20, z=10}, seed= 10 , octaves=2, persist=0.8}
 	})
