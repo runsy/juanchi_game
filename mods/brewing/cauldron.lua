@@ -38,15 +38,15 @@ local function create_recipe_book_form()
 		"button_exit[3.5,6.6;1,1;btn_exit;"..S("Close").."]"
 	--Create the cells
 	local cells = ""
-	local potion_name = ""
 	local potion_names = {}
 	local potion_idxs = ""
-	local potion_idx = 0
+	local potion_times = ""
 	local ing1_idxs = ""
 	local ing2_idxs = ""
 	local ing3_idxs = ""
 	for index, potion_craft in ipairs(brewing.craft_list) do
-		if potion_craft["effect"] == "jumping" then
+		local potion_name
+		if potion_craft["effect"] == "jump" then
 			potion_name = "potions_jump.png"
 		else
 			potion_name = "potions_"..potion_craft["effect"]..".png"
@@ -59,6 +59,7 @@ local function create_recipe_book_form()
 				potion_exists = nil
 			end
 		end
+		local potion_idx
 		if potion_exists then
 			potion_idx = potion_exists
 		else
@@ -88,7 +89,15 @@ local function create_recipe_book_form()
 		else
 			effect_type = "-"
 		end
-		cells = cells .. potion_idx .. ","..S(uppercase(potion_craft["effect"])) .. ",".. S("lvl").. " ".. effect_type .. potion_craft["level"]..','..index..','..index..','..index
+		local potion_name = "brewing:"..potion_craft["effect"].."_"..potion_craft["type"]..math.abs(potion_craft["level"])
+		--minetest.chat_send_all(potion_name)
+		local potion_time= minetest.registered_items[potion_name].time
+		if potion_time == nil then
+			potion_time = "-"
+		else
+			potion_time = potion_time.."s"
+		end
+		cells = cells .. potion_idx .. ","..S(uppercase(potion_craft["effect"])) .. ",".. S("lvl").. " ".. effect_type .. potion_craft["level"]..','..index..','..index..','..index..','..potion_time
 		if index > 1 then
 			ing1_idxs = ing1_idxs .. ','
 			ing2_idxs = ing2_idxs .. ','
@@ -105,9 +114,10 @@ local function create_recipe_book_form()
 		potion_idxs = potion_idxs .. tostring(idx).."="..value
 	end
 	--minetest.chat_send_all(potion_idxs)
+	--local def = minetest.registered_items[potion_name]
 	recipe_book_formspec =
 		recipe_book_formspec ..
-		"tablecolumns[image,"..potion_idxs..";text;text;image,"..ing1_idxs..";image,"..ing2_idxs..";image,"..ing3_idxs.."]"..
+		"tablecolumns[image,"..potion_idxs..";text;text;image,"..ing1_idxs..";image,"..ing2_idxs..";image,"..ing3_idxs..";text]"..
 		"table[0.375,0.375;7.2,6;table_potions;"..cells..";0]"
     return recipe_book_formspec
 end
@@ -199,10 +209,11 @@ end
 local function try_to_make_potion(pos, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	local ing1, ing2, ing3, ignitor, water, flask, dst
+	local ing1, ing2, ing3, ignitor, water, flask
 	local ing1_name, ing2_name, ing3_name, ignitor_name, water_name, flask_name
 	local flask_count
 	local brewed
+	local infotext
 	local update = true
 	while update do
 		update = false
@@ -219,16 +230,15 @@ local function try_to_make_potion(pos, player)
 		flask=	inv:get_stack("flask", 1)
 		flask_name = flask:get_name()
 		flask_count = flask:get_count()
-		dst=	inv:get_stack("dst", 1)
 
 		--The list: {ingredient_list_name, ingredient_stack, ingredient_name, how_much_decrements_when_crafted}
 		local ing_list = {{"ing1", ing1, ing1_name, 1}, {"ing2", ing2, ing2_name, 1}, {"ing3", ing3, ing3_name, 1}, {"ignitor", ignitor, ignitor_name, 1}, {"flask", flask, flask_name, brewing.settings.filled_flasks}}
 
-		local is_valid_water= is_valid_water(water_name)
+		local valid_water= is_valid_water(water_name)
 
 		--minetest.chat_send_player("singleplayer", brewing.settings.ignitor_name)
 
-		if ignitor_name== brewing.settings.ignitor_name and is_valid_water and flask_name== brewing.settings.flask_name and flask_count >= brewing.settings.filled_flasks then
+		if ignitor_name== brewing.settings.ignitor_name and valid_water and flask_name== brewing.settings.flask_name and flask_count >= brewing.settings.filled_flasks then
 			--brewed, afterbrewed = minetest.get_craft_result({method = "normal", width =3, items = {ingplus1, ingplus2, ingplus3, ingminus1, ingminus2, ingminus3, ignitor, water, flask}})
 			brewed = brewing.get_craft_result({ing1_name, ing2_name, ing3_name})
 			if brewed ~= nil then
@@ -252,7 +262,7 @@ local function try_to_make_potion(pos, player)
 				end
 			end
 		end
-		local infotext = ""
+		infotext = ""
 		end
 	--
 	-- Set meta values

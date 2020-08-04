@@ -1,7 +1,5 @@
-local modname = "swaz"
-local modpath = minetest.get_modpath(modname)
--- internationalization boilerplate
 local S = minetest.get_translator(minetest.get_current_modname())
+local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- Register Biomes
 
@@ -512,7 +510,6 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		sidelen = 16,
 		fill_ratio = 0.008,
 		biomes = {"swampz"},
-		sidelen = 16,
 		noise_params = {
 			offset = 0.05,
 			scale = 0.008,
@@ -534,7 +531,6 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		sidelen = 16,
 		fill_ratio = 0.008,
 		biomes = {"swampz"},
-		sidelen = 16,
 		noise_params = {
 			offset = 0.005,
 			scale = 0.008,

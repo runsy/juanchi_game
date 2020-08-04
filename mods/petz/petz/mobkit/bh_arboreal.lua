@@ -94,7 +94,7 @@ function mobkit.lq_climb(self)
 						pos.y = pos.y + 0.5
 						climb_pos = pos
 						break
-					elseif not(petz.is_tree_like(node_name)) then
+					elseif not(petz.is_tree_like(node.name)) then
 						climb = false
 						break
 					end

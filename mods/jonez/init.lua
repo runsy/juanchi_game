@@ -1,7 +1,4 @@
-jonez = {}
-
 --Variables
-local modname = "jonez"
 local S = minetest.get_translator(minetest.get_current_modname())
 
 function firstToUpper(str)

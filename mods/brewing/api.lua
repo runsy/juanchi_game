@@ -1,7 +1,7 @@
 local S, modname = ...
 
 -- Function to register the potions
-brewing.register_potion = function(sname, name, fname, time, def)
+brewing.register_potion = function(sname, name, fname, def)
 	local tps = {"add", "sub"}
 	for t=1, #tps do
 		for i=1, #def.types do
@@ -29,21 +29,17 @@ brewing.register_potion = function(sname, name, fname, time, def)
 			if t == 2 then
 				flags.inv = true
 			end
-			for name, val in pairs(brewing.effects[def.effect](sname, name, fname, time, sdata, flags)) do
-				item_def[name] = val
+			for key, val in pairs(brewing.effects[def.effect](sname, name, fname, sdata, flags)) do
+				item_def[key] = val
 			end
-			for name, val in pairs(sdata.set) do
-				item_def[name] = val
+			for key, val in pairs(sdata.set) do
+				item_def[key] = val
 			end
-			for name, val in pairs(sdata.effects) do
-				item_def.potions[name] = val
+			item_def["time"] = sdata.time
+			for key, val in pairs(sdata.effects) do
+				item_def.potions[key] = val
 			end
 			minetest.register_node(fname.."_"..tps[t]..sdata.type, item_def)
-			--potions.register_liquid(i..tps[t]..sname, name.." ("..tps[t].." "..i..")", item_def.on_use)
-			if minetest.get_modpath("throwing")~=nil then
-				brewing.register_arrow(fname.."_"..tps[t]..sdata.type, i..tps[t]..sname, name.." ("..tps[t].." "..i..")", item_def.on_use,
-						item_def.description, item_def.inventory_image)
-			end
 		end
 	end
 end
@@ -70,20 +66,15 @@ brewing.get_craft_result = function(ingredients)
 		--firstly in the 2 rows
 		for i= 1, 3, 1 do
 			match = false
-			for j = 1, 3, 1 do
-				--minetest.chat_send_player("singleplayer", "item="..potion_craft["recipe"][i])
-				--minetest.chat_send_player("singleplayer", "item2=".. ingredients[j])
-				if (potion_craft["recipe"][i] == ingredients[j]) or (potion_craft["recipe"][i] == '') then
-					match = true
-					break
-				end
+			if (potion_craft["recipe"][i] == ingredients[i]) or (potion_craft["recipe"][i] == '') then
+				match = true
 			end
 			if not match then --if an ingredient does not match
 				break
 			end
 		end
 		if match then --if coincidence with a potion_craft
-			output = modname ..":" .. potion_craft["effect"] .. "_".. potion_craft["type"] .. potion_craft["level"]
+			output = modname ..":" .. potion_craft["effect"] .. "_".. potion_craft["type"] .. math.abs(potion_craft["level"])
 			break
 		end
 	end
