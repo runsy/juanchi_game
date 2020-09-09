@@ -32,7 +32,6 @@ end)
 petz.mount_attached = {}
 
 function petz.attach(entity, player)
-	local attach_at, eye_offset = {}, {}
 	entity.player_rotation = entity.player_rotation or {x = 0, y = 0, z = 0}
 	entity.driver_attach_at = entity.driver_attach_at or {x = 0, y = 0, z = 0}
 	entity.driver_eye_offset = entity.driver_eye_offset or {x = 0, y = 0, z = 0}
@@ -41,8 +40,8 @@ function petz.attach(entity, player)
 	if entity.player_rotation.y == 90 then
 		rot_view = math.pi/2
 	end
-	attach_at = entity.driver_attach_at
-	eye_offset = entity.driver_eye_offset
+	local attach_at = entity.driver_attach_at
+	local eye_offset = entity.driver_eye_offset
 	player:set_attach(entity.object, "", attach_at, entity.player_rotation)
 	entity.driver = player --this goes after petz.force_detach!
 	local player_name = player:get_player_name()

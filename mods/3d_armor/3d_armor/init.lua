@@ -5,21 +5,16 @@ local last_punch_time = {}
 local pending_players = {}
 local timer = 0
 
--- support for i18n
-armor_i18n = { }
-armor_i18n.gettext, armor_i18n.ngettext = dofile(modpath.."/intllib.lua")
+dofile(modpath.."/api.lua")
 
 -- local functions
-local S = armor_i18n.gettext
 local F = minetest.formspec_escape
-
-dofile(modpath.."/api.lua")
+local S = armor.get_translator
 
 -- integration test
 if minetest.settings:get_bool("enable_3d_armor_integration_test") then
-        dofile(modpath.."/integration_test.lua")
+	dofile(modpath.."/integration_test.lua")
 end
-
 
 -- Legacy Config Support
 
@@ -291,6 +286,23 @@ default.player_register_model("3d_armor_character.b3d", {
 	},
 })
 
+default.player_register_model("3d_armor_female.b3d", {
+	animation_speed = 30,
+	textures = {
+		"female.png",
+		"3d_armor_trans.png",
+		"3d_armor_trans.png",
+	},
+	animations = {
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+	},
+})
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = armor:get_valid_player(player, "[on_player_receive_fields]")
 	if not name then
@@ -312,10 +324,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	local meta = player:get_meta()
-	if not(meta:get_string("gender") == "female") then
-		default.player_set_model(player, "3d_armor_character.b3d")
-	end
+
 	local player_name = player:get_player_name()
 
 	minetest.after(0, function()

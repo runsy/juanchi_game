@@ -898,7 +898,7 @@ function default.register_biomes()
 		node_dungeon = "default:cobble",
 		node_dungeon_alt = "default:mossycobble",
 		node_dungeon_stair = "stairs:stair_cobble",
-		y_max = -128,
+		y_max = -64,
 		y_min = -255,
 		heat_point = 85,
 		humidity_point = 65,
@@ -2306,15 +2306,16 @@ function default.register_decorations()
 		place_on = {"default:stone"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.1,
-			scale = 0.1,
+			offset = 0.005,
+			scale = 0.005,
 			spread = {x = 20, y = 20, z = 20},
-			seed = 569,
+			seed = 549,
 			octaves = 3,
 			persist = 0.7
 		},
-		y_max = -128,
+		y_max = -64,
 		y_min = -255,
+		flags= "all_floors",
 	})
 
 	-- Sunflower

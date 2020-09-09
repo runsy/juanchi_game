@@ -2,9 +2,6 @@
 -- Palm Tree
 --
 
-local modname = "palm"
-local modpath = minetest.get_modpath(modname)
-
 -- internationalization boilerplate
 local S = minetest.get_translator(minetest.get_current_modname())
 

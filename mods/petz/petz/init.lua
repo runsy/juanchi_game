@@ -24,7 +24,7 @@ petz.settings.mesh = nil
 petz.settings.visual_size = {}
 petz.settings.rotate = 0
 
-assert(loadfile(modpath .. "/settings.lua"))(modpath, S) --Load the settings
+assert(loadfile(modpath .. "/settings.lua"))(modpath) --Load the settings
 
 petz.tamed_by_owner = {} --a list of tamed petz with owner
 
@@ -43,8 +43,8 @@ petz.file_exists = function(name)
 	end
 end
 
-for i = 1, #petz.petz_list do --load all the petz.lua files
-	local file_name = modpath .. "/petz/"..petz.petz_list[i].."_"..petz.settings.type_api..".lua"
+for i = 1, #petz.settings["petz_list"] do --load all the petz.lua files
+	local file_name = modpath .. "/petz/"..petz.settings["petz_list"][i].."_mobkit"..".lua"
 	if petz.file_exists(file_name) then
 		assert(loadfile(file_name))(S)
 	end

@@ -53,6 +53,8 @@ petz.dyn_prop = {
 	set_vars = {type= "boolean", default = false},
 	shaved = {type= "boolean", default = false},
 	show_tag = {type= "boolean", default = false},
+	sleep_start_time = {type= "int", default = nil},
+	sleep_end_time = {type= "int", default = nil},
 	square_ball_attached = {type= "boolean", default = false},
 	status = {type= "string", default = ""},
 	tag = {type= "string", default = ""},
@@ -119,6 +121,9 @@ end
 petz.load_vars = function(self)
 	for key, value in pairs(petz.dyn_prop) do
 		self[key] = mobkit.recall(self, key) or value["default"]
+	end
+	if not(self.sleep_start_time) or not(self.sleep_end_time) then
+		petz.calculate_sleep_times(self)
 	end
 	petz.insert_tamed_by_owner(self)
 	petz.cleanup_prop(self)	 --Reset some vars
@@ -273,6 +278,7 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 			self.lashed = mobkit.remember(self, "lashed", false)
 			self.lashing_count = mobkit.remember(self, "lashing_count", 0)
 		end
+		petz.calculate_sleep_times(self) --Sleep behaviour
 	--
 	--2. ALREADY EXISTING MOBS
 	--
@@ -352,7 +358,6 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 			})
 		end
 	end
-	petz.calculate_sleep_times(self) --Sleep behaviour
 	--self.head_rotation = {x= -90, y= 90, z= 0}
 	--self.whead_position = self.object:get_bone_position("parent")
 	--self.head_position.y = self.head_position.y + 0.25

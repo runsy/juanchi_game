@@ -33,7 +33,7 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 			offset = 0.0005,
 			scale = 0.0005,
 			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
+			seed = 678,
 			octaves = 3,
 			persist = 0.66
 		},

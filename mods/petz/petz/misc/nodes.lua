@@ -146,6 +146,21 @@ minetest.register_node("petz:ducky_nest_egg", {
         type = "fixed",
         fixed= {-0.25, -0.75, -0.25, 0.25, -0.25, 0.25},
     },
+    on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(math.random(400, 600))
+    end,
+	on_timer = function(pos)
+        local pos_above = {x = pos.x, y = pos.y +1, z= pos.z}
+        if pos_above then
+            if not minetest.registered_entities["petz:ducky"] then
+                return
+            end
+            minetest.add_entity(pos_above, "petz:ducky")
+            minetest.set_node(pos, {name= "petz:ducky_nest"})
+            return true
+        end
+    end,
 	on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 		petz.extract_egg_from_nest(pos, player, "petz:ducky_egg") --extract the egg
 	end,
@@ -170,6 +185,21 @@ minetest.register_node("petz:chicken_nest_egg", {
         type = "fixed",
         fixed= {-0.25, -0.75, -0.25, 0.25, -0.25, 0.25},
     },
+    on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(math.random(400, 600))
+    end,
+	on_timer = function(pos)
+		local pos_above = {x = pos.x, y = pos.y +1, z= pos.z}
+		if pos_above then
+			if not minetest.registered_entities["petz:chicken"] then
+				return
+			end
+			minetest.add_entity(pos_above, "petz:chicken")
+			minetest.set_node(pos, {name= "petz:ducky_nest"})
+			return true
+		end
+	end,
 	on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 		petz.extract_egg_from_nest(pos, player, "petz:chicken_egg") --extract the egg
 	end,
@@ -183,45 +213,6 @@ minetest.register_craft({
         {'group:leaves', 'petz:ducky_egg', 'group:leaves'},
         {'default:papyrus', 'default:papyrus', 'default:papyrus'},
     }
-})
-
--- Chance to hatch an egg into a ducky or chicken
-minetest.register_abm({
-    nodenames = {"petz:ducky_nest_egg"},
-    neighbors = {},
-    interval = 600.0, -- Run every 10 minuts
-    chance = 5, -- Select every 1 in 3 nodes
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        local pos_above = {x = pos.x, y = pos.y +1, z= pos.z}
-        if pos_above then
-            if not minetest.registered_entities["petz:ducky"] then
-                return
-            end
-            --pos.y = pos.y + 1
-            local mob = minetest.add_entity(pos_above, "petz:ducky")
-            local ent = mob:get_luaentity()
-            minetest.set_node(pos, {name= "petz:ducky_nest"})
-        end
-    end
-})
-
-minetest.register_abm({
-    nodenames = {"petz:chicken_nest_egg"},
-    neighbors = {},
-    interval = 600.0, -- Run every 10 minuts
-    chance = 5, -- Select every 1 in 3 nodes
-    action = function(pos, node, active_object_count, active_object_count_wider)
-        local pos_above = {x = pos.x, y = pos.y +1, z= pos.z}
-        if pos_above then
-            if not minetest.registered_entities["petz:chicken"] then
-                return
-            end
-            --pos.y = pos.y + 1
-            local mob = minetest.add_entity(pos_above, "petz:chicken")
-            local ent = mob:get_luaentity()
-            minetest.set_node(pos, {name= "petz:ducky_nest"})
-        end
-    end
 })
 
 --Vanilla Wool
@@ -339,10 +330,11 @@ minetest.register_node("petz:beehive", {
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3,
 		flammable = 3, wool = 1},
 	sounds = default.node_sound_defaults(),
+	drop = {},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local	drops = {
-			{name = "petz:honeycomb", chance = 1, min = 6, max= 6},
+			{name = "petz:honeycomb", chance = 1, min = 1, max= 6},
 		}
 		meta:set_string("drops", minetest.serialize(drops))
 		local timer = minetest.get_node_timer(pos)
@@ -356,20 +348,39 @@ minetest.register_node("petz:beehive", {
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		local meta = minetest.get_meta(pos)
-		local honey_count = petz.settings.initial_honey_behive
-		meta:set_int("honey_count", honey_count)
+		local honey_count
 		local bee_count
 		if placer:is_player() then
-			bee_count = 1
+			honey_count = 0
+			bee_count = 0
+			minetest.after(petz.settings.worker_bee_delay, function(beehive_pos)
+				local node =minetest.get_node_or_nil(beehive_pos)
+				if not(node and node.name == "petz:beehive") then
+					return
+				end
+				meta = minetest.get_meta(beehive_pos)
+				local total_bees = meta:get_int("total_bees") or petz.settings.max_bees_behive
+				if total_bees < petz.settings.max_bees_behive then
+					bee_count = meta:get_int("bee_count")
+					bee_count = bee_count + 1
+					total_bees = total_bees + 1
+					meta:set_int('bee_count', bee_count)
+					meta:set_int('total_bees', total_bees)
+					honey_count = meta:get_int('honey_count')
+					petz.set_infotext_behive(meta, honey_count, bee_count)
+				end
+			end, pos)
 		else
+			honey_count = petz.settings.initial_honey_behive
 			bee_count = petz.settings.max_bees_behive
 		end
+		meta:set_int("honey_count", honey_count)
 		meta:set_int("bee_count", bee_count)
 		meta:set_int("total_bees", bee_count)
 		petz.set_infotext_behive(meta, honey_count, bee_count)
 	end,
 	on_destruct = function(pos)
-		local self = minetest.add_entity(pos, "petz:queen_bee")
+		minetest.add_entity(pos, "petz:queen_bee")
 		mokapi.node_drop_items(pos)
 	end,
 	on_timer = function(pos)
@@ -462,7 +473,7 @@ minetest.register_craft({
 	output = "petz:beehive",
 	recipe = {
 		{"petz:honeycomb", "petz:honeycomb", "petz:honeycomb"},
-		{"petz:honeycomb", "petz:bee_set", "petz:honeycomb"},
+		{"petz:honeycomb", "petz:queen_bee_set", "petz:honeycomb"},
 		{"petz:honeycomb", "petz:honeycomb", "petz:honeycomb"},
 	}
 })
@@ -695,5 +706,3 @@ minetest.register_node("petz:honey_block", {
 	light_source = default.LIGHT_MAX - 1,
 	sounds = default.node_sound_glass_defaults(),
 })
-
-

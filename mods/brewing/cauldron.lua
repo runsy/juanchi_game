@@ -40,20 +40,19 @@ local function create_recipe_book_form()
 	local cells = ""
 	local potion_names = {}
 	local potion_idxs = ""
-	local potion_times = ""
 	local ing1_idxs = ""
 	local ing2_idxs = ""
 	local ing3_idxs = ""
 	for index, potion_craft in ipairs(brewing.craft_list) do
-		local potion_name
+		local potion_texture
 		if potion_craft["effect"] == "jump" then
-			potion_name = "potions_jump.png"
+			potion_texture = "potions_jump.png"
 		else
-			potion_name = "potions_"..potion_craft["effect"]..".png"
+			potion_texture = "potions_"..potion_craft["effect"]..".png"
 		end
 		local potion_exists
 		for idx, value in ipairs(potion_names) do
-			if value == potion_name then
+			if value == potion_texture then
 				potion_exists = idx
 			else
 				potion_exists = nil
@@ -64,7 +63,7 @@ local function create_recipe_book_form()
 			potion_idx = potion_exists
 		else
 			local next_idx = #potion_names+1
-			potion_names[next_idx]= potion_name
+			potion_names[next_idx]= potion_texture
 			potion_idx = next_idx
 		end
 		local ing_idxs = {}
@@ -97,7 +96,13 @@ local function create_recipe_book_form()
 		else
 			potion_time = potion_time.."s"
 		end
-		cells = cells .. potion_idx .. ","..S(uppercase(potion_craft["effect"])) .. ",".. S("lvl").. " ".. effect_type .. potion_craft["level"]..','..index..','..index..','..index..','..potion_time
+		local potion_craft_description
+		if potion_craft["description"] then
+			potion_craft_description = S(potion_craft["description"])
+		else
+			potion_craft_description = S(uppercase(potion_craft["effect"]))
+		end
+		cells = cells .. potion_idx .. ",".. potion_craft_description.. ",".. S("lvl").. " ".. effect_type .. potion_craft["level"]..','..index..','..index..','..index..','..potion_time
 		if index > 1 then
 			ing1_idxs = ing1_idxs .. ','
 			ing2_idxs = ing2_idxs .. ','

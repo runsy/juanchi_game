@@ -5,8 +5,6 @@
 -- Thanks to VanessaE, Tenplus1, paramat and all others who
 -- contribute to this mod
 
-local modname = "bamboo"
-
 -- internationalization boilerplate
 local S = minetest.get_translator(minetest.get_current_modname())
 

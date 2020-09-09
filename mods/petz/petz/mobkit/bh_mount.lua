@@ -139,9 +139,8 @@ function mobkit.lq_mountdriver(self)
 			velocity = velocity - get_sign(velocity)
 		end
 		-- Set position, velocity and acceleration
-		local new_velo = {x = 0, y = 0, z = 0}
+		local new_velo = get_velocity(velocity, self.object:get_yaw() - rot_view, velo.y)
 		local new_acce = {x = 0, y = mobkit.gravity, z = 0}
-		new_velo = get_velocity(velocity, self.object:get_yaw() - rot_view, velo.y)
 		self.object:set_velocity(new_velo)
 		if not(self.gallop) then
 			mobkit.animate(self, "walk")	-- set animation

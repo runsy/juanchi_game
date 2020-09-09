@@ -96,7 +96,7 @@ minetest.register_decoration({
 		offset = 0.008,
 		scale = 0.001,
 		spread = {x = 255, y = 255, z = 255},
-		seed = 2,
+		seed = 89,
 		octaves = 3,
 		persist = 0.67
 	},

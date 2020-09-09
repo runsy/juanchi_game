@@ -51,6 +51,14 @@ player_api.register_model(lycanthropy.werewolf.model, {
 	eye_height = 1.47,
 })
 
+local use_playerphysics
+if minetest.get_modpath("playerphysics") ~= nil then
+	use_playerphysics = true
+else
+	use_playerphysics = false
+end
+local use_player_monoids = minetest.global_exists("player_monoids")
+
 ---
 --- Helper Functions
 ---
@@ -137,7 +145,17 @@ petz.set_lycanthropy = function(player)
 	else
 		werewolf_texture = lycanthropy.werewolf.textures[meta:get_int("petz:werewolf_clan_idx")]
 	end
-	player:set_physics_override(lycanthropy.werewolf.override_table)
+	if use_playerphysics then
+		playerphysics.add_physics_factor(player, "speed", "werewolf_speed", lycanthropy.werewolf.override_table.speed)
+		playerphysics.add_physics_factor(player, "jump", "werewolf_jump", lycanthropy.werewolf.override_table.jump)
+		playerphysics.add_physics_factor(player, "gravity", "werewolf_gravity", lycanthropy.werewolf.override_table.gravity)
+	elseif use_player_monoids then
+		player_monoids.speed:add_change(player, lycanthropy.werewolf.override_table.speed, "petz:physics")
+		player_monoids.jump:add_change(player, lycanthropy.werewolf.override_table.jump, "petz:physics")
+		player_monoids.gravity:add_change(player, lycanthropy.werewolf.override_table.gravity, "petz:physics")
+	else
+		player:set_physics_override(lycanthropy.werewolf.override_table)
+	end
 	petz.show_werewolf_vignette(player)
 	meta:set_int("petz:werewolf", 1)
 	if minetest.get_modpath("3d_armor") ~= nil then
@@ -156,7 +174,17 @@ petz.unset_lycanthropy = function(player)
 	else
 		player_api.set_model(player, "character.b3d")
 	end
-	petz.set_old_override_table(player)
+	if use_playerphysics then
+		playerphysics.remove_physics_factor(player, "speed", "werewolf_speed")
+		playerphysics.remove_physics_factor(player, "jump", "werewolf_jump")
+		playerphysics.remove_physics_factor(player, "gravity", "werewolf_gravity")
+	elseif use_player_monoids then
+		player_monoids.speed:del_change(player, "petz:physics")
+		player_monoids.jump:del_change(player, "petz:physics")
+		player_monoids.gravity:del_change(player, "petz:physics")
+	else
+		petz.set_old_override_table(player)
+	end
 	petz.remove_werewolf_vignette(player)
 	meta:set_int("petz:werewolf", 0)
 	if minetest.get_modpath("3d_armor") ~= nil then

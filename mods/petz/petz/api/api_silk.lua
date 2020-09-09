@@ -19,6 +19,22 @@ minetest.register_node("petz:cocoon", {
 		type = "fixed",
 		fixed = {-0.125, -0.5, -0.375, 0.0625, -0.25, 0.3125},
 	},
+    on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(math.random(400, 600))
+    end,
+	on_timer = function(pos)
+		if not minetest.registered_entities["petz:moth"] then
+			return
+		end
+		if pos and petz.is_night() == true then --only spawn at night, to it does not die
+			local mob = minetest.add_entity(pos, "petz:moth")
+			local ent = mob:get_luaentity()
+			minetest.set_node(pos, {name= "air"})
+			return false
+		end
+		return true
+	end
 })
 
 --Silkworm Egg
@@ -40,63 +56,34 @@ minetest.register_node("petz:silkworm_eggs", {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.062500, 0.1875, -0.4375, 0.1875},
 	},
-})
-
--- Chance to hatch an egg into a silkworm
-minetest.register_abm({
-    nodenames = {"petz:silkworm_eggs"},
-    neighbors = {},
-    interval = 300.0, -- Run every 5 minuts
-    chance = 3, -- Select every 1 in 5 nodes
-    action = function(pos, node, active_object_count, active_object_count_wider)
+    on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(math.random(200, 300))
+    end,
+	on_timer = function(pos)
 		if not minetest.registered_entities["petz:silkworm"] then
 			return
 		end
-		if node.name == 'ignore' then --make sure it's not acting on unloaded chunks
-			return
+		minetest.set_node(pos, {name= "air"})
+		minetest.add_entity(pos, "petz:silkworm")
+		local pos2 = {
+			x = pos.x + 1,
+			y = pos.y,
+			z = pos.z + 1,
+		}
+		if minetest.get_node(pos2) and minetest.get_node(pos2).name == "air" then
+			minetest.add_entity(pos2, "petz:silkworm")
 		end
-		if pos then
-			minetest.set_node(pos, {name= "air"})
-			minetest.add_entity(pos, "petz:silkworm")
-			local pos2 = {
-				x = pos.x + 1,
-				y = pos.y,
-				z = pos.z + 1,
-			}
-			if minetest.get_node(pos2) and minetest.get_node(pos2).name == "air" then
-				minetest.add_entity(pos2, "petz:silkworm")
-			end
-			local pos3 = {
-				x = pos.x - 1,
-				y = pos.y,
-				z = pos.z -1,
-			}
-			if minetest.get_node(pos3) and minetest.get_node(pos3).name == "air" then
-				minetest.add_entity(pos3, "petz:silkworm")
-			end
+		local pos3 = {
+			x = pos.x - 1,
+			y = pos.y,
+			z = pos.z -1,
+		}
+		if minetest.get_node(pos3) and minetest.get_node(pos3).name == "air" then
+			minetest.add_entity(pos3, "petz:silkworm")
 		end
-    end
-})
-
--- Chance to convert a cocoon into a moth
-minetest.register_abm({
-    nodenames = {"petz:cocoon"},
-    neighbors = {},
-    interval = 600.0, -- Run every 10 minuts
-    chance = 3, -- Select every 1 in 5 nodes
-    action = function(pos, node, active_object_count, active_object_count_wider)
-		if not minetest.registered_entities["petz:moth"] then
-			return
-		end
-		if node.name == 'ignore' then --make sure it's not acting on unloaded chunks
-			return
-		end
-		if pos and petz.is_night() == true then --only spawn at night, to it does not die
-			local mob = minetest.add_entity(pos, "petz:moth")
-			local ent = mob:get_luaentity()
-			minetest.set_node(pos, {name= "air"})
-		end
-    end
+		return false
+	end
 })
 
 --Spinning Wheel

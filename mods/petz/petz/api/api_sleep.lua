@@ -30,8 +30,8 @@ petz.calculate_sleep_times = function(self)
 			sleep_start_time = math.random(day_start, sleep_end_time_limit - sleep_time)
 			sleep_end_time = sleep_start_time + sleep_time
 		end
-		self.sleep_start_time = sleep_start_time
-		self.sleep_end_time = sleep_end_time
+		self.sleep_start_time = mobkit.remember(self, "sleep_start_time", sleep_start_time)
+		self.sleep_end_time = mobkit.remember(self, "sleep_end_time", sleep_end_time)
 		--minetest.chat_send_player("singleplayer", "sleep_time="..tostring(sleep_time).."/sleep_start_time="..tostring(sleep_start_time).."/sleep_end_time="..tostring(sleep_end_time))
 	end
 end

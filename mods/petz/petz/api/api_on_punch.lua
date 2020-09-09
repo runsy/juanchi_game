@@ -22,7 +22,7 @@ petz.calculate_damage = function(self, time_from_last_punch, tool_capabilities)
 	--minetest.chat_send_all(tostring(health_bonus))
 	local luck_bonus = math.random(-1, 1)
 	--minetest.chat_send_all(tostring(luck_bonus))
-	damage = tool_damage + time_bonus + health_bonus + luck_bonus
+	local damage = tool_damage + time_bonus + health_bonus + luck_bonus
 	--minetest.chat_send_all(tostring(damage))
 	return damage
 end
@@ -71,11 +71,11 @@ function petz.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 	if petz.settings.colorize_punch then
 		local punch_texture = self.textures[self.texture_no].."^[colorize:"..petz.settings.punch_color..":125"
 		self.object:set_properties(self, {textures = {punch_texture}})
-		minetest.after(0.1, function(self)
+		minetest.after(0.1, function()
 			if self then
 				self.object:set_properties(self, {textures = { self.textures[self.texture_no]}})
 			end
-		end, self)
+		end)
 	end
 	--Do Hurt-->
 	local damage = petz.calculate_damage(self, time_from_last_punch, tool_capabilities)

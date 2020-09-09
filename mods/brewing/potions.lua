@@ -67,7 +67,7 @@ brewing.register_potion("jump", S("Jump"), "brewing:jump", {
 			type = 1,
 			set = {},
 			effects = {
-				jump = 0.5,
+				jump = 1.3,
 			},
 			time = 60,
 		},
@@ -75,7 +75,7 @@ brewing.register_potion("jump", S("Jump"), "brewing:jump", {
 			type = 2,
 			set = {},
 			effects = {
-				jump = 1,
+				jump = 1.75,
 			},
 			time = 30,
 		},
@@ -83,7 +83,7 @@ brewing.register_potion("jump", S("Jump"), "brewing:jump", {
 			type = 3,
 			set = {},
 			effects = {
-				jump = 1.5,
+				jump = 2.2,
 			},
 			time = 15,
 		},
@@ -194,6 +194,60 @@ brewing.register_potion("air", S("Air"), "brewing:air", {
 			set = {},
 			effects = {
 			},
+		},
+	}
+})
+
+brewing.register_potion("invisibility", S("Invisibility"), "brewing:invisibility", {
+	effect = "invisibility",
+	types = {
+		{
+			type = 1,
+			set = {},
+			effects = {
+			},
+			time = 15,
+		},
+		{
+			type = 2,
+			set = {},
+			effects = {
+			},
+			time = 30,
+		},
+		{
+			type = 3,
+			set = {},
+			effects = {
+			},
+			time = 60,
+		},
+	}
+})
+
+brewing.register_potion("resist_fire", S("Resist Fire"), "brewing:resist_fire", {
+	effect = "resist_fire",
+	types = {
+		{
+			type = 1,
+			set = {},
+			effects = {
+			},
+			time = 15,
+		},
+		{
+			type = 2,
+			set = {},
+			effects = {
+			},
+			time = 30,
+		},
+		{
+			type = 3,
+			set = {},
+			effects = {
+			},
+			time = 60,
 		},
 	}
 })

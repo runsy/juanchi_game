@@ -22,7 +22,11 @@ player_api.register_model("character.b3d", {
 
 player_api.register_model("female.b3d", {
 	animation_speed = 30,
-	textures = {"female.png"},
+	textures = {
+		"female.png",
+		"3d_armor_trans.png",
+		"3d_armor_trans.png",
+	},
 	animations = {
 		-- Standard animations.
 		stand = {x = 0,   y = 79},
@@ -39,19 +43,14 @@ player_api.register_model("female.b3d", {
 
 -- Update appearance when the player joins
 minetest.register_on_joinplayer(function(player)
-	player_api.player_attached[player:get_player_name()] = false
-	local meta = player:get_meta()
-	local gender = meta:get_string("gender")
+	local player_name = player:get_player_name()
+	player_api.player_attached[player_name] = false
+	local gender = player:get_meta():get_string("gender")
 	if gender == "" then
-		gender = player_api.set_gender(player)
-	end
-	local model
-	if gender == "male" then
-		model = "character.b3d"
+		player_api.select_gender(player_name)
 	else
-		model = "female.b3d"
+		player_api.set_model(player, player_api.get_gender_model(gender))
 	end
-	player_api.set_model(player, model)
 	player:set_local_animation(
 		{x = 0,   y = 79},
 		{x = 168, y = 187},

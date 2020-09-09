@@ -56,10 +56,10 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 	end
 
 	local candidates_list = {} --Create a sublist of the petz with the same node to spawnand between max_height and min_height
-	for i = 1, #petz.petz_list do
+	for i = 1, #petz.settings["petz_list"] do
 		local pet_name
 		local can_spawn = true
-		pet_name = petz.petz_list[i]
+		pet_name = petz.settings["petz_list"][i]
 		local mob_ent_name = "petz:"..pet_name
 		--minetest.chat_send_player("singleplayer", mob_ent_name)
 		local ent = minetest.registered_entities[mob_ent_name]

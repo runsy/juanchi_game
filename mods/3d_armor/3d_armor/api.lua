@@ -1,5 +1,5 @@
 -- support for i18n
-local S = armor_i18n.gettext
+local S = minetest.get_translator(minetest.get_current_modname())
 
 local skin_previews = {}
 local use_player_monoids = minetest.global_exists("player_monoids")
@@ -74,7 +74,8 @@ armor = {
 		on_destroy = {},
 	},
 	migrate_old_inventory = true,
-	version = "0.4.13",
+  version = "0.4.13",
+  get_translator = S
 }
 
 armor.config = {
@@ -407,14 +408,15 @@ end
 
 armor.get_player_skin = function(self, player, name)
 	local meta = player:get_meta()
+	if player:get_meta():get_string("gender") == "female" then
+		return "female.png"
+	end
 	if (self.skin_mod == "skins" or self.skin_mod == "simple_skins") and skins.skins[name] then
 		return skins.skins[name]..".png"
 	elseif self.skin_mod == "u_skins" and u_skins.u_skins[name] then
 		return u_skins.u_skins[name]..".png"
 	elseif self.skin_mod == "wardrobe" and wardrobe.playerSkins and wardrobe.playerSkins[name] then
 		return wardrobe.playerSkins[name]
-	elseif player:get_meta():get_string("gender") == "female" then
-		return "female.png"
 	end
 	return armor.default_skin..".png"
 end

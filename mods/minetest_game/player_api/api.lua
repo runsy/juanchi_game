@@ -1,6 +1,9 @@
 -- Minetest 0.4 mod: player
 -- See README.txt for licensing and other information.
 
+-- Load support for MT game translation.
+local S = minetest.get_translator("player_api")
+
 player_api = {}
 
 -- Player animation blending
@@ -32,16 +35,40 @@ function player_api.get_animation(player)
 	}
 end
 
-function player_api.set_gender(player)
-	local gender
-	if math.random(2) == 1 then
-		gender = "male"
-	else
-		gender = "female"
+function player_api.set_gender(player, gender)
+	if not(gender) or gender == "random" then
+		if math.random(2) == 1 then
+			gender = "male"
+		else
+			gender = "female"
+		end
 	end
 	local meta = player:get_meta()
 	meta:set_string("gender", gender)
 	return gender
+end
+
+function player_api.get_gender(player)
+	local meta = player:get_meta()
+	return meta:get_string("gender")
+end
+
+function player_api.get_gender_model(gender)
+	local model
+	if gender == "male" then
+		if minetest.get_modpath("3d_armor")~=nil then
+			model =  "3d_armor_character.b3d"
+		else
+			model = "character.b3d"
+		end
+	else
+		if minetest.get_modpath("3d_armor")~=nil then
+			model =  "3d_armor_female.b3d"
+		else
+			model = "female.b3d"
+		end
+	end
+	return model
 end
 
 -- Called when a player's appearance needs to be updated
@@ -152,5 +179,46 @@ minetest.register_globalstep(function()
 				player_set_animation(player, "stand", animation_speed_mod)
 			end
 		end
+	end
+end)
+
+function player_api.get_gender_formspec(name)
+	local text = S("Select your gender")
+
+	local formspec = {
+		"formspec_version[3]",
+		"size[3.2,2.476]",
+		"label[0.375,0.5;", minetest.formspec_escape(text), "]",
+		"image_button_exit[0.375,1;1,1;player_male_face.png;btn_male;"..S("Male").."]",
+		"image_button_exit[1.7,1;1,1;player_female_face.png;btn_female;"..S("Female").."]"
+	}
+
+	-- table.concat is faster than string concatenation - `..`
+	return table.concat(formspec, "")
+end
+
+function player_api.select_gender(player_name)
+    minetest.show_formspec(player_name, "player_api:gender", player_api.get_gender_formspec(player_name))
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "player_api:gender" then
+		return
+	end
+	local gender
+	if fields.btn_male or fields.btn_female then
+		if fields.btn_male then
+			gender = "male"
+		else
+			gender = "female"
+		end
+		player_api.set_gender(player, gender)
+	else
+		gender = player_api.set_gender(player, "random")
+	end
+	local gender_model = player_api.get_gender_model(gender)
+	player_api.set_model(player, gender_model)
+	if minetest.get_modpath("3d_armor")~=nil then
+		player_api.set_textures(player, models[gender_model].textures)
 	end
 end)

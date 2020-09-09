@@ -4,12 +4,19 @@
 local S = ...
 
 local pet_name = "calf"
-local scale_model = 4.5
 local mesh = 'petz_calf.b3d'
-local textures= {"petz_calf.png", "petz_calf2.png", "petz_calf3.png"}
+local scale_model = 4.5
+local scale_baby = 0.5
+local visual_size = {x=petz.settings.visual_size.x*scale_model, y=petz.settings.visual_size.y*scale_model}
+local visual_size_baby = {x=petz.settings.visual_size.x*scale_model*scale_baby, y=petz.settings.visual_size.y*scale_model*scale_baby}
+local skin_colors = {"black_white", "brown_white", "brown", "white_black", "white_brown"}
+local textures = {}
+for n = 1, #skin_colors do
+	textures[n] = "petz_"..pet_name.."_"..skin_colors[n]..".png"
+end
 local p1 = {x= -0.0625, y = -0.5, z = -0.1875}
 local p2 = {x= 0.125, y = -0.0625, z = 0.1875}
-local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, scale_baby)
 
 minetest.register_entity("petz:"..pet_name,{
 	--Petz specifics
@@ -17,6 +24,7 @@ minetest.register_entity("petz:"..pet_name,{
 	init_tamagochi_timer = false,
 	is_pet = true,
 	has_affinity = false,
+	breed = true,
 	milkable = true,
 	is_wild = false,
 	give_orders = false,
@@ -40,15 +48,13 @@ minetest.register_entity("petz:"..pet_name,{
 	stepheight = 0.1,	--EVIL!
 	collide_with_objects = true,
 	collisionbox = collisionbox,
+	collisionbox_baby = collisionbox_baby,
 	visual = petz.settings.visual,
 	mesh = mesh,
 	textures = textures,
-	visual_size = {x=petz.settings.visual_size.x*scale_model, y=petz.settings.visual_size.y*scale_model},
-	replace_rate = 10,
-    replace_what = {
-        {"group:grass", "air", -1},
-        {"default:dirt_with_grass", "default:dirt", -2}
-    },
+	skin_colors = skin_colors,
+	visual_size = visual_size,
+	visual_size_baby = visual_size_baby,
 	static_save = true,
 	get_staticdata = mobkit.statfunc,
 	-- api props
