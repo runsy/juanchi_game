@@ -20,8 +20,6 @@ minetest.register_entity("petz:"..pet_name,{
 	bottled = "petz:bottle_moth",
 	max_height = 3,
 	spawn_at_night = true,
-	die_at_daylight = true,
-	max_daylight_level = 8,
 	has_affinity = false,
 	is_wild = false,
 	give_orders = false,

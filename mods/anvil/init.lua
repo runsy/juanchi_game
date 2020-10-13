@@ -136,7 +136,7 @@ minetest.register_node("anvil:anvil", {
 	description = S("Anvil"),
 	_doc_items_longdesc = S("A tool for repairing other tools in conjunction with a blacksmith's hammer."),
 	_doc_items_usagehelp = S("Right-click on this anvil with a damaged tool to place the damaged tool upon it. You can then repair the damaged tool by striking it with a blacksmith's hammer. Repeated blows may be necessary to fully repair a badly worn tool. To retrieve the tool either punch or right-click the anvil with an empty hand."),
-	tiles = {"default_stone.png"},
+	tiles = {"default_obsidian.png^[colorize:#FFFFFF:72"},
 	paramtype  = "light",
 	paramtype2 = "facedir",
 	groups = {cracky=2},
@@ -193,7 +193,7 @@ minetest.register_node("anvil:anvil", {
 				minetest.chat_send_player( player:get_player_name(), S('This anvil is for damaged tools only.'))
 				return 0
 			end
-		
+
 			if (minetest.get_item_group(stack:get_name(), "not_repaired_by_anvil") ~= 0) then
 				local item_def = minetest.registered_items[stack:get_name()]
 				minetest.chat_send_player( player:get_player_name(), S('@1 cannot be repaired with an anvil.', item_def.description))

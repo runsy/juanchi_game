@@ -443,6 +443,7 @@ for i = 1, #petz.settings["petz_list"] do --load the settings
 	petz.settings[petz_type.."_convert_to"] = user:get(petz_type.."_convert_to", nil) or settings:get(petz_type.."_convert_to", nil)
 	petz.settings[petz_type.."_convert_count"] = tonumber(user:get(petz_type.."_convert_count") or settings:get(petz_type.."_convert_count")) or nil
 	petz.settings[petz_type.."_lifetime"] = tonumber(user:get(petz_type.."_lifetime") or settings:get(petz_type.."_lifetime")) or nil
+	petz.settings[petz_type.."_disable_spawn"] = tonumber(user:get(petz_type.."_disable_spawn") or settings:get(petz_type.."_disable_spawn")) or false
 	if petz_type == "beaver" then
 		petz.settings[petz_type.."_create_dam"] = user:get_bool(petz_type.."_create_dam", false) or settings:get_bool(petz_type.."_create_dam", false)
 	elseif petz_type == "silkworm" then

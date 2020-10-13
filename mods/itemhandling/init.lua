@@ -14,6 +14,9 @@ local creative_mode = minetest.settings:get_bool("creative_mode")
 --survival
 if not creative_mode then
 	function minetest.handle_node_drops(pos, drops, digger)
+		if not(digger) or not(digger:is_player()) then
+			return
+		end
 		local meta = digger:get_wielded_item():get_meta()
 		local slippery =  meta:get_int("slippery")
 		local careful = meta:get_int("careful")

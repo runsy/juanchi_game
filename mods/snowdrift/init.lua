@@ -161,7 +161,7 @@ minetest.register_globalstep(function(dtime)
 				skybox[player_name] = true
 			elseif not precip and skybox[player_name] then
 				-- Set normal sky only if skybox
-				player:set_sky({}, "regular", {}, true)
+				player:set_sky({"white"}, "regular", {}, true)
 				skybox[player_name] = nil
 			end
 
@@ -266,7 +266,7 @@ minetest.register_globalstep(function(dtime)
 			end
 			-- Set normal sky if skybox
 			if skybox[player_name] then
-				player:set_sky({}, "regular", {}, true)
+				player:set_sky({"white"}, "regular", {}, true)
 				skybox[player_name] = nil
 			end
 		end
