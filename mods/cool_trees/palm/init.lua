@@ -227,7 +227,6 @@ minetest.register_node("palm:wood", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
-
 -- palm tree leaves
 minetest.register_node("palm:leaves", {
 	description = S("Palm Leaves"),

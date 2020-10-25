@@ -45,6 +45,7 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		schematic = modpath.."/schematics/ebony.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
+		place_offset_y = -1,
 	})
 end
 

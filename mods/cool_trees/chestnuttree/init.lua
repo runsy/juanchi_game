@@ -69,17 +69,17 @@ end
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"default:dirt_with_grass"},
+		place_on = {"rainf:meadow"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.00005,
+			offset = 0.0008,
 			scale = 0.00004,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 278,
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"grassland"},
+		biomes = {"rainf"},
 		y_min = 1,
 		y_max = 80,
 		schematic = modpath.."/schematics/chestnuttree.mts",

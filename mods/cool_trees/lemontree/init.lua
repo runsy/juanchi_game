@@ -5,6 +5,7 @@
 local modname = "lemontree"
 local modpath = minetest.get_modpath(modname)
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local fruit_grow_time = 1200
 
 -- internationalization boilerplate
 local S = minetest.get_translator(minetest.get_current_modname())
@@ -31,6 +32,22 @@ minetest.register_node("lemontree:lemon", {
 
 	after_place_node = function(pos, placer, itemstack)
 		minetest.set_node(pos, {name = "lemontree:lemon", param2 = 1})
+	end,
+
+	on_dig = function(pos, node, digger)
+		if digger:is_player() then
+			local inv = digger:get_inventory()
+			if inv:room_for_item("main", "lemontree:lemon") then
+				inv:add_item("main", "lemontree:lemon")
+			end
+		end
+		minetest.remove_node(pos)
+		pos.y = pos.y + 1
+		local node_above = minetest.get_node_or_nil(pos)
+		if node_above and node_above.param2 == 0 and node_above.name == "lemontree:leaves" then
+			local timer = minetest.get_node_timer(pos)
+			timer:start(fruit_grow_time)
+		end
 	end,
 })
 
@@ -156,6 +173,17 @@ minetest.register_node("lemontree:leaves", {
 	},
 	sounds = default.node_sound_leaves_defaults(),
 	after_place_node = default.after_place_leaves,
+
+	on_timer = function(pos)
+		pos.y = pos.y - 1
+		local node = minetest.get_node_or_nil(pos)
+		if node and node.name == "air" then
+			minetest.set_node(pos, {name = "lemontree:lemon"})
+			return false
+		else
+			return true
+		end
+    end
 })
 
 --

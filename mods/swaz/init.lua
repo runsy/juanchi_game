@@ -14,7 +14,7 @@ minetest.register_biome({
 	node_water_top = "swaz:water_source",
 	depth_water_top = 1,
 	node_stone = "swaz:limestone",
-	y_max = 5,
+	y_max = 25,
 	y_min = 1,
 	heat_point = 80,
 	humidity_point = 89,
@@ -56,7 +56,6 @@ minetest.register_node("swaz:limestone", {
 	tiles = {"swaz_limestone.png"},
 	groups = {cracky = 3, stone = 1},
 	drop = "swaz:limestone",
-	legacy_mineral = true,
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -222,7 +221,7 @@ minetest.register_node("swaz:pampas_grass", {
 	description = S("Pampas Grass"),
 	drawtype = "plantlike",
 	waving = 1,
-	visual_scale = 0.8,
+	visual_scale = 0.9,
 	tiles = {"swaz_pampas_grass.png"},
 	inventory_image = "swaz_pampas_grass.png",
 	wield_image = "swaz_pampas_grass.png",
@@ -242,7 +241,7 @@ minetest.register_node("swaz:lavender", {
 	description = S("Lavender"),
 	drawtype = "plantlike",
 	waving = 1,
-	visual_scale = 0.8,
+	visual_scale = 1.0,
 	tiles = {"swaz_lavender.png"},
 	inventory_image = "swaz_lavender.png",
 	wield_image = "swaz_lavender.png",
@@ -250,7 +249,7 @@ minetest.register_node("swaz:lavender", {
 	sunlight_propagates = true,
 	walkable = false,
 	buildable_to = true,
-	groups = {snappy = 3, flora = 1, attached_node = 1, flammable = 1},
+	groups = {snappy = 3, flower = 1, flora = 1, attached_node = 1, flammable = 1, color_violet = 1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -574,6 +573,111 @@ minetest.register_craft({
 	recipe = {"swaz:adobe", "swaz:adobe", "swaz:adobe", "swaz:adobe"},
 })
 
+minetest.register_node("swaz:brick_wall", {
+	description = S("Brick Wall"),
+	tiles = {"swaz_brick_wall.png"},
+	is_ground_content = false,
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = "swaz:brick_wall",
+	type = "cooking",
+	cooktime = 3.0,
+	recipe = "swaz:mudbrick",
+})
+
+minetest.register_node("swaz:mixed_brick_wall", {
+	description = S("Mixed Brick Wall"),
+	tiles = {"swaz_mixed_brick_wall.png"},
+	is_ground_content = false,
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = "swaz:mixed_brick_wall",
+	type = "shapeless",
+	recipe = {"swaz:brick_wall", "dye:red", "dye:blue"},
+})
+
+minetest.register_node("swaz:sandy_brick_wall", {
+	description = S("Sandy Brick Wall"),
+	tiles = {"swaz_sandy_brick_wall.png"},
+	is_ground_content = false,
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = "swaz:sandy_brick_wall",
+	type = "shapeless",
+	recipe = {"swaz:brick_wall", "default:sand"},
+})
+
+local cement_base
+
+if minetest.get_modpath("basic_materials")~=nil then
+	cement_base = "basic_materials:wet_cement"
+else
+	cement_base = "dye:grey"
+end
+
+minetest.register_node("swaz:cemented_brick_wall", {
+	description = S("Cemented Brick Wall"),
+	tiles = {"swaz_cemented_brick_wall.png"},
+	is_ground_content = false,
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craft({
+	output = "swaz:cemented_brick_wall",
+	type = "shapeless",
+	recipe = {"swaz:brick_wall", cement_base},
+})
+
+--Roof/Gables
+
+minetest.register_node("swaz:roof_slope_red", {
+	description = S("Red Roof Slope"),
+	drawtype= "mesh",
+	mesh = "swaz_roof_slope.b3d",
+	tiles = {"swaz_red_roof.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0, 0.5},
+			{-0.5, 0, 0, 0.5, 0.5, 0.5},
+		}
+	}
+})
+
+minetest.register_node("swaz:red_roof_corner", {
+	description = S("Red Roof Corner"),
+	drawtype= "mesh",
+	mesh = "swaz_roof_corner.b3d",
+	tiles = {"swaz_red_roof.png"},
+	paramtype2 = "facedir",
+	is_ground_content = false,
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("swaz:roof_flat_red", {
+	description = S("Red Flat Roof"),
+	tiles = {"swaz_red_gables.png", "swaz_adobe.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	groups = {cracky = 3, stone = 1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 if minetest.get_modpath("stairs")~=nil then
 
 	stairs.register_stair_and_slab(
@@ -593,6 +697,16 @@ if minetest.get_modpath("stairs")~=nil then
 		{"swaz_mudbrick.png"},
 		S("Mudbrick Stair"),
 		S("Mudbrick Slab"),
+		default.node_sound_stone_defaults()
+	)
+
+	stairs.register_stair_and_slab(
+		"adobe_brick",
+		"swaz_brick_wall",
+		{cracky = 2, stone = 1},
+		{"swaz_brick_wall.png"},
+		S("Bricked Stair"),
+		S("Bricked Slab"),
 		default.node_sound_stone_defaults()
 	)
 end
