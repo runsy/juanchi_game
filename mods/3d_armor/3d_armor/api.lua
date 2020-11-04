@@ -5,6 +5,7 @@ local skin_previews = {}
 local use_player_monoids = minetest.global_exists("player_monoids")
 local use_armor_monoid = minetest.global_exists("armor_monoid")
 local use_pova_mod = minetest.get_modpath("pova")
+local use_playerphysics = minetest.global_exists("playerphysics")
 local armor_def = setmetatable({}, {
 	__index = function()
 		return setmetatable({
@@ -103,6 +104,19 @@ armor.config = {
 -- Armor Registration
 
 armor.register_armor = function(self, name, def)
+	def.on_secondary_use = function(itemstack, player)
+		return armor:equip(player, itemstack)
+	end
+	def.on_place = function(itemstack, player, pointed_thing)
+		if pointed_thing.type == "node" and player and not player:get_player_control().sneak then
+			local node = minetest.get_node(pointed_thing.under)
+			local ndef = minetest.registered_nodes[node.name]
+			if ndef and ndef.on_rightclick then
+				return ndef.on_rightclick(pointed_thing.under, node, player, itemstack, pointed_thing)
+			end
+		end
+		return armor:equip(player, itemstack)
+	end
 	minetest.register_tool(name, def)
 end
 
@@ -184,7 +198,7 @@ armor.set_player_armor = function(self, player)
 	local state = 0
 	local count = 0
 	local material = {count=1}
-	local preview = armor:get_preview(player, name)
+	local preview = armor:get_preview(name)
 	local texture = "3d_armor_trans.png"
 	local physics = {}
 	local attributes = {}
@@ -286,7 +300,14 @@ armor.set_player_armor = function(self, player)
 		end
 		player:set_armor_groups(groups)
 	end
-	if use_player_monoids then
+	if use_playerphysics then
+		playerphysics.remove_physics_factor(player, "speed", "3d_armor:physics")
+		playerphysics.remove_physics_factor(player, "jump", "3d_armor:physics")
+		playerphysics.remove_physics_factor(player, "gravity", "3d_armor:physics")
+		playerphysics.add_physics_factor(player, "speed", "3d_armor:physics", physics.speed)
+		playerphysics.add_physics_factor(player, "jump", "3d_armor:physics", physics.jump)
+		playerphysics.add_physics_factor(player, "gravity", "3d_armor:physics", physics.gravity)
+	elseif use_player_monoids then
 		player_monoids.speed:add_change(player, physics.speed,
 			"3d_armor:physics")
 		player_monoids.jump:add_change(player, physics.jump,
@@ -302,7 +323,10 @@ armor.set_player_armor = function(self, player)
 		})
 		pova.do_override(player)
 	else
-		player:set_physics_override(physics)
+		local player_physics_locked = player:get_meta():get_int("player_physics_locked")
+		if player_physics_locked == nil or player_physics_locked == 0 then
+			player:set_physics_override(physics)
+		end
 	end
 	self.textures[name].armor = texture
 	self.textures[name].preview = preview
@@ -406,11 +430,69 @@ armor.damage = function(self, player, index, stack, use)
 	end
 end
 
-armor.get_player_skin = function(self, player, name)
-	local meta = player:get_meta()
-	if player:get_meta():get_string("gender") == "female" then
-		return "female.png"
+armor.get_weared_armor_elements = function(self, player)
+    local name, inv = self:get_valid_player(player, "[get_weared_armor]")
+	local weared_armor = {}
+	if not name then
+		return
 	end
+    for i=1, inv:get_size("armor") do
+        local item_name = inv:get_stack("armor", i):get_name()
+        local element = self:get_element(item_name)
+        if element ~= nil then
+            weared_armor[element] = item_name
+        end
+	end
+	return weared_armor
+end
+
+armor.equip = function(self, player, itemstack)
+    local name, armor_inv = self:get_valid_player(player, "[equip]")
+    local weared_armor = self:get_weared_armor_elements(player)
+    local armor_element = self:get_element(itemstack:get_name())
+	if name and armor_element then
+		if weared_armor[armor_element] ~= nil then
+			self:unequip(player, armor_element)
+		end
+		armor_inv:add_item("armor", itemstack:take_item())
+		self:set_player_armor(player)
+		self:save_armor_inventory(player)
+	end
+	return itemstack
+end
+
+armor.unequip = function(self, player, armor_element)
+    local name, armor_inv = self:get_valid_player(player, "[unequip]")
+	local weared_armor = self:get_weared_armor_elements(player)
+	if not name or not weared_armor[armor_element] then
+		return
+	end
+	local itemstack = armor_inv:remove_item("armor", ItemStack(weared_armor[armor_element]))
+	minetest.after(0, function()
+		local inv = player:get_inventory()
+		if inv:room_for_item("main", itemstack) then
+			inv:add_item("main", itemstack)
+		else
+			minetest.add_item(player:get_pos(), itemstack)
+		end
+	end)
+    self:set_player_armor(player)
+	self:save_armor_inventory(player)
+end
+
+armor.remove_all = function(self, player)
+    local name, inv = self:get_valid_player(player, "[remove_all]")
+	if not name then
+		return
+    end
+	inv:set_list("armor", {})
+	self:set_player_armor(player)
+	self:save_armor_inventory(player)
+end
+
+armor.get_player_skin = function(self, name)
+	local player = minetest.get_player_by_name(name)
+	local meta = player:get_meta()
 	if (self.skin_mod == "skins" or self.skin_mod == "simple_skins") and skins.skins[name] then
 		return skins.skins[name]..".png"
 	elseif self.skin_mod == "u_skins" and u_skins.u_skins[name] then
@@ -418,7 +500,21 @@ armor.get_player_skin = function(self, player, name)
 	elseif self.skin_mod == "wardrobe" and wardrobe.playerSkins and wardrobe.playerSkins[name] then
 		return wardrobe.playerSkins[name]
 	end
-	return armor.default_skin..".png"
+	if player:get_meta():get_string("gender") == "female" then
+		return "female.png"
+	else
+		return "character.png"
+	end
+end
+
+armor.update_skin = function(self, name)
+	minetest.after(0, function()
+		local pplayer = minetest.get_player_by_name(name)
+		if pplayer then
+			self.textures[name].skin = self:get_player_skin(name)
+			self:set_player_armor(pplayer)
+		end
+	end)
 end
 
 armor.add_preview = function(self, preview)

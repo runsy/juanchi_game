@@ -78,6 +78,8 @@ end
 -- nodes from being placed in the top half of the door.
 minetest.register_node("doors:hidden", {
 	description = S("Hidden Door Segment"),
+	inventory_image = "doors_hidden_segment.png^default_invisible_node_overlay.png",
+	wield_image = "doors_hidden_segment.png^default_invisible_node_overlay.png",
 	drawtype = "airlike",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -431,6 +433,7 @@ function doors.register(name, def)
 	def.sunlight_propagates = true
 	def.walkable = true
 	def.is_ground_content = false
+	use_texture_alpha = true
 	def.buildable_to = false
 	def.selection_box = {type = "fixed", fixed = {-1/2,-1/2,-1/2,1/2,3/2,-6/16}}
 	def.collision_box = {type = "fixed", fixed = {-1/2,-1/2,-1/2,1/2,3/2,-6/16}}

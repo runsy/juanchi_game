@@ -11,29 +11,32 @@ minetest.register_biome({
 	depth_filler = 3,
 	node_riverbed = "default:sand",
 	depth_riverbed = 2,
+	node_water = "swaz:water_source",
+	depth_water_top = 5,
 	node_water_top = "swaz:water_source",
-	depth_water_top = 1,
 	node_stone = "swaz:limestone",
-	y_max = 25,
+	y_max = 7,
 	y_min = 1,
 	heat_point = 80,
 	humidity_point = 89,
+	vertical_blend = 0,
 })
 
 minetest.register_biome({
 	name = "swampz_shore",
-	node_top = "default:dirt",
+	node_top = "swaz:mud",
 	depth_top = 1,
-	node_filler = "default:dirt",
+	node_filler = "swaz:mud",
 	depth_filler = 3,
 	node_riverbed = "default:sand",
 	depth_riverbed = 2,
+	node_water = "swaz:water_source",
+	depth_water_top = 5,
 	node_water_top = "swaz:water_source",
-	depth_water_top = 1,
 	y_max = 0,
-	y_min = -1,
-	heat_point = 60,
-	humidity_point = 68,
+	y_min = -5,
+	heat_point = 79,
+	humidity_point = 90,
 	vertical_blend = 0,
 })
 
@@ -71,7 +74,7 @@ minetest.register_node("swaz:mud_with_moss", {
 	tiles = {"swaz_moss.png", "swaz_mud.png",
 		{name = "swaz_mud.png^swaz_mud_with_moss_side.png",
 			tileable_vertical = false}},
-	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
+	groups = {crumbly = 3, soil = 1},
 	drop = "swaz:mud",
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
@@ -111,7 +114,7 @@ minetest.register_node("swaz:water_source", {
 			},
 		},
 	},
-	alpha = 191,
+	alpha = 212,
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -124,7 +127,7 @@ minetest.register_node("swaz:water_source", {
 	liquid_alternative_flowing = "swaz:water_flowing",
 	liquid_alternative_source = "swaz:water_source",
 	liquid_viscosity = 1,
-	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
+	post_effect_color = {a = 191, r = 30, g = 60, b = 90},
 	groups = {water = 3, liquid = 3, cools_lava = 1},
 	sounds = default.node_sound_water_defaults(),
 })
@@ -156,7 +159,7 @@ minetest.register_node("swaz:water_flowing", {
 			},
 		},
 	},
-	alpha = 191,
+	alpha = 212,
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
@@ -170,7 +173,7 @@ minetest.register_node("swaz:water_flowing", {
 	liquid_alternative_flowing = "swaz:water_flowing",
 	liquid_alternative_source = "swaz:water_source",
 	liquid_viscosity = 1,
-	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
+	post_effect_color = {a = 191, r = 30, g = 90, b = 90},
 	groups = {water = 3, liquid = 3, not_in_creative_inventory = 1,
 		cools_lava = 1},
 	sounds = default.node_sound_water_defaults(),
@@ -319,7 +322,7 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		y_max = 1000,
 		place_offset_y = -2,
 		spawn_by = "swaz:water_source",
-		num_spawn_by = 4,
+		num_spawn_by = 6,
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
 	})
@@ -709,4 +712,43 @@ if minetest.get_modpath("stairs")~=nil then
 		S("Bricked Slab"),
 		default.node_sound_stone_defaults()
 	)
+end
+
+--Farming Support
+
+if minetest.get_modpath("farming")~=nil then
+
+	minetest.override_item("swaz:silt_with_grass", {
+		soil = {
+			base = "default:silt_with_grass",
+			dry = "swaz:soil",
+			wet = "swaz:soil_wet"
+		}
+	})
+
+	minetest.register_node("swaz:soil", {
+		description = S("Soil"),
+		tiles = {"swaz_silt.png^farming_soil.png", "swaz_silt.png"},
+		drop = "swaz:silt",
+		groups = {crumbly=3, not_in_creative_inventory=1, soil=2, grassland = 1, field = 1},
+		sounds = default.node_sound_dirt_defaults(),
+		soil = {
+			base = "swaz:silt",
+			dry = "swaz:soil",
+			wet = "swaz:soil_wet"
+		}
+	})
+
+	minetest.register_node("swaz:soil_wet", {
+		description = S("Wet Soil"),
+		tiles = {"swaz_silt.png^farming_soil_wet.png", "swaz_silt.png"},
+		drop = "swaz:silt",
+		groups = {crumbly=3, not_in_creative_inventory=1, soil=3, wet = 1, grassland = 1, field = 1},
+		sounds = default.node_sound_dirt_defaults(),
+		soil = {
+			base = "swaz:silt",
+			dry = "swaz:soil",
+			wet = "swaz:soil_wet"
+		}
+	})
 end

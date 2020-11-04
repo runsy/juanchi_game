@@ -221,6 +221,10 @@ default:brick
 
 default:meselamp
 default:mese_post_light
+default:mese_post_light_acacia_wood
+default:mese_post_light_junglewood
+default:mese_post_light_pine_wood
+default:mese_post_light_aspen_wood
 
 Misc
 ----
@@ -656,7 +660,7 @@ minetest.register_node("default:ice", {
 	is_ground_content = false,
 	paramtype = "light",
 	groups = {cracky = 3, cools_lava = 1, slippery = 3},
-	sounds = default.node_sound_glass_defaults(),
+	sounds = default.node_sound_ice_defaults(),
 })
 
 -- Mapgen-placed ice with 'is ground content = true' to contain tunnels
@@ -667,7 +671,7 @@ minetest.register_node("default:cave_ice", {
 	groups = {cracky = 3, cools_lava = 1, slippery = 3,
 		not_in_creative_inventory = 1},
 	drop = "default:ice",
-	sounds = default.node_sound_glass_defaults(),
+	sounds = default.node_sound_ice_defaults(),
 })
 
 --
@@ -792,6 +796,8 @@ minetest.register_node("default:apple", {
 
 minetest.register_node("default:apple_mark", {
 	description = S("Apple Marker"),
+	inventory_image = "default_apple.png^default_invisible_node_overlay.png",
+	wield_image = "default_apple.png^default_invisible_node_overlay.png",
 	drawtype = "airlike",
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -1588,6 +1594,7 @@ end
 minetest.register_node("default:fern_1", {
 	description = S("Fern"),
 	drawtype = "plantlike",
+	visual_scale = 0.8,
 	waving = 1,
 	tiles = {"default_fern_1.png"},
 	inventory_image = "default_fern_1.png",
@@ -1617,7 +1624,7 @@ for i = 2, 3 do
 		description = S("Fern"),
 		drawtype = "plantlike",
 		waving = 1,
-		visual_scale = 2,
+		visual_scale = 1.0,
 		tiles = {"default_fern_" .. i .. ".png"},
 		inventory_image = "default_fern_" .. i .. ".png",
 		wield_image = "default_fern_" .. i .. ".png",
@@ -1708,7 +1715,6 @@ minetest.register_node("default:bush_stem", {
 minetest.register_node("default:bush_leaves", {
 	description = S("Bush Leaves"),
 	drawtype = "allfaces_optional",
-	waving = 1,
 	tiles = {"default_leaves_simple.png"},
 	paramtype = "light",
 	groups = {snappy = 3, flammable = 2, leaves = 1},
@@ -1762,7 +1768,6 @@ minetest.register_node("default:bush_sapling", {
 minetest.register_node("default:blueberry_bush_leaves_with_berries", {
 	description = S("Blueberry Bush Leaves with Berries"),
 	drawtype = "allfaces_optional",
-	waving = 1,
 	tiles = {"default_blueberry_bush_leaves.png^default_blueberry_overlay.png"},
 	paramtype = "light",
 	groups = {snappy = 3, flammable = 2, leaves = 1, dig_immediate = 3},
@@ -1779,7 +1784,6 @@ minetest.register_node("default:blueberry_bush_leaves_with_berries", {
 minetest.register_node("default:blueberry_bush_leaves", {
 	description = S("Blueberry Bush Leaves"),
 	drawtype = "allfaces_optional",
-	waving = 1,
 	tiles = {"default_blueberry_bush_leaves.png"},
 	paramtype = "light",
 	groups = {snappy = 3, flammable = 2, leaves = 1},
@@ -1858,7 +1862,6 @@ minetest.register_node("default:acacia_bush_stem", {
 minetest.register_node("default:acacia_bush_leaves", {
 	description = S("Acacia Bush Leaves"),
 	drawtype = "allfaces_optional",
-	waving = 1,
 	tiles = {"default_acacia_leaves_simple.png"},
 	paramtype = "light",
 	groups = {snappy = 3, flammable = 2, leaves = 1},
@@ -1929,7 +1932,6 @@ minetest.register_node("default:pine_bush_stem", {
 minetest.register_node("default:pine_bush_needles", {
 	description = S("Pine Bush Needles"),
 	drawtype = "allfaces_optional",
-	waving = 1,
 	tiles = {"default_pine_needles.png"},
 	paramtype = "light",
 	groups = {snappy = 3, flammable = 2, leaves = 1},
@@ -1979,6 +1981,7 @@ minetest.register_node("default:pine_bush_sapling", {
 		return itemstack
 	end,
 })
+
 
 minetest.register_node("default:sand_with_kelp", {
 	description = S("Kelp"),
@@ -2873,25 +2876,34 @@ minetest.register_node("default:meselamp", {
 	light_source = default.LIGHT_MAX,
 })
 
-minetest.register_node("default:mese_post_light", {
-	description = S("Mese Post Light"),
-	tiles = {"default_mese_post_light_top.png", "default_mese_post_light_top.png",
-		"default_mese_post_light_side_dark.png", "default_mese_post_light_side_dark.png",
-		"default_mese_post_light_side.png", "default_mese_post_light_side.png"},
-	wield_image = "default_mese_post_light_side.png",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-2 / 16, -8 / 16, -2 / 16, 2 / 16, 8 / 16, 2 / 16},
-		},
-	},
-	paramtype = "light",
-	light_source = default.LIGHT_MAX,
-	sunlight_propagates = true,
-	is_ground_content = false,
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-	sounds = default.node_sound_wood_defaults(),
+default.register_mesepost("default:mese_post_light", {
+	description = S("Apple Wood Mese Post Light"),
+	texture = "default_fence_wood.png",
+	material = "default:wood",
+})
+
+default.register_mesepost("default:mese_post_light_acacia", {
+	description = S("Acacia Wood Mese Post Light"),
+	texture = "default_fence_acacia_wood.png",
+	material = "default:acacia_wood",
+})
+
+default.register_mesepost("default:mese_post_light_junglewood", {
+	description = S("Jungle Wood Mese Post Light"),
+	texture = "default_fence_junglewood.png",
+	material = "default:junglewood",
+})
+
+default.register_mesepost("default:mese_post_light_pine_wood", {
+	description = S("Pine Wood Mese Post Light"),
+	texture = "default_fence_pine_wood.png",
+	material = "default:pine_wood",
+})
+
+default.register_mesepost("default:mese_post_light_aspen_wood", {
+	description = S("Aspen Wood Mese Post Light"),
+	texture = "default_fence_aspen_wood.png",
+	material = "default:aspen_wood",
 })
 
 --
