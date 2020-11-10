@@ -247,6 +247,7 @@ armor.set_player_armor = function(self, player)
 			local prev = def.preview or tex.."_preview"
 			prev = prev:gsub(".png$", "")
 			texture = texture.."^"..tex..".png"
+			--minetest.chat_send_all(texture..", "..tex)
 			preview = preview.."^"..prev..".png"
 			state = state + stack:get_wear()
 			count = count + 1
@@ -500,11 +501,8 @@ armor.get_player_skin = function(self, name)
 	elseif self.skin_mod == "wardrobe" and wardrobe.playerSkins and wardrobe.playerSkins[name] then
 		return wardrobe.playerSkins[name]
 	end
-	if player:get_meta():get_string("gender") == "female" then
-		return "female.png"
-	else
-		return "character.png"
-	end
+local gender = player:get_meta():get_string("gender")
+	return player_api.registered_models[player_api.get_gender_model(gender)].textures[1]
 end
 
 armor.update_skin = function(self, name)

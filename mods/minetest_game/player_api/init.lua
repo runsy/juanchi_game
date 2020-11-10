@@ -1,6 +1,7 @@
 -- player/init.lua
 
 dofile(minetest.get_modpath("player_api") .. "/api.lua")
+dofile(minetest.get_modpath("player_api") .. "/cloths.lua")
 
 -- Default player appearance
 player_api.register_model("character.b3d", {
@@ -49,6 +50,8 @@ minetest.register_on_joinplayer(function(player)
 	if gender == "" then
 		player_api.select_gender(player_name)
 	else
+		local cloth = player_api.compose_cloth(player)
+		player_api.registered_models[player_api.get_gender_model(gender)].textures[1] = cloth
 		player_api.set_model(player, player_api.get_gender_model(gender))
 	end
 	player:set_local_animation(

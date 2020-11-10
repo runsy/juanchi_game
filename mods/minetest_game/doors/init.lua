@@ -433,7 +433,7 @@ function doors.register(name, def)
 	def.sunlight_propagates = true
 	def.walkable = true
 	def.is_ground_content = false
-	use_texture_alpha = true
+	def.use_texture_alpha = true
 	def.buildable_to = false
 	def.selection_box = {type = "fixed", fixed = {-1/2,-1/2,-1/2,1/2,3/2,-6/16}}
 	def.collision_box = {type = "fixed", fixed = {-1/2,-1/2,-1/2,1/2,3/2,-6/16}}
