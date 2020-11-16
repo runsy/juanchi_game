@@ -14,7 +14,6 @@ end)
 --
 
 petz.on_rightclick = function(self, clicker)
-	minetest.chat_send_all(tostring(petz.settings["kitty_spawn_chance"]))
 	if not(clicker:is_player()) then
 		return false
 	end
