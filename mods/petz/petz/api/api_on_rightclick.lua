@@ -14,6 +14,7 @@ end)
 --
 
 petz.on_rightclick = function(self, clicker)
+	minetest.chat_send_all(tostring(petz.settings["kitty_spawn_chance"]))
 	if not(clicker:is_player()) then
 		return false
 	end
@@ -78,6 +79,10 @@ petz.on_rightclick = function(self, clicker)
 			petz.lamb_wool_shave(self, clicker) --shear it!
 		else
 			show_form = true
+		end
+	elseif self.type == "ant" and self.ant_type == "queen" then
+		if wielded_item_name == "farming:seed_wheat" then
+			petz_feed_queen_ant(self, clicker, player_name, wielded_item)
 		end
 	elseif self.milkable == true and wielded_item_name == "bucket:bucket_empty" and clicker:get_inventory() then
 		if not(self.milked) then

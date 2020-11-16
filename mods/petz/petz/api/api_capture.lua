@@ -1,4 +1,4 @@
-local modpath, S = ...
+local S = ...
 
 --
 -- Register Egg
@@ -41,7 +41,7 @@ function petz:register_egg(pet_name, desc, inv_img, tamed)
 					return
 				end
 				spawn_pos = petz.pos_to_spawn(pet_name, spawn_pos)
-				local ent = petz.create_pet(placer, itemstack, pet_name, spawn_pos)
+				petz.create_pet(placer, itemstack, pet_name, spawn_pos)
 			end
 			return itemstack
 		end,

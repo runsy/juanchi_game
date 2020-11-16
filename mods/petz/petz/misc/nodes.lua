@@ -1,5 +1,12 @@
 local modpath, S = ...
 
+local tree = minetest.serialize_schematic(modpath .. "/schematics/petz_anthill.mts", "lua", {})
+local file = io.open(modpath .. "/schematics/petz_anthill.lua", "w")
+if file then
+	file:write(tree)
+	file:close()
+end
+
 --Material for Pet's House
 
 minetest.register_node("petz:red_gables", {
@@ -705,4 +712,167 @@ minetest.register_node("petz:honey_block", {
 	use_texture_alpha = true,
 	light_source = default.LIGHT_MAX - 1,
 	sounds = default.node_sound_glass_defaults(),
+})
+
+--Ant Nodes
+
+minetest.register_node("petz:antbed", {
+    description = S("Ant-bed"),
+    tiles = {"petz_antbed.png"},
+    is_ground_content = false,
+	groups = {crumbly = 3},
+	sounds = default.node_sound_leaves_defaults(),
+})
+
+minetest.register_craft({
+	type = "shaped",
+	output = "petz:antbed",
+	recipe = {
+		{"farming:wheat", "group:leaves", "farming:wheat"},
+		{"farming:cotton", "farming:seed_wheat", "farming:cotton"},
+		{"farming:wheat", "group:leaves", "farming:wheat"},
+	}
+})
+
+minetest.register_node("petz:anthill_entrance", {
+    description = S("Anthill Entrance"),
+    tiles = {"petz_anthill_entrance.png", "petz_anthill_entrance.png", "petz_antbed.png"},
+    is_ground_content = false,
+	groups = {crumbly = 3},
+	sounds = default.node_sound_leaves_defaults(),
+
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		timer:start(5) --check to defend the anthill entrance each 5 seconds
+    end,
+
+	on_timer = function(pos) --check the entrance to defend it
+		pos_top = {
+				x = pos.x,
+				y = pos.y + 0.5,
+				z = pos.z,
+		}
+		local node = minetest.get_node_or_nil(pos_top)
+		if node and minetest.registered_nodes[node.name] and node.name == "air" then
+			local chance_worker = math.random(1, 240) --once a day a worker ant arises
+			if chance_worker == 1 then
+				if not minetest.registered_entities["petz:ant"] then
+					return true
+				end
+				minetest.add_entity(pos_top, "petz:ant")
+			end
+			--Check if player near (on a radius of 7) to spawn a warrior ant to defend the anthill
+			local nearby_objects = minetest.get_objects_inside_radius(pos, 7)
+
+			local player_near = false
+			for _, obj in ipairs(nearby_objects) do
+				if obj:is_player() and mobkit.is_alive(obj) then
+					player_near = true
+					break
+				end
+			end
+			if player_near then
+				if not minetest.registered_entities["petz:warrior_ant"] then
+					return true
+				end
+				minetest.add_entity(pos_top, "petz:warrior_ant")
+			end
+		end
+		return true --always do the check again
+	end
+})
+
+minetest.register_node("petz:antegg", {
+	description = S("Ant Egg"),
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.25, -0.5, -0.25, 0.25, 0.0, 0.25},
+		}
+	},
+	tiles =  {"petz_antegg.png"},
+	walkable = true,
+	groups = {snappy = 2, },
+	paramtype = "light",
+	paramtype2 = "glasslikeliquidlevel",
+	param2 = 50,
+	sunlight_propagates = true,
+	use_texture_alpha = true,
+	light_source = default.LIGHT_MAX - 10,
+	sounds = default.node_sound_leaves_defaults(),
+
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		local lay_antegg_timing = petz.settings.lay_antegg_timing
+		timer:start(math.random(lay_antegg_timing - (lay_antegg_timing*0.2), lay_antegg_timing + (lay_antegg_timing*0.2)))
+    end,
+
+	on_timer = function(pos)
+		local entity
+		local chance = math.random(1, 100) --for the type of ant
+		if chance >= 20 then
+			entity ="petz:ant"
+		elseif chance >= 4 and chance < 20 then
+			entity ="petz:warrior_ant"
+		else
+			entity ="petz:queen_ant"
+		end
+		if not minetest.registered_entities[entity] then
+			return true
+		end
+		minetest.add_entity(pos, entity) --spawn the warrior ant
+		minetest.set_node(pos, {name= "air"}) --remove the node
+		return false
+	end
+})
+
+minetest.register_node("petz:grain_packet", {
+    description = S("Grain Packet"),
+    tiles = {"petz_grain_packet.png"},
+    is_ground_content = false,
+	groups = {snappy = 3, flammable = 2},
+	sounds = default.node_sound_leaves_defaults(),
+	drop = {
+		max_items = 15,
+		items = {
+			{
+				items = {'farming:seed_wheat 5'}
+			},
+			{
+				items = {'farming:seed_cotton'},
+				rarity = 5,
+			},
+			{
+				items = {'default:apple'},
+				rarity = 15,
+			},
+			{
+			items = {'default:blueberries'},
+				rarity = 20,
+			},
+			{
+				items = {'default:iron_lump'},
+				rarity = 25,
+			},
+			{
+				items = {'default:gold_lump'},
+				rarity = 40,
+			},
+			{
+				items = {'default:diamond'},
+				rarity = 80,
+			},
+		}
+	},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "petz:grain_packet",
+	recipe = {
+		"farming:seed_wheat", "farming:seed_wheat", "farming:seed_wheat",
+		"farming:seed_wheat", "farming:seed_wheat", "farming:seed_wheat",
+		"farming:seed_wheat", "farming:seed_wheat", "farming:seed_wheat"
+	}
 })

@@ -141,6 +141,15 @@ minetest.register_craftitem("petz:chicken_legs_bucket", {
 
 minetest.register_craft({
 	type = "shapeless",
+	output = "petz:roasted_chicken_legs 3",
+    recipe = {"petz:chicken_legs_bucket"},
+    replacements = {
+		{"petz:chicken_legs_bucket", "bucket:bucket_empty"}
+	},
+})
+
+minetest.register_craft({
+	type = "shapeless",
 	output = "petz:chicken_legs_bucket",
     recipe = {"petz:roasted_chicken_legs", "petz:roasted_chicken_legs",
 				"petz:roasted_chicken_legs", "bucket:bucket_empty"

@@ -569,6 +569,23 @@ minetest.register_craftitem("petz:snow_leopard_skin", {
 	inventory_image = "petz_snow_leopard_skin.png",
 })
 
+--Ant Drops
+
+minetest.register_craftitem("petz:ant_head", {
+	description = S("Ant Head"),
+	inventory_image = "petz_ant_head.png",
+})
+
+minetest.register_craftitem("petz:ant_body", {
+	description = S("Ant Body"),
+	inventory_image = "petz_ant_body.png",
+})
+
+minetest.register_craftitem("petz:ant_leg", {
+	description = S("Ant Leg"),
+	inventory_image = "petz_ant_leg.png",
+})
+
 --minetest.register_node("petz:squirrel_cage", {
 	--description = S("Squirrel Cage"),
 	--drawtype = "glasslike_framed",

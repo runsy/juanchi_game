@@ -181,6 +181,12 @@ function mobkit.node_name_in(self, where)
 				y = pos.y + 1,
 				z = pos.z + dir_z,
 			}
+		elseif where == "front_below" then
+			pos2= {
+				x = pos.x + dir_x,
+				y = pos.y - 1,
+				z = pos.z + dir_z,
+			}
 		end
 		local node = minetest.get_node_or_nil(pos2)
 		if node and minetest.registered_nodes[node.name] then

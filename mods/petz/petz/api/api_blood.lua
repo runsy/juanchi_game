@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 function petz.blood(self)
 	if not(petz.settings.blood) or self.no_blood then
 		return

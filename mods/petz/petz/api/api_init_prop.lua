@@ -7,6 +7,7 @@ local modpath, S = ...
 petz.dyn_prop = {
 	accel = {type= "int", default = 1},
 	affinity = {type= "int", default = 100},
+	anthill_founded = {type= "boolean", default = false},
 	beaver_oil_applied = {type= "boolean", default = false},
 	behive = {type= "pos", default = false},
 	brushed = {type= "boolean", default = false},
@@ -336,6 +337,12 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		minetest.after(math.random(120, 150), function(self)
 			if mobkit.is_alive(self.object) then
 				self.create_beehive = mobkit.remember(self, "create_beehive", true)
+			end
+		end, self)
+	elseif self.type == "ant" and self.ant_type == "queen" then
+		minetest.after(math.random(120, 150), function(self)
+			if mobkit.is_alive(self.object) then
+				self.create_anthill = mobkit.remember(self, "create_anthill", true)
 			end
 		end, self)
 	end

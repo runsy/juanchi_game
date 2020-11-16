@@ -229,7 +229,7 @@ local settings_def = {
 	type = "boolean",
 	default = false,
 	},
-	--Blood
+	--Poop
 	{
 	name = "poop",
 	type = "boolean",
@@ -244,6 +244,22 @@ local settings_def = {
 	name = "poop_decay",
 	type = "number",
 	default = 1200,
+	},
+	--Ants
+	{
+	name = "lay_antegg_timing",
+	type = "number",
+	default = 1200,
+	},
+	{
+	name = "max_laid_anteggs",
+	type = "number",
+	default = 500,
+	},
+	{
+	name = "ant_population",
+	type = "number",
+	default = 5,
 	},
 	--Smoke particles when die
 	{
@@ -408,7 +424,12 @@ for key, value in ipairs(settings_def) do
 		if not(value.default) then
 			value.default = false
 		end
-		petz.settings[value.name] = user:get_bool(value.name) or settings:get_bool(value.name, value.default)
+		local bool_value = user:get_bool(value.name) --can return true/false or nil
+		if bool_value == nil then
+			petz.settings[value.name] = settings:get_bool(value.name, value.default)
+		else
+			petz.settings[value.name] = bool_value
+		end
 	end
 end
 
@@ -427,27 +448,40 @@ end
 --Mobs Specific
 for i = 1, #petz.settings["petz_list"] do --load the settings
 	local petz_type = petz.settings["petz_list"][i]
-	petz.settings[petz_type.."_spawn"]  = user:get_bool(petz_type.."_spawn", false) or settings:get_bool(petz_type.."_spawn", false)
+	petz.settings[petz_type.."_spawn"] = user:get_bool(petz_type.."_spawn")
+	if petz.settings[petz_type.."_spawn"] == nil then
+		petz.settings[petz_type.."_spawn"] = settings:get_bool(petz_type.."_spawn", false)
+	end
 	petz.settings[petz_type.."_spawn_chance"]  = tonumber(user:get(petz_type.."_spawn_chance") or settings:get(petz_type.."_spawn_chance")) or 0.0
-	petz.settings[petz_type.."_spawn_nodes"]  = user:get(petz_type.."_spawn_nodes", "") or settings:get(petz_type.."_spawn_nodes", "")
-	petz.settings[petz_type.."_spawn_biome"]  = user:get(petz_type.."_spawn_biome", "default") or settings:get(petz_type.."_spawn_biome", "default")
+	petz.settings[petz_type.."_spawn_nodes"]  = user:get(petz_type.."_spawn_nodes") or settings:get(petz_type.."_spawn_nodes") or ""
+	petz.settings[petz_type.."_spawn_biome"]  = user:get(petz_type.."_spawn_biome") or settings:get(petz_type.."_spawn_biome") or "default"
 	petz.settings[petz_type.."_spawn_herd"] = tonumber(user:get(petz_type.."_spawn_herd") or settings:get(petz_type.."_spawn_herd")) or 1
-	petz.settings[petz_type.."_seasonal"] = user:get(petz_type.."_seasonal", "") or settings:get(petz_type.."_seasonal", "")
-	petz.settings[petz_type.."_follow"] = user:get(petz_type.."_follow", "") or settings:get(petz_type.."_follow", "")
-	petz.settings[petz_type.."_breed"]  = user:get(petz_type.."_breed", "") or settings:get(petz_type.."_breed", "")
-	petz.settings[petz_type.."_predators"]  = user:get(petz_type.."_predators", "") or settings:get(petz_type.."_predators", "")
-	petz.settings[petz_type.."_preys"] = user:get(petz_type.."_preys", "") or settings:get(petz_type.."_preys", "")
-	petz.settings[petz_type.."_colorized"] = user:get_bool(petz_type.."_colorized", false) or settings:get_bool(petz_type.."_colorized", false)
+	petz.settings[petz_type.."_seasonal"] = user:get(petz_type.."_seasonal") or settings:get(petz_type.."_seasonal") or ""
+	petz.settings[petz_type.."_follow"] = user:get(petz_type.."_follow") or settings:get(petz_type.."_follow") or ""
+	petz.settings[petz_type.."_breed"]  = user:get(petz_type.."_breed") or settings:get(petz_type.."_breed") or ""
+	petz.settings[petz_type.."_predators"]  = user:get(petz_type.."_predators") or settings:get(petz_type.."_predators") or ""
+	petz.settings[petz_type.."_preys"] = user:get(petz_type.."_preys") or settings:get(petz_type.."_preys") or ""
+	petz.settings[petz_type.."_colorized"] = user:get_bool(petz_type.."_colorized")
+	if petz.settings[petz_type.."_colorized"] == nil then
+		petz.settings[petz_type.."_colorized"] = settings:get_bool(petz_type.."_colorized", false)
+	end
 	petz.settings[petz_type.."_copulation_distance"] = tonumber(user:get(petz_type.."_copulation_distance") or settings:get(petz_type.."_copulation_distance")) or 0.0
-	petz.settings[petz_type.."_convert"] = user:get(petz_type.."_convert", nil) or settings:get(petz_type.."_convert", nil)
-	petz.settings[petz_type.."_convert_to"] = user:get(petz_type.."_convert_to", nil) or settings:get(petz_type.."_convert_to", nil)
+	petz.settings[petz_type.."_convert"] = user:get(petz_type.."_convert") or settings:get(petz_type.."_convert") or nil
+	petz.settings[petz_type.."_convert_to"] = user:get(petz_type.."_convert_to") or settings:get(petz_type.."_convert_to") or nil
 	petz.settings[petz_type.."_convert_count"] = tonumber(user:get(petz_type.."_convert_count") or settings:get(petz_type.."_convert_count")) or nil
 	petz.settings[petz_type.."_lifetime"] = tonumber(user:get(petz_type.."_lifetime") or settings:get(petz_type.."_lifetime")) or nil
-	petz.settings[petz_type.."_disable_spawn"] = tonumber(user:get(petz_type.."_disable_spawn") or settings:get(petz_type.."_disable_spawn")) or false
+	petz.settings[petz_type.."_disable_spawn"] = user:get_bool(petz_type.."_disable_spawn")
+	if petz.settings[petz_type.."_disable_spawn"] == nil then
+		petz.settings[petz_type.."_disable_spawn"] = settings:get_bool(petz_type.."_disable_spawn", false)
+	end
 	if petz_type == "beaver" then
-		petz.settings[petz_type.."_create_dam"] = user:get_bool(petz_type.."_create_dam", false) or settings:get_bool(petz_type.."_create_dam", false)
+		petz.settings[petz_type.."_create_dam"] = user:get_bool(petz_type.."_create_dam")
+		if petz.settings[petz_type.."_create_dam"] == nil then
+			petz.settings[petz_type.."_create_dam"] = settings:get_bool(petz_type.."_create_dam", false)
+		end
+		settings:get_bool(petz_type.."_create_dam", false)
 	elseif petz_type == "silkworm" then
-		petz.settings[petz_type.."_lay_egg_on_node"] = user:get(petz_type.."_lay_egg_on_node", "") or settings:get(petz_type.."_lay_egg_on_node", "")
+		petz.settings[petz_type.."_lay_egg_on_node"] = user:get(petz_type.."_lay_egg_on_node") or settings:get(petz_type.."_lay_egg_on_node") or ""
 	end
 end
 

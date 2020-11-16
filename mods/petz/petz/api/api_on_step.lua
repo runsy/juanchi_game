@@ -23,7 +23,7 @@ petz.on_step = function(self, dtime)
 		end
 		--Tamagochi
 		--Check the hungry
-		if petz.settings.tamagochi_mode == true and self.is_pet and petz.settings.tamagochi_hungry_warning > 0 and not(self.status=="sleep") then
+		if petz.settings.tamagochi_mode == true and self.owner and self.is_pet and petz.settings.tamagochi_hungry_warning > 0 and not(self.status=="sleep") then
 			if not(self.tmp_follow_texture) then
 				local items = string.split(petz.settings[self.type.."_follow"], ',')
 				local item = petz.str_remove_spaces(items[1]) --the first one

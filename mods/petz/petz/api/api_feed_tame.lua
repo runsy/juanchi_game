@@ -90,3 +90,14 @@ petz.tame_whip= function(self, hitter)
 			mokapi.make_sound("object", hitter, "petz_whip", petz.settings.max_hear_distance)
 		end
 end
+
+--Ants
+petz_feed_queen_ant= function(self, clicker, player_name, wielded_item)
+	local creative_mode = minetest.settings:get_bool("creative_mode")
+	if creative_mode == false then -- if not in creative, take item
+		wielded_item:take_item()
+		clicker:set_wielded_item(wielded_item)
+	end
+	self.eggs_count = mobkit.remember(self, "eggs_count", 0)
+	minetest.chat_send_player(player_name, S("The Queen Ant will produce more eggs."))
+end

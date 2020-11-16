@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.get_collisionbox = function(p1, p2, scale_model, scale_baby)
 	p1 = vector.multiply(p1, scale_model)
 	p2 = vector.multiply(p2, scale_model)

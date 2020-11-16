@@ -9,7 +9,9 @@ globals = {
     "petz",
     "stairs",
     "farming",
-    "player_api"
+    "player_api",
+    "hunger_ng",
+    "dye"
 }
 
 read_globals = {

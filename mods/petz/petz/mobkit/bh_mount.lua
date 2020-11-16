@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 ---
 --- DRIVER MOUNT
 ---
@@ -77,14 +75,11 @@ function mobkit.lq_mountdriver(self)
 			rot_steer, rot_view = 0, math.pi/2
 		end
 		local acce_y = 0
-		local velo
-		if velo == nil then
-			velo= {
-				x= self.max_speed_forward/3,
-				y= 0,
-				z= self.max_speed_forward/3,
-			}
-		end
+		local velo= {
+			x= self.max_speed_forward/3,
+			y= 0,
+			z= self.max_speed_forward/3,
+		}
 		local velocity = get_v(velo)
 		--minetest.chat_send_player("singleplayer", tostring(velocity))
 		-- process controls
@@ -112,7 +107,6 @@ function mobkit.lq_mountdriver(self)
 			velo.y = velo.y + (self.jump_height)*4
 			acce_y = acce_y *1.5
 		else --stand
-			velocity = 0
 			mobkit.animate(self, "stand")
 			return
 		end

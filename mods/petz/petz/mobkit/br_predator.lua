@@ -49,23 +49,7 @@ function petz.predator_brain(self)
 
 		-- hunt a prey
 		if prty < 12 then -- if not busy with anything important
-			if self.tamed == false then
-				local preys_list = petz.settings[self.type.."_preys"]
-				if preys_list then
-					preys_list = petz.str_remove_spaces(preys_list)
-					local preys = string.split(preys_list, ',')
-					for i = 1, #preys  do --loop  thru all preys
-						--minetest.chat_send_player("singleplayer", "preys list="..preys[i])
-						--minetest.chat_send_player("singleplayer", "node name="..node.name)
-						local prey = mobkit.get_closest_entity(self, preys[i])	-- look for prey
-						if prey then
-							--minetest.chat_send_player("singleplayer", "got it")
-							petz.hq_hunt(self, 12, prey) -- and chase it
-							return
-						end
-					end
-				end
-			end
+			 petz.bh_hunt(self, 12)
 		end
 
 		if prty < 10 then

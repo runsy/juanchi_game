@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.get_color_group = function(item_name)
 	local color_name
 	local name
