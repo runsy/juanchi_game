@@ -110,17 +110,17 @@ Author: dobroide
 https://freesound.org/people/dobroide/sounds/18229/
 License: This work is licensed under the Attribution License.
 --------------------------------------------
-filename: petz_chicken_cluck.ogg
+filename: petz_hen_cluck.ogg
 Author: JarredGibb
 https://freesound.org/people/JarredGibb/sounds/233093/
 License: This work is licensed under the Creative Commons 0 License.
 --------------------------------------------
-filename: petz_chicken_cluck_2.ogg & petz_chicken_cluck_3.ogg
+filename: petz_hen_cluck_2.ogg & petz_chicken_cluck_3.ogg
 Author: www.bonson.ca
 https://freesound.org/people/www.bonson.ca/sounds/24967/
 License: This work is licensed under the Attribution License.
 --------------------------------------------
-filename: petz_chicken_moaning.ogg
+filename: petz_hen_moaning.ogg
 Author: Rudmer_Rotteveel
 https://freesound.org/people/Rudmer_Rotteveel/sounds/316920/
 License: This work is licensed under the Creative Commons 0 License.
@@ -384,3 +384,25 @@ filename: petz_leopard_attack.ogg
 Author: Darsycho
 https://freesound.org/people/Darsycho/sounds/442114/
 License: This work is licensed under the Creative Commons 0 License.
+--------------------------------------------
+filename: petz_rooster_crow.ogg
+Author: InspectorJ
+https://freesound.org/people/InspectorJ/sounds/439472/
+License: This work is licensed under the Attribution License.
+--------------------------------------------
+filename: petz_rooster_chirp.ogg
+Author: Setuniman
+https://freesound.org/people/Setuniman/sounds/134049/
+License: This work is licensed under the Attribution License.
+--------------------------------------------
+filename: petz_rooster_moaning.ogg
+Author: ra_gun
+https://freesound.org/people/ra_gun/sounds/81270/
+License: This work is licensed under the Creative Commons 0 License.
+--------------------------------------------
+filename: petz_chicken_chirp.ogg & filename: petz_chicken_moaning.ogg
+& petz_chicken_chirp_2.ogg & petz_chicken_moaning.ogg
+Author: AGFX
+https://freesound.org/people/AGFX/sounds/43380/
+License: This work is licensed under the Creative Commons 0 License.
+--------------------------------------------

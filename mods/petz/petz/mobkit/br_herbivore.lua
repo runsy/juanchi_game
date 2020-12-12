@@ -1,6 +1,3 @@
-local modpath, S = ...
-
---
 -- 1. HERBIBORE/FLYING MOBS BRAIN
 --
 
@@ -100,6 +97,20 @@ function petz.herbivore_brain(self)
 			end
 		end
 
+		-- hunt a prey (another congener)
+		if prty < 12 and self.aggressive then
+			 petz.bh_hunt(self, 12, true)
+		end
+
+		--Baby petz follow their parents
+		if prty < 10 then
+			if petz.settings.parent_search and self.parents then
+				if mobkit.timer(self, 5) then --each 5 seconds search for parents
+					petz.follow_parents(self, pos)
+				end
+			end
+		end
+
 		--if prty < 7 and self.type == "moth" and mobkit.is_queue_empty_high(self) then --search for a squareball
 			--local pos_torch_near = minetest.find_node_near(pos, self.view_range, "default:torch")
 			--if pos_torch_near then
@@ -108,7 +119,7 @@ function petz.herbivore_brain(self)
 			--end
 		--end
 
-		--Replace nodes by others
+		--Poop
 		if prty < 7 then
 			petz.poop(self, pos)
 		end

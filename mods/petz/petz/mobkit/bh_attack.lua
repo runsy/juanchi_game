@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 -- Attack Player Behaviour
 --
@@ -102,8 +100,6 @@ end
 
 function petz.lq_jumpattack(self,height,target)
 	local phase=1
-	local timer=0.5
-	local tgtbox = target:get_properties().collisionbox
 	local func=function(self)
 		if not mobkit.is_alive(target) then return true end
 		if self.isonground then
@@ -130,7 +126,6 @@ function petz.lq_jumpattack(self,height,target)
 			-- calculate attack spot
 			local yaw = self.object:get_yaw()
 			local dir = minetest.yaw_to_dir(yaw)
-			local apos = mobkit.pos_translate2d(pos,yaw,self.attack.range)
 			local distance = vector.distance(pos, tgtpos)
 			--minetest.chat_send_all(tostring(distance))
 			if distance < 2.0 then
@@ -217,9 +212,4 @@ function mobkit.lq_flyattack(self, target)
 		return true
 	end
 	mobkit.queue_low(self,func)
-end
-
-function petz.rpg_damage(self)
-	local attack = self.attack or nil
-	local max_speed = max_speed or 0
 end

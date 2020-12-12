@@ -88,6 +88,13 @@ minetest.register_node("swaz:silt", {
 	sounds = default.node_sound_dirt_defaults(),
 })
 
+minetest.register_craft({
+	output = "swaz:silt",
+	type = "shapeless",
+	recipe = {"group:soil", "bucket:bucket_water"},
+	replacements = {{"bucket:bucket_water", "bucket:bucket_empty"}}
+})
+
 minetest.register_node("swaz:water_source", {
 	description = S("Muddy Water Source"),
 	drawtype = "liquid",
@@ -260,6 +267,110 @@ minetest.register_node("swaz:lavender", {
 	},
 })
 
+--Barberry Bush Stuff
+
+-- Required wrapper to allow customization of default.after_place_leaves
+local function after_place_leaves(...)
+	return default.after_place_leaves(...)
+end
+
+minetest.register_craftitem("swaz:barberries", {
+	description = S("Barberries"),
+	inventory_image = "swaz_barberries.png",
+	groups = {food_barberries = 1, food_berry = 1},
+	on_use = minetest.item_eat(2),
+})
+
+minetest.register_node("swaz:barberry_bush_leaves_with_berries", {
+	description = S("Barberry Bush Leaves with Berries"),
+	drawtype = "plantlike",
+	tiles = {"swaz_barberry_bush_leaves.png^swaz_barberry_overlay.png"},
+	inventory_image = "swaz_barberry_bush_leaves.png^swaz_barberry_overlay.png",
+	paramtype = "light",
+	groups = {snappy = 3, flammable = 2, leaves = 1, dig_immediate = 3},
+	drop = "swaz:barberries",
+	sounds = default.node_sound_leaves_defaults(),
+	node_dig_prediction = "swaz:barberry_bush_leaves",
+	selection_box = {
+		type = "fixed",
+		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 2 / 16, 4 / 16}
+	},
+
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		minetest.set_node(pos, {name = "swaz:barberry_bush_leaves"})
+		minetest.get_node_timer(pos):start(math.random(300, 1500))
+	end,
+})
+
+minetest.register_node("swaz:barberry_bush_leaves", {
+	description = S("Barberry Bush Leaves"),
+	drawtype = "plantlike",
+	tiles = {"swaz_barberry_bush_leaves.png"},
+	inventory_image = "swaz_barberry_bush_leaves.png",
+	paramtype = "light",
+	groups = {snappy = 3, flammable = 2, leaves = 1},
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {"swaz:barberry_bush_sapling"}, rarity = 5},
+			{items = {"swaz:barberry_bush_leaves"}}
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
+		selection_box = {
+		type = "fixed",
+		fixed = {-4 / 16, -0.5, -4 / 16, 4 / 16, 2 / 16, 4 / 16}
+	},
+
+	on_timer = function(pos, elapsed)
+		if minetest.get_node_light(pos) < 11 then
+			minetest.get_node_timer(pos):start(200)
+		else
+			minetest.set_node(pos, {name = "swaz:barberry_bush_leaves_with_berries"})
+		end
+	end,
+
+	after_place_node = after_place_leaves,
+})
+
+minetest.register_node("swaz:barberry_bush_sapling", {
+	description = S("Barberry Bush Sapling"),
+	drawtype = "plantlike",
+	tiles = {"swaz_barberry_bush_sapling.png"},
+	inventory_image = "swaz_barberry_bush_sapling.png",
+	wield_image = "swaz_barberry_bush_sapling.png",
+	paramtype = "light",
+	sunlight_propagates = true,
+	walkable = false,
+	on_timer = function(pos, elapsed)
+		minetest.set_node(pos, {name = "swaz:barberry_bush_leaves"})
+		minetest.get_node_timer(pos):start(math.random(300, 1500))
+	end,
+	selection_box = {
+		type = "fixed",
+		fixed = {-2 / 16, -0.5, -1 / 16, 2 / 16, -2 / 16, 2 / 16}
+	},
+	groups = {snappy = 2, dig_immediate = 3, flammable = 2,
+		attached_node = 1, sapling = 1},
+	sounds = default.node_sound_leaves_defaults(),
+
+	on_construct = function(pos)
+		minetest.get_node_timer(pos):start(math.random(300, 1500))
+	end,
+
+	on_place = function(itemstack, placer, pointed_thing)
+		itemstack = default.sapling_on_place(itemstack, placer, pointed_thing,
+			"swaz:barberry_bush_sapling",
+			-- minp, maxp to be checked, relative to sapling pos
+			{x = -1, y = 0, z = -1},
+			{x = 1, y = 1, z = 1},
+			-- maximum interval of interior volume check
+			2)
+
+		return itemstack
+	end,
+})
+
 -- Register Decoration
 -- IMPORTANT!
 -- THE ORDER OF THE DECORATION MATTERS!
@@ -285,13 +396,17 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		height = 2,
 		y_min = 0,
 		y_max = 1000,
-		place_offset_y = 0,
+		place_offset_y = -1,
 		schematic = {
-			size = {x = 4, y = 1, z = 4},
+			size = {x = 4, y = 2, z = 4},
 			data = {
+				{name = "swaz:silt"}, {name = "swaz:silt"}, {name = "swaz:silt"},{name = "swaz:silt"},
 				{name = "swaz:silt_with_grass"}, {name = "swaz:silt_with_grass"}, {name = "swaz:silt_with_grass"},{name = "swaz:silt_with_grass"},
+				{name = "swaz:silt"}, {name = "swaz:silt"}, {name = "swaz:silt"},{name = "swaz:silt"},
 				{name = "swaz:silt_with_grass"}, {name = "swaz:water_source"}, {name = "swaz:water_source"},{name = "swaz:silt_with_grass"},
+				{name = "swaz:silt"}, {name = "swaz:silt"}, {name = "swaz:silt"},{name = "swaz:silt"},
 				{name = "swaz:silt_with_grass"}, {name = "swaz:water_source"}, {name = "swaz:water_source"},{name = "swaz:silt_with_grass"},
+				{name = "swaz:silt"}, {name = "swaz:silt"}, {name = "swaz:silt"},{name = "swaz:silt"},
 				{name = "swaz:silt_with_grass"}, {name = "swaz:silt_with_grass"}, {name = "swaz:silt_with_grass"},{name = "swaz:silt_with_grass"},
 			}
 		},
@@ -544,6 +659,27 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		y_min = 1,
 		y_max = 80,
 	})
+
+	--Barberry
+
+	minetest.register_decoration({
+		decoration = "swaz:barberry_bush_leaves_with_berries",
+		deco_type = "simple",
+		place_on = "swaz:silt_with_grass",
+		sidelen = 16,
+		biomes = {"swampz"},
+		noise_params = {
+			offset = 0.0008,
+			scale = 0.008,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		y_min = 1,
+		y_max = 80,
+	})
+
 end
 
 -- Construction Materials

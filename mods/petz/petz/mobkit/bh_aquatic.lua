@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 ---
 --- Aquatic Behaviours
 ---

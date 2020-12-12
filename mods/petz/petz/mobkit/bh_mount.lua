@@ -70,9 +70,9 @@ function mobkit.lq_mountdriver(self)
 	local auto_drive = false
 	local func = function(self)
 		if not(self.driver) then return true end
-		local rot_steer, rot_view = math.pi/2, 0
+		local rot_view = 0
 		if self.player_rotation.y == 90 then
-			rot_steer, rot_view = 0, math.pi/2
+			rot_view = math.pi/2
 		end
 		local acce_y = 0
 		local velo= {

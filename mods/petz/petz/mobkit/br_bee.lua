@@ -1,6 +1,3 @@
-local modpath, S = ...
-
---
 -- BEE BRAIN
 --
 

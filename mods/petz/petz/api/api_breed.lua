@@ -145,15 +145,22 @@ petz.growth_timer = function(self, dtime)
 		local pos = self.object:get_pos()
 		pos.y = pos.y + 1.01 -- grows a litte up
 		self.object:set_pos(pos)
-		local vel = self.object:get_velocity()
+		local obj
+		if self.parents then -- for chicken only
+			mokapi.remove_mob(self)
+			obj = minetest.add_entity(pos, self.parents[math.random(1, #self.parents)])
+		else
+			obj = self.object
+			petz.set_properties(self, {
+				jump = false,
+				is_baby = false,
+				visual_size = self.visual_size,
+				collisionbox = self.collisionbox
+			})
+		end
+		local vel = obj:get_velocity()
 		vel.y=vel.y + 4.0
-		self.object:set_velocity(vel)
-		petz.set_properties(self, {
-			jump = false,
-			is_baby = false,
-			visual_size = self.visual_size,
-			collisionbox = self.collisionbox
-		})
-		mokapi.make_sound("object", self.object, "petz_pop_sound", petz.settings.max_hear_distance)
+		obj:set_velocity(vel)
+		mokapi.make_sound("object", obj, "petz_pop_sound", petz.settings.max_hear_distance)
 	end
 end

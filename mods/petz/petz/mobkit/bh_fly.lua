@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 -- WANDER FLY BEHAVIOUR (2 functions: HQ & LQ)
 --

@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 -- FOLLOW BEHAVIOURS
 -- 2 types: for terrestrial and for flying/aquatic mobs.
@@ -102,4 +100,29 @@ function mobkit.flyto(self, target)
 	local new_yaw = minetest.dir_to_yaw(dir)
 	self.object:set_yaw(new_yaw)
 	self.object:set_velocity(velocity)
+end
+
+function petz.follow_parents(self, pos)
+	local tpos
+	local ent_obj = mobkit.get_closest_entity(self, self.parents[1]) -- look for the mom to join with
+	if not ent_obj then
+		ent_obj = mobkit.get_closest_entity(self, self.parents[2]) -- look for the dad to join with
+	end
+	if ent_obj then
+		local ent = ent_obj:get_luaentity()
+		if ent then
+			tpos = ent_obj:get_pos()
+			local distance = vector.distance(pos, tpos)
+			if distance > 5 then
+				mobkit.hq_goto(self, 10, tpos)
+				return true
+			else
+				return false
+			end
+		else
+			return false
+		end
+	else
+		return false
+	end
 end

@@ -9,7 +9,10 @@ function petz.bh_create_anthill(self, pos)
 	if not self.create_anthill or pos.y > 8 then
 		return false
 	end
-	local node_name = mobkit.node_name_in(self, "below")
+	local node_name, pos_below = mobkit.node_name_in(self, "below")
+	if minetest.is_protected(pos_below, "") then --check for a non-protected node
+		return false
+	end
 	--Only construct on 'soil' or 'sand' nodes
 	if minetest.get_item_group(node_name, "soil") > 0 or minetest.get_item_group(node_name, "sand") > 0 then
 		local minp = {

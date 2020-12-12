@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 -- Approach Torch Behaviour
 -- for moths (not finished!!!)

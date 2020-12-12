@@ -170,7 +170,10 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 			self.gallop_exhausted = mobkit.remember(self, "gallop_exhausted", false)
 			self.gallop_recover_time = mobkit.remember(self, "gallop_recover_time", petz.settings.gallop_recover_time)
 		end
-		if self.type == "pony" then
+		if self.parents then
+			self.is_baby = mobkit.remember(self, "is_baby", true)
+		end
+		if self.type == "pony" then --not in the previopus loop, cos also is mountable
 			self.horseshoes = mobkit.remember(self, "horseshoes", 0)
 		end
 		if self.herd then
@@ -351,6 +354,13 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 			petz.colorize(self, self.colorized)
 		end
 	end
+	--DELETE THIS BLOCK IN THE NEXT UPDATE -- FOR COMPATIBIITY PURPOSES FOR OLD CHICKENS ONLY>>>
+	if self.type == "chicken" and self.texture_no > 1 then
+		self.is_baby = mobkit.remember(self, "is_baby", true)
+		self.texture_no = mobkit.remember(self, "texture_no", 1)
+		petz.set_properties(self, {textures = {self.textures[1]}})
+	end
+	--<<<
 	if self.horseshoes and captured_mob == false then
 		petz.horseshoes_speedup(self)
 	end

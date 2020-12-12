@@ -115,6 +115,12 @@ local settings_def = {
 	type = "boolean",
 	default = true,
 	},
+	--Disable Kennel
+	{
+	name = "disable_kennel",
+	type = "boolean",
+	default = false,
+	},
 	--Spawn
 	{
 	name = "spawn_interval",
@@ -146,6 +152,12 @@ local settings_def = {
 	type = "boolean",
 	default = false,
 	},
+	--Parent Search
+	{
+	name = "parent_search",
+	type = "boolean",
+	default = true,
+	},
 	--Lifetime
 	{
 	name = "lifetime",
@@ -169,14 +181,19 @@ local settings_def = {
 	},
 	--Lay Eggs
 	{
-	name = "lay_egg_chance",
+	name = "lay_egg_timing",
 	type = "number",
-	default = 90000,
+	default = 1200,
 	},
 	{
 	name = "max_laid_eggs",
 	type = "number",
 	default = 10,
+	},
+	{
+	name = "hatch_egg_timing",
+	type = "number",
+	default = 500,
 	},
 	--Misc Random Sound Chance
 	{
@@ -457,8 +474,8 @@ for i = 1, #petz.settings["petz_list"] do --load the settings
 	petz.settings[petz_type.."_spawn_biome"]  = user:get(petz_type.."_spawn_biome") or settings:get(petz_type.."_spawn_biome") or "default"
 	petz.settings[petz_type.."_spawn_herd"] = tonumber(user:get(petz_type.."_spawn_herd") or settings:get(petz_type.."_spawn_herd")) or 1
 	petz.settings[petz_type.."_seasonal"] = user:get(petz_type.."_seasonal") or settings:get(petz_type.."_seasonal") or ""
-	petz.settings[petz_type.."_follow"] = user:get(petz_type.."_follow") or settings:get(petz_type.."_follow") or ""
-	petz.settings[petz_type.."_breed"]  = user:get(petz_type.."_breed") or settings:get(petz_type.."_breed") or ""
+	petz.settings[petz_type.."_follow"] = user:get(petz_type.."_follow") or settings:get(petz_type.."_follow") or nil
+	petz.settings[petz_type.."_breed"]  = user:get(petz_type.."_breed") or settings:get(petz_type.."_breed") or nil
 	petz.settings[petz_type.."_predators"]  = user:get(petz_type.."_predators") or settings:get(petz_type.."_predators") or ""
 	petz.settings[petz_type.."_preys"] = user:get(petz_type.."_preys") or settings:get(petz_type.."_preys") or ""
 	petz.settings[petz_type.."_colorized"] = user:get_bool(petz_type.."_colorized")

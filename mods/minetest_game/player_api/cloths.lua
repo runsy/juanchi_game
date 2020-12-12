@@ -16,13 +16,35 @@ function player_api.register_cloth(name, def)
 	if not(def.wield_image) then
 		def.wield_image = def.inventory_image
 	end
+	local tooltip
+	if def.groups["cloth"] == 1 then
+		tooltip = S("Head")
+	elseif def.groups["cloth"] == 2 then
+		tooltip = S("Upper")
+	else
+		tooltip = S("Lower")
+	end
+	tooltip = "(" .. tooltip .. ")"
+	local gender, gender_color
+	if def.gender == "male" then
+		gender = S("Male")
+		gender_color = "#00baff"
+	elseif def.gender == "female" then
+		gender = S("Female")
+		gender_color = "#ff69b4"
+	else
+		gender = S("Unisex")
+		gender_color = "#9400d3"
+	end
+	tooltip = tooltip.."\n".. minetest.colorize(gender_color, gender)
 	minetest.register_craftitem(name, {
-		description = def.description,
+		description = def.description .. "\n" .. tooltip,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		stack_max = def.stack_max or 16,
 		_cloth_texture = def.texture,
-		_cloth_genre = def.genre,
+		_cloth_preview = def.preview,
+		_cloth_gender = def.gender,
 		groups = def.groups,
 	})
 end
@@ -32,7 +54,8 @@ player_api.register_cloth("player_api:cloth_female_upper_default", {
 	inventory_image = "cloth_female_upper_default_inv.png",
 	wield_image = "cloth_female_upper_default.png",
 	texture = "cloth_female_upper_default.png",
-	genre = "female",
+	preview = "cloth_female_upper_preview.png",
+	gender = "female",
 	groups = {cloth = 2},
 })
 
@@ -41,7 +64,8 @@ player_api.register_cloth("player_api:cloth_female_lower_default", {
 	inventory_image = "cloth_female_lower_default_inv.png",
 	wield_image = "cloth_female_lower_default_inv.png",
 	texture = "cloth_female_lower_default.png",
-	genre = "female",
+	preview = "cloth_female_lower_preview.png",
+	gender = "female",
 	groups = {cloth = 3},
 })
 
@@ -50,7 +74,8 @@ player_api.register_cloth("player_api:cloth_female_head_default", {
 	inventory_image = "cloth_female_head_default_inv.png",
 	wield_image = "cloth_female_head_default_inv.png",
 	texture = "cloth_female_head_default.png",
-	genre = "female",
+	preview = "cloth_female_head_preview.png",
+	gender = "female",
 	groups = {cloth = 1},
 })
 
@@ -59,7 +84,8 @@ player_api.register_cloth("player_api:cloth_male_upper_default", {
 	inventory_image = "cloth_male_upper_default_inv.png",
 	wield_image = "cloth_male_upper_default_inv.png",
 	texture = "cloth_male_upper_default.png",
-	genre = "male",
+	preview = "cloth_male_upper_preview.png",
+	gender = "male",
 	groups = {cloth = 2},
 })
 
@@ -68,16 +94,16 @@ player_api.register_cloth("player_api:cloth_male_lower_default", {
 	inventory_image = "cloth_male_lower_default_inv.png",
 	wield_image = "cloth_male_lower_default_inv.png",
 	texture = "cloth_male_lower_default.png",
-	genre = "male",
+	preview = "cloth_male_lower_preview.png",
+	gender = "male",
 	groups = {cloth = 3},
 })
 
-function player_api.set_cloths(player, gender)
-
+function player_api.set_cloths(player)
+	local gender = player:get_meta():get_string("gender")
 	--Create the "cloths" inventory
-
 	local inv = player:get_inventory()
-	inv:set_size("cloths", 3)
+	inv:set_size("cloths", 8)
 
 	if gender == "male" then
 		inv:add_item("cloths", 'player_api:cloth_male_upper_default')
@@ -90,15 +116,14 @@ function player_api.set_cloths(player, gender)
 end
 
 function player_api.compose_cloth(player)
-	if not(player_api.has_cloths(player)) then
-		return nil
-	end
-	local gender = player:get_meta():get_string("gender")
+	local meta = player:get_meta()
+	local gender = meta:get_string("gender")
 	local inv = player:get_inventory()
 	local inv_list = inv:get_list("cloths")
 	local upper_ItemStack
 	local lower_ItemStack
 	local head_ItemStack
+	local underwear = false
 	for i = 1, #inv_list do
 		local item_name = inv_list[i]:get_name()
 		--minetest.chat_send_all(item_name)
@@ -110,7 +135,11 @@ function player_api.compose_cloth(player)
 			upper_ItemStack = minetest.registered_items[item_name]._cloth_texture
 		elseif cloth_type == 3 then
 			lower_ItemStack = minetest.registered_items[item_name]._cloth_texture
+			underwear = true
 		end
+	end
+	if not(underwear) then
+		lower_ItemStack = "cloth_lower_underwear_default.png"
 	end
 	local base_texture
 	if gender == "male" then

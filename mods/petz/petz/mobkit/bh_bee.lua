@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 ---
 --- Bee Behaviours
 ---
@@ -126,7 +124,6 @@ function mobkit.lq_approach_behive(self)
 		else
 			return true
 		end
-		local pos = self.object:get_pos()
 		--local y_distance = tpos.y - pos.y
 		if mobkit.drive_to_pos(self, tpos, 1.5, 6.28, (self.view_range / 4) ) then
 			mobkit.clear_queue_high(self)

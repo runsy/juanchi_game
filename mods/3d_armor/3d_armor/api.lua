@@ -501,7 +501,7 @@ armor.get_player_skin = function(self, name)
 	elseif self.skin_mod == "wardrobe" and wardrobe.playerSkins and wardrobe.playerSkins[name] then
 		return wardrobe.playerSkins[name]
 	end
-local gender = player:get_meta():get_string("gender")
+	local gender = player:get_meta():get_string("gender")
 	return player_api.registered_models[player_api.get_gender_model(gender)].textures[1]
 end
 

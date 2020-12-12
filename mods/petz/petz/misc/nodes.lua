@@ -66,7 +66,17 @@ minetest.register_craftitem("petz:kennel", {
             return
         end
         local pt_above = pointed_thing.above
-        if not(minetest.is_protected(pt_above, user:get_player_name())) then
+        local pos2 = {
+			x = pt_above.x + 3,
+			y = pt_above.y + 5,
+			z = pt_above.z + 4,
+		}
+		local player_name = user:get_player_name()
+		if petz.settings["disable_kennel"] then
+			minetest.chat_send_player(player_name, S("The placement of kennel was disabled."))
+			return
+		end
+		if not(minetest.is_area_protected(pt_above, pos2, player_name, 4)) then
 			minetest.place_schematic(pt_above, modpath..'/schematics/kennel.mts', 0, nil, true)
 			itemstack:take_item()
 			return itemstack
@@ -194,7 +204,8 @@ minetest.register_node("petz:chicken_nest_egg", {
     },
     on_construct = function(pos)
 		local timer = minetest.get_node_timer(pos)
-		timer:start(math.random(400, 600))
+		local hatch_egg_timing = petz.settings.hatch_egg_timing
+		timer:start(math.random(hatch_egg_timing - (hatch_egg_timing*0.2), hatch_egg_timing+ (hatch_egg_timing*0.2)))
     end,
 	on_timer = function(pos)
 		local pos_above = {x = pos.x, y = pos.y +1, z= pos.z}
@@ -202,7 +213,9 @@ minetest.register_node("petz:chicken_nest_egg", {
 			if not minetest.registered_entities["petz:chicken"] then
 				return
 			end
-			minetest.add_entity(pos_above, "petz:chicken")
+			local entity = minetest.add_entity(pos_above, "petz:chicken"):get_luaentity()
+			entity.is_baby = mobkit.remember(entity, "is_baby", true) --it is a baby
+			entity.growth_time = mobkit.remember(entity, "growth_time", 0.0) --the chicken to grow
 			minetest.set_node(pos, {name= "petz:ducky_nest"})
 			return true
 		end

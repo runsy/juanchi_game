@@ -38,7 +38,7 @@ function petz.ant_brain(self)
 
 		-- hunt a prey (another queen in the case of a queen)
 		if prty < 20 and self.ant_type == "queen" then
-			 petz.bh_hunt(self, 20)
+			 petz.bh_hunt(self, 20, true)
 		end
 
 		if prty < 13 and self.ant_type == "queen" and not(self.anthill_founded) then --if queen, try to create a colony (anthill)

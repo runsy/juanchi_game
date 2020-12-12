@@ -14,7 +14,8 @@ petz.lay_egg = function(self)
 	end
 	local pos = self.object:get_pos()
 	if self.type_of_egg == "item" then
-		if math.random(1, petz.settings.lay_egg_chance) == 1 then
+		local lay_egg_timing = petz.settings.lay_egg_timing
+		if mobkit.timer(self, math.random(lay_egg_timing - (lay_egg_timing*0.2), lay_egg_timing+ (lay_egg_timing*0.2))) then
 			minetest.add_item(pos, "petz:"..self.type.."_egg") --chicken/duck/penguin egg!
 			petz.increase_egg_count(self)
 		end
@@ -26,8 +27,14 @@ petz.lay_egg = function(self)
 			{x = pos.x + lay_range, y = pos.y + 1, z = pos.z + lay_range},
 			"petz:ducky_nest")
 		if #nearby_nodes > 1 then
+			local nest_type
+			if self.type == "hen" then
+				nest_type = "chicken"
+			else
+				nest_type = "ducky"
+			end
 			local nest_to_lay = nearby_nodes[math.random(1, #nearby_nodes)]
-			minetest.set_node(nest_to_lay, {name= "petz:"..self.type.."_nest_egg"})
+			minetest.set_node(nest_to_lay, {name= "petz:"..nest_type.."_nest_egg"})
 			petz.increase_egg_count(self)
 		end
 	end
