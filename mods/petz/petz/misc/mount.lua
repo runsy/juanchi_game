@@ -15,7 +15,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	local attached_to = player:get_attach()
 	if attached_to then
 		local entity = attached_to:get_luaentity()
-		if entity.is_mountable then
+		if entity and entity.is_mountable then
 			local hp = player:get_hp()
 			if hp_change < 0 then
 				local new_hp = hp + hp_change

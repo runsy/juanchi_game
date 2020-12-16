@@ -355,7 +355,7 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		end
 	end
 	--DELETE THIS BLOCK IN THE NEXT UPDATE -- FOR COMPATIBIITY PURPOSES FOR OLD CHICKENS ONLY>>>
-	if self.type == "chicken" and self.texture_no > 1 then
+	if self.type == "chicken" then
 		self.is_baby = mobkit.remember(self, "is_baby", true)
 		self.texture_no = mobkit.remember(self, "texture_no", 1)
 		petz.set_properties(self, {textures = {self.textures[1]}})
