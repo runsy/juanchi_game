@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 minetest.register_on_leaveplayer(function(player)
 	petz.force_detach(player)
 end)

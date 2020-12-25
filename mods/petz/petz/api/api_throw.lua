@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --effects can be: fire
 
 function petz.throw(self, dtime, damage, effect, particles, sound)

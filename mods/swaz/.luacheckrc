@@ -4,7 +4,8 @@ allow_defined_top = true
 globals = {
     "minetest",
     "mobkit",
-    "stairs"
+    "stairs",
+    "bucket"
 }
 
 read_globals = {

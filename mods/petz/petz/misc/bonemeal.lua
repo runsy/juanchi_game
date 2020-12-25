@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --Bonemeal support
 
 minetest.register_craft({

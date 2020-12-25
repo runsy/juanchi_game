@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.check_lifetime = function(self)
 	local pet_lifetime = petz.settings[self.type.."_lifetime"]
 	--minetest.chat_send_all("test")

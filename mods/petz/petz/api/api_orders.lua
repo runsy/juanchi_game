@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.ownthing = function(self)
 	self.status = mobkit.remember(self, "status", nil)
 	if self.can_fly then

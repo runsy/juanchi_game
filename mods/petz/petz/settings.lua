@@ -418,6 +418,11 @@ local settings_def = {
 	},
 }
 
+--General Hardcoded Settings-->
+petz.settings.visual = "mesh"
+petz.settings.visual_size = {x=10, y=10}
+petz.settings.rotate = 0
+
 for key, value in ipairs(settings_def) do
 	if value.type == "string" then
 		if not(value.default) then
@@ -501,7 +506,3 @@ for i = 1, #petz.settings["petz_list"] do --load the settings
 		petz.settings[petz_type.."_lay_egg_on_node"] = user:get(petz_type.."_lay_egg_on_node") or settings:get(petz_type.."_lay_egg_on_node") or ""
 	end
 end
-
-petz.settings.visual = "mesh"
-petz.settings.visual_size = {x=10, y=10}
-petz.settings.rotate = 0

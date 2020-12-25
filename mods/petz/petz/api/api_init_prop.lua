@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 --'set_initial_properties' is call by 'on_activate' for each pet
 --

@@ -16,7 +16,7 @@ end)
 function closet.compose_preview(clicker, gender)
 	local inv = clicker:get_inventory()
 	local inv_list = inv:get_list("cloths")
-	local head, upper, lower, underwear
+	local head, upper, lower, underwear, footwear
 	for i = 1, #inv_list do
 		local item_name = inv_list[i]:get_name()
 		local cloth_type = minetest.get_item_group(item_name, "cloth")
@@ -27,6 +27,8 @@ function closet.compose_preview(clicker, gender)
 		elseif cloth_type == 3 then
 			lower = minetest.registered_items[item_name]._cloth_preview
 			underwear = true
+		elseif cloth_type == 4 then
+			footwear = minetest.registered_items[item_name]._cloth_preview
 		end
 	end
 	if not(underwear) then
@@ -48,6 +50,9 @@ function closet.compose_preview(clicker, gender)
 	if lower then
 		preview= preview .. ":8,40="..lower
 	end
+	if footwear then
+		preview= preview .. ":8,40="..footwear
+	end
 	return preview
 end
 
@@ -62,17 +67,30 @@ end
 	--end
 	--minetest.chat_send_all(raw_texture)
 
+local function get_bg(x,y,rows,columns,image)
+	local out = ""
+	for i=0,columns do
+		out = out .."image["..x+i..","..y..";1,1;"..image.."]"
+		for j = 0,rows do
+			out = out .."image["..x+i..","..y+j..";1,1;"..image.."]"
+		end
+	end
+	return out
+end
+
 function closet.container.get_container_formspec(pos, clicker)
 	local gender = player_api.get_gender(clicker)
-	local model = player_api.get_gender_model(gender)
+	--5.4--local model = player_api.get_gender_model(gender)
 	local preview = closet.compose_preview(clicker, gender)
 	local spos = pos.x .. "," .. pos.y .. "," .. pos.z
 	local formspec =
 		"size[8,8.25]" ..
 		--5.4--"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195;;;0,79]"..
 		"image[0.5,0.5;2,4;"..preview.."]" ..
-		"list[current_player;cloths;3,0.25;1,4]" ..
+		"list[current_player;cloths;2.5,0.25;2,4]" ..
+		get_bg(2.5,0.25,3,1,"closet_gui_clothes_bg.png")..
 		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
+		get_bg(5,0.25,3,2,"closet_gui_closet_bg.png")..
 		"list[current_player;main;0,4.5;8,1;]" ..
 		"list[current_player;main;0,5.5;8,3;8]" ..
 		default.get_hotbar_bg(0,4.5)
@@ -82,15 +100,19 @@ end
 -- Allow only "cloth" groups to put/move
 
 minetest.register_allow_player_inventory_action(function(player, action, inventory, inventory_info)
-	local stack
+	local stack, from_inv, to_index
 	if action == "move" and inventory_info.to_list == "cloths" then
-		--for moving items from player inventory list 'main' to 'cloths'
 		if inventory_info.from_list == inventory_info.to_list then --for moving inside the 'cloths' inventory
 			return 1
 		end
+		--for moving items from player inventory list 'main' to 'cloths'
+		from_inv = "main"
+		to_index = inventory_info.to_index
 		stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
 	elseif action == "put" and inventory_info.listname == "cloths" then
 		--for moving from node inventory 'closet' to player inventory 'cloths'
+		from_inv = "closet"
+		to_index = inventory_info.index
 		stack = inventory_info.stack
 	else
 		return
@@ -102,10 +124,28 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 			return 0
 		end
 		--search for another cloth of the same type
-		local cloth_list = player:get_inventory():get_list("cloths")
+		local player_inv = player:get_inventory()
+		local cloth_list = player_inv:get_list("cloths")
 		for i = 1, #cloth_list do
-			local cloth_type = minetest.get_item_group(cloth_list[i]:get_name(), "cloth")
+			local cloth_name = cloth_list[i]:get_name()
+			local cloth_type = minetest.get_item_group(cloth_name, "cloth")
 			if cloth_type == item_group then
+				if player_inv:get_stack("cloths", to_index):get_count() == 0 then --if put on an empty slot
+					if from_inv == "main" then
+						if player_inv:room_for_item("main", cloth_name) then
+							player_inv:remove_item("cloths", cloth_name)
+							player_inv:add_item("main", cloth_name)
+							return 1
+						end
+					else --closet inventory
+						local closet_inv = minetest.get_inventory({ type="node", pos=get_context(player:get_player_name())})
+						if closet_inv:room_for_item("closet", cloth_name) then
+							player_inv:remove_item("cloths", cloth_name)
+							closet_inv:add_item("closet", cloth_name)
+							return 1
+						end
+					end
+				end
 				return 0
 			end
 		end
@@ -120,8 +160,9 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 		--for moving items from player inventory list 'main' to 'cloths'
 		if inventory_info.from_list == inventory_info.to_list then --for moving inside the 'cloths' inventory
 			update_cloths = false
+		else
+			update_cloths = true
 		end
-		update_cloths = true
 	elseif (action == "move" and inventory_info.to_list == "main" and inventory_info.from_list == "cloths") then
 		update_cloths = true
 	elseif (action == "put" or action == "take") and inventory_info.listname == "cloths" then

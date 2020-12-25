@@ -172,7 +172,8 @@ function minetest.calculate_knockback(player, ...)
 end
 
 -- Check each player and apply animations
-minetest.register_globalstep(function()
+local timer = 0
+minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local model_name = player_model[name]
@@ -186,6 +187,52 @@ minetest.register_globalstep(function()
 				animation_speed_mod = animation_speed_mod / 2
 			end
 
+			local on_water
+			--Determine if the player is in a water node
+			local player_pos = player:get_pos()
+			local node_name = minetest.get_node(player_pos).name
+			if minetest.registered_nodes[node_name] then
+				if minetest.registered_nodes[node_name]["liquidtype"] == "source" or
+					minetest.registered_nodes[node_name]["liquidtype"] == "flowing" then
+						local player_pos_below = {x= player_pos.x, y= player_pos.y-1, z= player_pos.z}
+						local node_name_below = minetest.get_node(player_pos_below).name
+						local player_pos_above = {x= player_pos.x, y= player_pos.y+1, z= player_pos.z}
+						local node_name_above = minetest.get_node(player_pos_above).name
+						if minetest.registered_nodes[node_name_below] and minetest.registered_nodes[node_name_above] then
+							local node_below_is_liquid
+							if minetest.registered_nodes[node_name_below]["liquidtype"] == "source" or
+								minetest.registered_nodes[node_name_below]["liquidtype"] == "flowing" then
+									node_below_is_liquid = true
+							else
+									node_below_is_liquid = false
+							end
+							local node_above_is_liquid
+							if minetest.registered_nodes[node_name_above]["liquidtype"] == "source" or
+								minetest.registered_nodes[node_name_above]["liquidtype"] == "flowing" then
+									node_above_is_liquid = true
+							else
+									node_above_is_liquid = false
+							end
+							local node_above_is_air
+							if minetest.registered_nodes[node_name_above] == "air" then
+								node_above_is_air = true
+							else
+								node_above_is_air = false
+							end
+							if	((node_below_is_liquid) and not(node_above_is_air)) or
+								(not(node_below_is_liquid) and node_above_is_liquid) then
+								on_water = true
+							else
+								on_water = false
+							end
+						else
+							on_water = true
+						end
+				else
+						on_water = false
+				end
+			end
+
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "lay")
@@ -196,14 +243,54 @@ minetest.register_globalstep(function()
 					player_sneak[name] = controls.sneak
 				end
 				if controls.LMB or controls.RMB then
-					player_set_animation(player, "walk_mine", animation_speed_mod)
+					if not(on_water) then
+						player_set_animation(player, "walk_mine", animation_speed_mod)
+					else
+						player_set_animation(player, "swin_and_mine", animation_speed_mod)
+					end
 				else
-					player_set_animation(player, "walk", animation_speed_mod)
+					if not(on_water) then
+						player_set_animation(player, "walk", animation_speed_mod)
+					else
+						player_set_animation(player, "swin", animation_speed_mod)
+					end
 				end
 			elseif controls.LMB or controls.RMB then
-				player_set_animation(player, "mine", animation_speed_mod)
+				if not(on_water) then
+					player_set_animation(player, "mine", animation_speed_mod)
+				else
+					player_set_animation(player, "swin_mine", animation_speed_mod)
+				end
 			else
-				player_set_animation(player, "stand", animation_speed_mod)
+				if not(on_water) then
+					player_set_animation(player, "stand", animation_speed_mod)
+				else
+					player_set_animation(player, "swin_stand", animation_speed_mod)
+				end
+			end
+			if on_water and player_pos.y < 0 then
+				timer = timer + dtime
+				if timer > 1 then
+					player_pos.y = player_pos.y + 1
+					minetest.add_particlespawner({
+						amount = 6,
+						time = 1,
+						minpos = player_pos,
+						maxpos = player_pos,
+						minvel = {x=0, y=0, z=0},
+						maxvel = {x=1, y=5, z=1},
+						minacc = {x=0, y=0, z=0},
+						maxacc = {x=1, y=1, z=1},
+						minexptime = 0.2,
+						maxexptime = 1.0,
+						minsize = 1,
+						maxsize = 1.5,
+						collisiondetection = false,
+						vertical = false,
+						texture = "bubble.png",
+					})
+					timer = 0
+				end
 			end
 		end
 	end

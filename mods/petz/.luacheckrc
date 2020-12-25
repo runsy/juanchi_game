@@ -11,7 +11,10 @@ globals = {
     "farming",
     "player_api",
     "hunger_ng",
-    "dye"
+    "dye",
+    "armor",
+    "player_physics",
+    "player_monoids"
 }
 
 read_globals = {

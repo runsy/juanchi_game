@@ -21,8 +21,10 @@ function player_api.register_cloth(name, def)
 		tooltip = S("Head")
 	elseif def.groups["cloth"] == 2 then
 		tooltip = S("Upper")
-	else
+	elseif def.groups["cloth"] == 3 then
 		tooltip = S("Lower")
+	else
+		tooltip = S("Footwear")
 	end
 	tooltip = "(" .. tooltip .. ")"
 	local gender, gender_color
@@ -69,6 +71,16 @@ player_api.register_cloth("player_api:cloth_female_lower_default", {
 	groups = {cloth = 3},
 })
 
+player_api.register_cloth("player_api:cloth_unisex_footwear_default", {
+	description = S("Common Black Shoes"),
+	inventory_image = "cloth_unisex_footwear_default_inv.png",
+	wield_image = "cloth_unisex_footwear_default_inv.png",
+	texture = "cloth_unisex_footwear_default.png",
+	preview = "cloth_unisex_footwear_preview.png",
+	gender = "unisex",
+	groups = {cloth = 4},
+})
+
 player_api.register_cloth("player_api:cloth_female_head_default", {
 	description = S("Pink Bow"),
 	inventory_image = "cloth_female_head_default_inv.png",
@@ -113,6 +125,7 @@ function player_api.set_cloths(player)
 		inv:add_item("cloths", 'player_api:cloth_female_upper_default')
 		inv:add_item("cloths", 'player_api:cloth_female_lower_default')
 	end
+	inv:add_item("cloths", 'player_api:cloth_unisex_footwear_default')
 end
 
 function player_api.compose_cloth(player)
@@ -120,9 +133,7 @@ function player_api.compose_cloth(player)
 	local gender = meta:get_string("gender")
 	local inv = player:get_inventory()
 	local inv_list = inv:get_list("cloths")
-	local upper_ItemStack
-	local lower_ItemStack
-	local head_ItemStack
+	local upper_ItemStack, lower_ItemStack, footwear_ItemStack, head_ItemStack
 	local underwear = false
 	for i = 1, #inv_list do
 		local item_name = inv_list[i]:get_name()
@@ -136,6 +147,8 @@ function player_api.compose_cloth(player)
 		elseif cloth_type == 3 then
 			lower_ItemStack = minetest.registered_items[item_name]._cloth_texture
 			underwear = true
+		elseif cloth_type == 4 then
+			footwear_ItemStack = minetest.registered_items[item_name]._cloth_texture
 		end
 	end
 	if not(underwear) then
@@ -153,6 +166,9 @@ function player_api.compose_cloth(player)
 	end
 	if lower_ItemStack then
 		cloth = cloth .. ":0,32="..lower_ItemStack
+	end
+	if footwear_ItemStack then
+		cloth = cloth .. ":0,32="..footwear_ItemStack
 	end
 	if head_ItemStack then
 		cloth = cloth .. ":48,0="..head_ItemStack

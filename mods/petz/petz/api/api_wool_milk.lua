@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 ---
 ---Refill lamb or milk
 ---

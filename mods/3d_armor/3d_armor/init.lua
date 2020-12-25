@@ -61,6 +61,17 @@ for material, _ in pairs(armor.materials) do
 	end
 end
 
+-- Remove torch damage if fire_protect_torch == false
+if armor.config.fire_protect_torch == false and armor.config.fire_protect == true then
+	for k,v in pairs(armor.fire_nodes) do
+		for k2,v2 in pairs(v) do
+			if string.find (v2,"torch") then
+				armor.fire_nodes[k] = nil
+			end
+		end
+	end
+end
+
 -- Mod Compatibility
 
 if minetest.get_modpath("technic") then
@@ -292,6 +303,10 @@ default.player_register_model("3d_armor_character.b3d", {
 		mine = {x=189, y=198},
 		walk_mine = {x=200, y=219},
 		sit = {x=81, y=160},
+		swin = {x = 221, y = 269},
+		swin_mine = {x = 270, y = 290},
+		swin_and_mine = {x = 291, y = 314},
+		swin_stand = {x = 221, y = 221},
 	},
 })
 
@@ -309,6 +324,10 @@ default.player_register_model("3d_armor_female.b3d", {
 		mine = {x=189, y=198},
 		walk_mine = {x=200, y=219},
 		sit = {x=81, y=160},
+		swin = {x = 221, y = 269},
+		swin_mine = {x = 270, y = 290},
+		swin_and_mine = {x = 291, y = 314},
+		swin_stand = {x = 221, y = 221},
 	},
 })
 
@@ -394,13 +413,20 @@ if armor.config.drop == true or armor.config.destroy == true then
 			end)
 		end
 	end)
+else -- reset un-dropped armor and it's effects
+	minetest.register_on_respawnplayer(function(player)
+		armor:set_player_armor(player)
+	end)
 end
 
 if armor.config.punch_damage == true then
 	minetest.register_on_punchplayer(function(player, hitter,
 			time_from_last_punch, tool_capabilities)
 		local name = player:get_player_name()
-		if name then
+		local hit_ip = hitter:is_player()
+		if name and hit_ip and minetest.is_protected(player:get_pos(), "") then
+			return
+		elseif name then
 			armor:punch(player, hitter, time_from_last_punch, tool_capabilities)
 			last_punch_time[name] = minetest.get_gametime()
 		end

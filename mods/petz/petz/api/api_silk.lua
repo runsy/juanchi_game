@@ -1,4 +1,4 @@
-local modpath, S = ...
+local S = ...
 
 --Coocon
 minetest.register_node("petz:cocoon", {
@@ -28,8 +28,7 @@ minetest.register_node("petz:cocoon", {
 			return
 		end
 		if pos and petz.is_night() == true then --only spawn at night, to it does not die
-			local mob = minetest.add_entity(pos, "petz:moth")
-			local ent = mob:get_luaentity()
+			minetest.add_entity(pos, "petz:moth")
 			minetest.set_node(pos, {name= "air"})
 			return false
 		end

@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.on_step = function(self, dtime)
 	local on_step_time = 1
 	if mobkit.timer(self, on_step_time) and not(self.dead) then --Only check every 1 sec, not every step!

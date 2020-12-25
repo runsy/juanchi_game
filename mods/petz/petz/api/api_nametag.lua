@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.update_nametag = function(self)
 	local name_tag
 	if self.show_tag == true and self.tag and not(self.tag == "") then

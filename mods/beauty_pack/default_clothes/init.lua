@@ -56,3 +56,13 @@ minetest.register_craft({
 		{"", "", ""},
 	}
 })
+
+minetest.register_craft({
+	output = "player_api:cloth_unisex_footwear_default",
+	type = "shaped",
+	recipe = {
+		{"fabric:black", "", "fabric:black"},
+		{"fabric:black", "", "fabric:black"},
+		{"", "", ""},
+	}
+})

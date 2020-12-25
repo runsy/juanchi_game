@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.puncher_is_player = function(puncher)
 	if type(puncher) == 'userdata' and puncher:is_player() then
 		return true

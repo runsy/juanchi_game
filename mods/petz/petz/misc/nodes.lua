@@ -760,7 +760,7 @@ minetest.register_node("petz:anthill_entrance", {
     end,
 
 	on_timer = function(pos) --check the entrance to defend it
-		pos_top = {
+		local pos_top = {
 				x = pos.x,
 				y = pos.y + 0.5,
 				z = pos.z,

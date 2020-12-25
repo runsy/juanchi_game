@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local function register_tnt(name, def)
   local primed_name = "bazm:primed_" .. name
-  local name = "bazm:" .. name
+  name = "bazm:" .. name
   local explode_hear_dist = 4 * math.sqrt(def.strength)
 
   local function on_blast_break(pos)
@@ -125,8 +125,8 @@ minetest.register_craft({
 	type = "shaped",
 	output = "bazm:nuke",
 	recipe = {
-		{"basic_materials:energy_crystal_simple", "basic_materials:energy_crystal_simple", "basic_materials:energy_crystal_simple"},
-		{"basic_materials:energy_crystal_simple", "basic_materials:ic", "basic_materials:energy_crystal_simple"},
-		{"basic_materials:energy_crystal_simple", "basic_materials:energy_crystal_simple", "basic_materials:energy_crystal_simple"},
+		{"basic_materials:energy_crystal_simple", "nuclearz:uranium_rod", "basic_materials:energy_crystal_simple"},
+		{"nuclearz:uranium_rod", "basic_materials:ic", "nuclearz:uranium_rod"},
+		{"basic_materials:energy_crystal_simple", "nuclearz:uranium_rod", "basic_materials:energy_crystal_simple"},
 	}
 })

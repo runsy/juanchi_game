@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.increase_egg_count = function(self)
 	self.eggs_count = mobkit.remember(self, "eggs_count", self.eggs_count+1)
 end

@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.get_node_below = function(pos)
 	local pos_below = {
 		x = pos.x,

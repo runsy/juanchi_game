@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 petz.calculate_sleep_times = function(self)
 	if not petz.settings.sleeping then
 		return

@@ -4,7 +4,8 @@ allow_defined_top = true
 globals = {
     "minetest",
     "player_api",
-    "armor"
+    "armor",
+    "dye"
 }
 
 read_globals = {

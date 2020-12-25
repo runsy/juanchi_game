@@ -1,5 +1,3 @@
-local modpath, S = ...
-
 --
 --on_die event for all the mobs
 --

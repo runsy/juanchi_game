@@ -371,6 +371,109 @@ minetest.register_node("swaz:barberry_bush_sapling", {
 	end,
 })
 
+--Iris Flower
+
+minetest.register_node("swaz:iris_top", {
+	description = S("Iris").. " ("..S("flower")..")",
+	drawtype = "plantlike",
+	visual_scale = 0.8,
+	tiles = {"swaz_iris_top.png"},
+	inventory_image = "swaz_iris_flower.png",
+	paramtype = "light",
+	walkable = false,
+	waving = 1,
+	groups = {snappy = 3, flammable = 3, flower =1, flora=1, not_in_creative_inventory = 1},
+	sounds = default.node_sound_leaves_defaults(),
+	drop = "swaz:iris",
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.1875, -0.5, -0.1875, 0.1875, 0.1875, 0.1875}
+	},
+	after_destruct = function(pos, oldnode)
+		pos.y = pos.y - 2
+		local node = minetest.get_node_or_nil(pos)
+		if node and node.name == "swaz:iris" then
+			minetest.swap_node(pos, {name = "swaz:mud"})
+		end
+	end
+})
+
+minetest.register_node("swaz:iris", {
+	description = S("Iris"),
+	drawtype = "plantlike_rooted",
+	visual_scale = 1.0,
+	tiles = {"swaz_mud.png"},
+	special_tiles = {
+		nil,
+		nil,
+		"swaz_iris_base.png",
+		"swaz_iris_base.png",
+		"swaz_iris_base.png",
+		"swaz_iris_base.png",
+	},
+	inventory_image = "swaz_iris_top_inv.png",
+	wield_image = "swaz_iris_top_inv.png",
+	paramtype = "light",
+	walkable = false,
+	waving = 1,
+	groups = {snappy = 3, flammable = 3, flower =1, flora=1, attached_node = 1},
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
+	},
+
+	on_construct = function(pos)
+		pos.y = pos.y + 2
+		minetest.swap_node(pos, {name = "swaz:iris_top"})
+	end,
+
+	after_destruct = function(pos, oldnode)
+		pos.y = pos.y + 2
+		local node = minetest.get_node_or_nil(pos)
+		if node and node.name == "swaz:iris_top" then
+			minetest.remove_node(pos)
+		end
+	end,
+
+	on_place = function(itemstack, placer, pointed_thing)
+		-- Call on_rightclick if the pointed node defines it
+		if pointed_thing.type == "node" and placer and
+				not placer:get_player_control().sneak then
+			local node_ptu = minetest.get_node(pointed_thing.under)
+			local def_ptu = minetest.registered_nodes[node_ptu.name]
+			if def_ptu and def_ptu.on_rightclick then
+				return def_ptu.on_rightclick(pointed_thing.under, node_ptu, placer,
+					itemstack, pointed_thing)
+			end
+		end
+		local pos = pointed_thing.under
+		if minetest.get_node(pos).name ~= "swaz:mud" or pos.y < 0 then
+			return itemstack
+		end
+		local height = 1
+		local pos_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local node_top = minetest.get_node(pos_top)
+		local def_top = minetest.registered_nodes[node_top.name]
+		local player_name = placer:get_player_name()
+
+
+			if not minetest.is_protected(pos, player_name) and
+					not minetest.is_protected(pos_top, player_name) then
+				minetest.set_node(pos, {name= "swaz:iris",
+					param2 = height * 16})
+				if not (creative and creative.is_enabled_for
+						and creative.is_enabled_for(player_name)) then
+					itemstack:take_item()
+				end
+			else
+				minetest.chat_send_player(player_name, S("Node is protected"))
+				minetest.record_protection_violation(pos, player_name)
+			end
+
+	end,
+})
+
 -- Register Decoration
 -- IMPORTANT!
 -- THE ORDER OF THE DECORATION MATTERS!
@@ -666,18 +769,46 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		decoration = "swaz:barberry_bush_leaves_with_berries",
 		deco_type = "simple",
 		place_on = "swaz:silt_with_grass",
-		sidelen = 16,
 		biomes = {"swampz"},
 		noise_params = {
 			offset = 0.0008,
 			scale = 0.008,
 			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
+			seed = 2678,
 			octaves = 3,
 			persist = 0.66
 		},
 		y_min = 1,
 		y_max = 80,
+	})
+
+	--Iris Flower
+
+	minetest.register_decoration({
+		name = "swaz:iris",
+		decoration = "swaz:iris",
+		deco_type = "schematic",
+		schematic = {
+			size = {x = 1, y = 3, z = 1},
+			data = {
+				{name = "swaz:iris"}, {name = "air"}, {name = "swaz:iris_top"},
+			}
+		},
+		place_on = {"swaz:mud"},
+		biomes = "swampz_shore",
+		sidelen = 16,
+		noise_params = {
+			offset = -0.3,
+			scale = 0.7,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 354,
+			octaves = 3,
+			persist = 0.7
+		},
+		place_offset_y = 0,
+		y_min = 0,
+		y_max = 0,
+		flags = "place_center_x, place_center_z, force_placement",
 	})
 
 end
@@ -887,4 +1018,17 @@ if minetest.get_modpath("farming")~=nil then
 			wet = "swaz:soil_wet"
 		}
 	})
+end
+
+
+if minetest.get_modpath("bucket")~=nil then
+	bucket.register_liquid(
+		"swaz:water_source",
+		"swaz:water_flowing",
+		"swaz:bucket_swampy_water",
+		"swaz_swampy_water.png",
+		S("Swampy Water Bucket"),
+		{tool = 1, water_bucket = 1},
+		true
+	)
 end
