@@ -236,7 +236,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local gender = player:get_meta():get_string("gender")
 	player_api.registered_models[player_api.get_gender_model(gender)].textures[1] = cloth
 	local player_name = player:get_player_name()
-	armor.textures[player_name].skin = cloth
+	if minetest.get_modpath("3d_armor")~=nil then
+		armor.textures[player_name].skin = cloth
+	end
 	player_api.set_textures(player, player_api.registered_models[player_api.get_gender_model(gender)].textures)
 
 	closet.container.container_lid_close(pn)
