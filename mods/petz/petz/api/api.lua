@@ -39,3 +39,6 @@ assert(loadfile(modpath .. "/api/api_bottled.lua"))(modpath, S)
 assert(loadfile(modpath .. "/api/api_colors.lua"))()
 assert(loadfile(modpath .. "/api/api_sell_buy.lua"))(S)
 assert(loadfile(modpath .. "/api/api_lifetime.lua"))()
+assert(loadfile(modpath .. "/api/api_back_home.lua"))()
+assert(loadfile(modpath .. "/api/api_on_deactivate.lua"))()
+

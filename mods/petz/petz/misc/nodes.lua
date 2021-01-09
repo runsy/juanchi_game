@@ -1,11 +1,13 @@
 local modpath, S = ...
 
+--[[
 local tree = minetest.serialize_schematic(modpath .. "/schematics/petz_anthill.mts", "lua", {})
 local file = io.open(modpath .. "/schematics/petz_anthill.lua", "w")
 if file then
 	file:write(tree)
 	file:close()
 end
+]]
 
 --Material for Pet's House
 
@@ -149,6 +151,7 @@ minetest.register_node("petz:ducky_nest_egg", {
     inventory_image = "petz_ducky_nest_egg_inv.png",
     wield_image = "petz_ducky_nest_egg_inv.png",
     tiles = {"petz_ducky_nest_egg.png"},
+	use_texture_alpha = true,
     groups = {snappy=1, bendy=2, cracky=1},
     sounds = default.node_sound_wood_defaults(),
     paramtype = "light",
@@ -194,6 +197,7 @@ minetest.register_node("petz:chicken_nest_egg", {
     mesh = 'petz_ducky_nest_egg.b3d',
     visual_size = {x = 1.3, y = 1.3},
     tiles = {"petz_chicken_nest_egg.png"},
+    use_texture_alpha = true,
     collision_box = {
         type = "fixed",
         fixed= {-0.25, -0.75, -0.25, 0.25, -0.25, 0.25},
@@ -373,12 +377,12 @@ minetest.register_node("petz:beehive", {
 		if placer:is_player() then
 			honey_count = 0
 			bee_count = 0
-			minetest.after(petz.settings.worker_bee_delay, function(beehive_pos)
-				local node =minetest.get_node_or_nil(beehive_pos)
+			minetest.after(petz.settings.worker_bee_delay, function()
+				local node =minetest.get_node_or_nil(pos)
 				if not(node and node.name == "petz:beehive") then
 					return
 				end
-				meta = minetest.get_meta(beehive_pos)
+				meta = minetest.get_meta(pos)
 				local total_bees = meta:get_int("total_bees") or petz.settings.max_bees_behive
 				if total_bees < petz.settings.max_bees_behive then
 					bee_count = meta:get_int("bee_count")
@@ -605,6 +609,7 @@ minetest.register_node("petz:cat_basket", {
 		"petz_cat_basket_side.png",
 		"petz_cat_basket_side.png"
 	},
+	use_texture_alpha = true,
 	drawtype = "nodebox",
 	paramtype = "light",
 	groups = {snappy=1, bendy=2, cracky=1},

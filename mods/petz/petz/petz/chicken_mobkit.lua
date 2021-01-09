@@ -14,6 +14,8 @@ for i=1, 3 do
 	local lay_eggs
 	local parents
 	local aggressive
+	local is_baby
+	local is_male
 	if i == 1 then
 		pet_name = "hen"
 		description = "Hen"
@@ -29,6 +31,8 @@ for i=1, 3 do
 		}
 		parents = nil
 		aggressive = false
+		is_baby = false
+		is_male = false
 	elseif i == 2 then
 		pet_name = "rooster"
 		description = "Rooster"
@@ -44,6 +48,8 @@ for i=1, 3 do
 		}
 		parents = nil
 		aggressive = true
+		is_baby = false
+		is_male = true
 	else
 		pet_name = "chicken"
 		description = "Chicken"
@@ -59,8 +65,9 @@ for i=1, 3 do
 		}
 		parents = {"petz:hen", "petz:rooster"}
 		aggressive = false
+		is_baby = true
 	end
-	local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+	local collisionbox = petz.get_collisionbox(p1, p2, scale_model, nil)
 
 	minetest.register_entity("petz:"..pet_name,{
 		--Petz specifics
@@ -69,6 +76,7 @@ for i=1, 3 do
 		is_pet = true,
 		has_affinity = false,
 		is_wild = false,
+		is_male = is_male,
 		is_baby = is_baby,
 		parents = parents,
 		aggressive = aggressive,
@@ -123,6 +131,10 @@ for i=1, 3 do
 		on_activate = function(self, staticdata, dtime_s) --on_activate, required
 			mobkit.actfunc(self, staticdata, dtime_s)
 			petz.set_initial_properties(self, staticdata, dtime_s)
+		end,
+
+		on_deactivate = function(self)
+			petz.on_deactivate(self)
 		end,
 
 		on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)

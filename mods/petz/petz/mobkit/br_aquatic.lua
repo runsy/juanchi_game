@@ -24,7 +24,7 @@ function petz.aquatic_brain(self)
 		mobkit.hurt(self, petz.settings.air_damage)
 	end
 
-	mobkit.check_ground_suffocation(self, pos)
+	petz.check_ground_suffocation(self, pos)
 
 	if mobkit.timer(self, 1) then
 
@@ -58,7 +58,7 @@ function petz.aquatic_brain(self)
 				if random_number == 1 then
 					--minetest.chat_send_player("singleplayer", "jump")
 					mobkit.clear_queue_high(self)
-					mobkit.hq_aqua_jump(self, 8)
+					petz.hq_aqua_jump(self, 8)
 				end
 			end
 		end

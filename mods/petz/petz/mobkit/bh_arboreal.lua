@@ -3,9 +3,9 @@
 --
 
 function petz.check_tree(self)
-	local node_front_name = mobkit.node_name_in(self, "front")
+	local node_front_name = petz.node_name_in(self, "front")
 	--minetest.chat_send_player("singleplayer", node_front_name)
-	local node_top_name= mobkit.node_name_in(self, "top")
+	local node_top_name= petz.node_name_in(self, "top")
 	--minetest.chat_send_player("singleplayer", node_top_name)
 	if node_front_name and minetest.registered_nodes[node_front_name]
 		and petz.is_tree_like(node_front_name)
@@ -29,7 +29,7 @@ end
 
 function petz.bh_climb(self, pos, prty)
 	if petz.check_tree(self) then
-		mobkit.hq_climb(self, prty)
+		petz.hq_climb(self, prty)
 		mobkit.animate(self, 'climb')
 		return true
 	else --search for a tree
@@ -49,8 +49,8 @@ function petz.bh_climb(self, pos, prty)
 	return false
 end
 
-function mobkit.hq_climb(self, prty)
-	local func=function(self)
+function petz.hq_climb(self, prty)
+	local func=function()
 		if not petz.check_tree(self) then
 			self.status = nil
 			mobkit.clear_queue_high(self)
@@ -59,14 +59,14 @@ function mobkit.hq_climb(self, prty)
 		end
 		if mobkit.is_queue_empty_low(self) then
 			self.status = "climb"
-			mobkit.lq_climb(self)
+			petz.lq_climb(self)
 		end
 	end
 	mobkit.queue_high(self,func,prty)
 end
 
-function mobkit.lq_climb(self)
-	local func = function(self)
+function petz.lq_climb(self)
+	local func = function()
 		local pos = self.object:get_pos()
 		pos.y = pos.y + 1
 		local node_top = minetest.get_node_or_nil(pos)
@@ -74,7 +74,7 @@ function mobkit.lq_climb(self)
 			return true
 		end
 		local node_top_name= node_top.name
-		local node_front_top_name, front_top_pos = mobkit.node_name_in(self, "front_top")
+		local node_front_top_name, front_top_pos = petz.node_name_in(self, "front_top")
 		--minetest.chat_send_all(node_top_name)
 		if node_top_name and minetest.registered_nodes[node_top_name]
 			and (petz.is_tree_like(node_top_name)) then

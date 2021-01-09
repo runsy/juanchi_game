@@ -8,6 +8,7 @@
 
 petz.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "default:dirt"
 
+--[[
 local node_ok = function(pos, fallback)
 	fallback = fallback or petz.fallback_node
 	local node = minetest.get_node_or_nil(pos)
@@ -33,6 +34,7 @@ local function node_is(pos)
 	end
 	return "other"
 end
+]]
 
 local function get_sign(i)
 	i = i or 0
@@ -53,22 +55,22 @@ local function get_v(v)
 	return math.sqrt(v.x * v.x + v.z * v.z)
 end
 
-function mobkit.hq_mountdriver(self, prty)
-	local func=function(self)
+function petz.hq_mountdriver(self, prty)
+	local func=function()
 		if not(self.driver) then
 			return true
 		else
 			if mobkit.is_queue_empty_low(self) then
-				mobkit.lq_mountdriver(self)
+				petz.lq_mountdriver(self)
 			end
 		end
 	end
 	mobkit.queue_high(self,func,prty)
 end
 
-function mobkit.lq_mountdriver(self)
+function petz.lq_mountdriver(self)
 	local auto_drive = false
-	local func = function(self)
+	local func = function()
 		if not(self.driver) then return true end
 		local rot_view = 0
 		if self.player_rotation.y == 90 then

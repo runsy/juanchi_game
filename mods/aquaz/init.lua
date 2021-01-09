@@ -299,6 +299,7 @@ for i = 1, #aquaz.coral_deco do
 		paramtype = "light",
 		paramtype2 = "facedir",
 		tiles = {aquaz.coral_deco[i].tile},
+		use_texture_alpha = true,
 		inventory_image = aquaz.coral_deco[i].tile,
 		wield_image = aquaz.coral_deco[i].tile,
 		node_box = {

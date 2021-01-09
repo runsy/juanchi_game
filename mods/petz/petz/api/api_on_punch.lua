@@ -71,7 +71,7 @@ function petz.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 		self.object:set_properties(self, {textures = {punch_texture}})
 		minetest.after(0.1, function()
 			if self then
-				self.object:set_properties(self, {textures = { self.textures[self.texture_no]}})
+				self.object:set_properties(self, {textures = { petz.compose_texture(self) }})
 			end
 		end)
 	end

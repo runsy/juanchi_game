@@ -21,7 +21,7 @@ function petz.semiaquatic_brain(self)
 	end
 
 	if not(petz.isinliquid(self)) then
-		mobkit.check_ground_suffocation(self, pos)
+		petz.check_ground_suffocation(self, pos)
 	end
 
 	if mobkit.timer(self, 1) then

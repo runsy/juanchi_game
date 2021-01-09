@@ -365,3 +365,26 @@ minetest.register_craft({
 	recipe = "petz:raw_goat",
 	cooktime = 3,
 })
+
+--Rabbit Food
+minetest.register_craftitem("petz:raw_rabbit", {
+    description = S("Raw Rabbit"),
+    inventory_image = "petz_raw_rabbit.png",
+    wield_image = "petz_raw_rabbit.png",
+    on_use = minetest.item_eat(1),
+    groups = {flammable = 2, food = 2, food_meat_raw = 1},
+})
+
+minetest.register_craftitem("petz:roasted_rabbit", {
+	description = S("Roasted Rabbit"),
+	inventory_image = "petz_roasted_rabbit.png",
+	on_use = minetest.item_eat(3),
+	groups = {flammable = 2, food = 2, food_meat = 1},
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "petz:roasted_rabbit",
+	recipe = "petz:raw_rabbit",
+	cooktime = 2,
+})

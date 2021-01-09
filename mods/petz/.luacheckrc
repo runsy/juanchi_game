@@ -13,8 +13,9 @@ globals = {
     "hunger_ng",
     "dye",
     "armor",
-    "player_physics",
-    "player_monoids"
+    "playerphysics",
+    "player_monoids",
+    "awards"
 }
 
 read_globals = {

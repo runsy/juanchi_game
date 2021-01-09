@@ -248,6 +248,7 @@ end)
 function closet.register_container(name, d)
 	local def = table.copy(d)
 	def.drawtype = 'mesh'
+	def.use_texture_alpha = true
 	def.paramtype = "light"
 	def.paramtype2 = "facedir"
 	def.is_ground_content = false

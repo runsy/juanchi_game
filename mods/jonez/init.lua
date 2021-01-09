@@ -129,10 +129,11 @@ local styles = {
 	"medieval",
 	"gothic",
 	"pompeiian",
-	"corinthian"
+	"corinthian",
+	"carthaginian",
+	"industrial",
+	"romanesque"
 }
-
-
 
 -- The Crafting of the Greek Set
 
@@ -175,8 +176,6 @@ minetest.register_craft({
 		{'', 'jonez:marble_polished', ''},
 	},
 })
-
-
 
 for i = 1, #styles do
 
@@ -232,6 +231,7 @@ for i = 1, #vines do
 		paramtype = "light",
 		paramtype2 = "facedir",
 		tiles = {vines[i].texture},
+		use_texture_alpha = true,
 		inventory_image = vines[i].texture,
 		wield_image = vines[i].texture,
 		node_box = {
@@ -260,21 +260,27 @@ local panels = {
 			{"dye:green", "dye:red", "dye:orange"},
 		}
 	},
-	{name= "wrought_lattice_bottom", description= "Ancient Wrought Lattice (Bottom)",textures={front="jonez_wrought_lattice_bottom.png", edge="jonez_panes_edge.png"},
+	{name= "wrought_lattice_bottom", description= "Ancient Wrought Lattice (Bottom)",
+		textures={front="jonez_wrought_lattice_bottom.png", edge="jonez_panes_edge.png"},
+		use_texture_alpha = true,
 		recipe = {
 			{'', '', ''},
 			{'default:steel_ingot', 'default:tin_ingot', 'default:steel_ingot'},
 			{'default:steel_ingot', 'default:tin_ingot', 'default:steel_ingot'},
 		}
 	},
-	{name= "palace_window_top", description= "Palace Window (Top)",textures={front="jonez_palace_window_top.png", edge="default_wood.png"},
+	{name= "palace_window_top", description= "Palace Window (Top)",
+		textures={front="jonez_palace_window_top.png", edge="default_wood.png"},
+		use_texture_alpha = true,
 		recipe = {
 			{'', 'xpanes:pane_flat', ''},
 			{'', 'xpanes:pane_flat', ''},
 			{'', '', ''},
 		}
 	},
-	{name= "palace_window_bottom", description= "Palace Window (Bottom)",textures={front="jonez_palace_window_bottom.png", edge="default_wood.png"},
+	{name= "palace_window_bottom", description= "Palace Window (Bottom)",
+		textures={front="jonez_palace_window_bottom.png", edge="default_wood.png"},
+		use_texture_alpha = true,
 		recipe = {
 			{'', '', ''},
 			{'', 'xpanes:pane_flat', ''},
@@ -287,6 +293,7 @@ for j=1, #panels do
 	xpanes.register_pane(panels[j].name, {
 		description = S(panels[j].description),
 		textures = {panels[j].textures.front, nil, panels[j].textures.edge},
+		use_texture_alpha = panels[j].use_texture_alpha,
 		inventory_image = panels[j].textures.front,
 		wield_image = panels[j].textures.front,
 		sounds = default.node_sound_glass_defaults(),
@@ -375,16 +382,23 @@ local pavements= {
 	},
 	{name= "jonez:pompeiian_path", description= "Ancient Pompeiian Path", texture= "jonez_pompeiian_path.png", amount = 4,
 		recipe = {
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished'},
+			{'stairs:slab_marble_brick', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished'},
 		}
 	},
-	{name= "jonez:pompeiian_path", description= "Ancient Pompeiian Path", texture= "jonez_pompeiian_path.png", amount = 4,
+	{name= "jonez:carthaginian_pavement", description= "Carthaginian Pavement", texture= "jonez_carthaginian_pavement.png", amount = 4,
 		recipe = {
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
-			{'stairs:slab_marble_brick', 'default:gravel', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick'},
+		}
+	},
+	{name= "jonez:carthaginian_wall", description= "Carthaginian Wall", texture= "jonez_carthaginian_wall.png", amount = 4,
+		recipe = {
+			{'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished'},
+			{'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick'},
+			{'stairs:slab_marble_brick_polished', 'stairs:slab_marble_brick', 'stairs:slab_marble_brick_polished'},
 		}
 	},
 }
@@ -433,6 +447,7 @@ minetest.register_node("jonez:wrought_lattice_top", {
 		"jonez_wrought_lattice_top.png",
 		"jonez_wrought_lattice_top.png"
 	},
+	use_texture_alpha = true,
 })
 
 minetest.register_craft({
@@ -451,7 +466,6 @@ minetest.register_node("jonez:versailles_pavement", {
 	groups = {cracky=3},
 	sounds = default.node_sound_stone_defaults(),
 })
-
 
 minetest.register_craft({
 	output = 'jonez:versailles_pavement',

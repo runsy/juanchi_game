@@ -9,7 +9,7 @@ function petz.bh_create_anthill(self, pos)
 	if not self.create_anthill or pos.y > 8 then
 		return false
 	end
-	local node_name, pos_below = mobkit.node_name_in(self, "below")
+	local node_name, pos_below = petz.node_name_in(self, "below")
 	if minetest.is_protected(pos_below, "") then --check for a non-protected node
 		return false
 	end
@@ -28,7 +28,7 @@ function petz.bh_create_anthill(self, pos)
 		if #minetest.find_nodes_in_area(minp, maxp, {"petz:antbed"}) < 1 then
 			minetest.place_schematic({x = pos.x-6, y = pos.y-25, z = pos.z-6}, modpath.."/schematics/petz_anthill.mts", "0", nil, true)
 			 --replace the entrance node to the same to trigger the on_construct event of the node (because is not triggered for schematics)-->
-			local node_entrance, pos_entrance = mobkit.node_name_in(self, "below")
+			local node_entrance, pos_entrance = petz.node_name_in(self, "below")
 			if node_entrance == "petz:anthill_entrance" then
 				minetest.set_node(pos_entrance, {name = node_entrance})
 			end
@@ -49,8 +49,8 @@ function petz.bh_lay_antegg(self, pos)
 		return
 	end
 	--Lay in front (air node) and above a Ant Bed Node
-	local node_name_front, egg_pos = mobkit.node_name_in(self, "front")
-	local node_name_front_below = mobkit.node_name_in(self, "front_below")
+	local node_name_front, egg_pos = petz.node_name_in(self, "front")
+	local node_name_front_below = petz.node_name_in(self, "front_below")
 	if node_name_front == "air" and node_name_front_below == "petz:antbed" then
 		minetest.place_node(egg_pos, {name="petz:antegg"})
 		petz.increase_egg_count(self)

@@ -21,7 +21,7 @@ function petz.bh_attack_player(self, pos, prty, player)
 				if self.can_swin then
 					mobkit.hq_aqua_attack(self, prty, player, 6)
 				elseif self.can_fly then
-					mobkit.hq_flyhunt(self, prty, player)
+					petz.hq_flyhunt(self, prty, player)
 				else
 					petz.hq_hunt(self, prty, player) -- try to repel them
 				end
@@ -47,7 +47,7 @@ function petz.bh_attack_player(self, pos, prty, player)
 end
 
 function petz.hq_hunt(self,prty,tgtobj)
-	local func = function(self)
+	local func = function()
 		if not mobkit.is_alive(tgtobj) then return true end
 		if mobkit.is_queue_empty_low(self) and self.isonground then
 			local pos = mobkit.get_stand_pos(self)
@@ -75,7 +75,7 @@ function petz.is_pos_in_box(self, pos,bpos,box)
 end
 
 function petz.hq_attack(self,prty,tgtobj)
-	local func = function(self)
+	local func = function()
 		if not mobkit.is_alive(tgtobj) then return true end
 		if mobkit.is_queue_empty_low(self) then
 			local pos = mobkit.get_stand_pos(self)
@@ -100,7 +100,7 @@ end
 
 function petz.lq_jumpattack(self,height,target)
 	local phase=1
-	local func=function(self)
+	local func=function()
 		if not mobkit.is_alive(target) then return true end
 		if self.isonground then
 			if phase==1 then	-- collision bug workaround
@@ -147,8 +147,8 @@ end
 ---Fly Attack Behaviour
 ---
 
-function mobkit.hq_flyhunt(self, prty, tgtobj)
-	local func = function(self)
+function petz.hq_flyhunt(self, prty, tgtobj)
+	local func = function()
 		if not mobkit.is_alive(tgtobj) then return true end
 		if mobkit.is_queue_empty_low(self) then
 			local pos = mobkit.get_stand_pos(self)
@@ -157,18 +157,18 @@ function mobkit.hq_flyhunt(self, prty, tgtobj)
 			if dist > self.view_range then
 				return true
 			elseif dist > 3 then
-				mobkit.flyto(self, tgtobj)
+				petz.flyto(self, tgtobj)
 			else
 				--minetest.chat_send_player("singleplayer", "hq fly attack")
-				mobkit.hq_flyattack(self, prty+1, tgtobj)
+				petz.hq_flyattack(self, prty+1, tgtobj)
 			end
 		end
 	end
 	mobkit.queue_high(self,func,prty)
 end
 
-function mobkit.hq_flyattack(self, prty, tgtobj)
-	local func = function(self)
+function petz.hq_flyattack(self, prty, tgtobj)
+	local func = function()
 		if not mobkit.is_alive(tgtobj) then
 			return true
 		end
@@ -179,15 +179,15 @@ function mobkit.hq_flyattack(self, prty, tgtobj)
 			if dist > 3 then
 				return true
 			else
-				mobkit.lq_flyattack(self, tgtobj)
+				petz.lq_flyattack(self, tgtobj)
 			end
 		end
 	end
 	mobkit.queue_high(self,func,prty)
 end
 
-function mobkit.lq_flyattack(self, target)
-	local func = function(self)
+function petz.lq_flyattack(self, target)
+	local func = function()
 		if not mobkit.is_alive(target) then
 			return true
 		end
@@ -206,7 +206,7 @@ function mobkit.lq_flyattack(self, target)
 				self.hp = 0 --bees must to die!!!
 			end
 		else
-			mobkit.flyto(self, target)
+			petz.flyto(self, target)
 		end
 		mobkit.lq_idle(self, 0.3)
 		return true

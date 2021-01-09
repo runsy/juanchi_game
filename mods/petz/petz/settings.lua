@@ -416,6 +416,12 @@ local settings_def = {
 	type = "number",
 	default = 0,
 	},
+	--Go Back Home Distance
+	{
+	name = "back_home_distance",
+	type = "number",
+	default = 50,
+	},
 }
 
 --General Hardcoded Settings-->

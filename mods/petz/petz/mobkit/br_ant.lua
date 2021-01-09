@@ -13,7 +13,7 @@ function petz.ant_brain(self)
 		return
 	end
 
-	mobkit.check_ground_suffocation(self, pos)
+	petz.check_ground_suffocation(self, pos)
 
 	local timer_timing = 1
 

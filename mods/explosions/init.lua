@@ -54,7 +54,7 @@ local function get_blastres(name, def)
   local cracky_br = { [0] = math.huge, 200, 150, 100 }
   local liquid_br = { [0] = math.huge, 200, 100, 50 }
   local level_mul = { [0] = 1, 1.5, 2.5, 5 }
-
+  local res
   res = math.huge
   res = math.min(res, instant_br[minetest.get_item_group(name, 'dig_immediate')])
   res = math.min(res, oddly_br[

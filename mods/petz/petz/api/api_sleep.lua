@@ -65,12 +65,12 @@ petz.sleep = function(self, prty, force)
 	mobkit.animate(self, 'sleep')
 	local texture = self.textures[self.texture_no]
 	self.object:set_properties(self, {textures = {texture.."^petz_"..self.type.."_sleep.png"}}) --sleeping eyes
-	mobkit.hq_sleep(self, prty, force)
+	petz.hq_sleep(self, prty, force)
 end
 
-function mobkit.hq_sleep(self, prty, force)
+function petz.hq_sleep(self, prty, force)
 	local timer = 2
-	local func=function(self)
+	local func=function()
 		timer = timer - self.dtime
 		if timer <  0 then
 			if not(force) then

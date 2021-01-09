@@ -162,7 +162,7 @@ minetest.register_craft({
 })
 
 petz.init_convert_to_chrysalis = function(self)
-	minetest.after(math.random(1200, 1500), function(self)
+	minetest.after(math.random(1200, 1500), function()
 		if not(mobkit.is_alive(self)) then
 			return
 		end
@@ -176,7 +176,7 @@ petz.init_convert_to_chrysalis = function(self)
 end
 
 petz.init_lay_eggs = function(self)
-	minetest.after(math.random(150, 240), function(self)
+	minetest.after(math.random(150, 240), function()
 		if not(mobkit.is_alive(self)) then
 			return
 		end
@@ -184,7 +184,7 @@ petz.init_lay_eggs = function(self)
 			return
 		end
 		petz.alight(self)
-		minetest.after(10.0, function(self)
+		minetest.after(10.0, function()
 			if not(mobkit.is_alive(self)) then
 				return
 			end
@@ -192,7 +192,7 @@ petz.init_lay_eggs = function(self)
 			if minetest.get_node(pos) and minetest.get_node(pos).name ~= "air" then
 				return
 			end
-			local node_name = mobkit.node_name_in(self, "below")
+			local node_name = petz.node_name_in(self, "below")
 			local spawn_egg = false
 			if string.sub(petz.settings.silkworm_lay_egg_on_node, 1, 5) == "group" then
 				local node_group = minetest.get_item_group(node_name, string.sub(petz.settings.silkworm_lay_egg_on_node, 7))

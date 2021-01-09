@@ -2,10 +2,10 @@
 -- WANDER FLY BEHAVIOUR (2 functions: HQ & LQ)
 --
 
-function mobkit.hq_wanderfly(self, prty)
-	local func=function(self)
+function petz.hq_wanderfly(self, prty)
+	local func=function()
 		if mobkit.is_queue_empty_low(self) then
-			mobkit.lq_dumbfly(self, 0.6)
+			petz.lq_dumbfly(self, 0.6)
 		end
 	end
 	mobkit.queue_high(self,func,prty)
@@ -20,8 +20,8 @@ end
 --5) In each status a chance to change of status, important: more preference for 'ascend'
 --than descend, cos this does the mobs stand on air, and climb mountains and trees.
 
-function mobkit.lq_turn2yaw(self, yaw)
-	local func = function(self)
+function petz.lq_turn2yaw(self, yaw)
+	local func = function()
 		if mobkit.turn2yaw(self, yaw) then
 			return true
 		end
@@ -29,11 +29,11 @@ function mobkit.lq_turn2yaw(self, yaw)
 	mobkit.queue_low(self,func)
 end
 
-function mobkit.lq_dumbfly(self, speed_factor)
+function petz.lq_dumbfly(self, speed_factor)
 	local timer = petz.settings.fly_check_time
 	local fly_status = "ascend"
 	speed_factor = speed_factor or 1
-	local func = function(self)
+	local func = function()
 		timer = timer - self.dtime
 		if timer < 0 then
 			--minetest.chat_send_player("singleplayer", tostring(timer))
@@ -42,24 +42,24 @@ function mobkit.lq_dumbfly(self, speed_factor)
 			local random_num = math.random(1, 5)
 			local yaw = self.object:get_yaw()
 			local rotation = self.object:get_rotation()
-			if random_num <= 1 or mobkit.node_name_in(self, "front") ~= "air" then
+			if random_num <= 1 or petz.node_name_in(self, "front") ~= "air" then
 				if yaw then
 					--minetest.chat_send_player("singleplayer", "test")
 					local rotation_integer = math.random(0, 4)
 					local rotation_decimals = math.random()
 					local new_yaw = yaw + rotation_integer + rotation_decimals
-					mobkit.lq_turn2yaw(self, new_yaw)
+					petz.lq_turn2yaw(self, new_yaw)
 					return true --finish this que to start the turn
 				end
 			end
 			local y_impulse = 1
-			if mobkit.check_front_obstacle(self) and mobkit.node_name_in(self, "top") == "air" then
+			if petz.check_front_obstacle(self) and petz.node_name_in(self, "top") == "air" then
 				fly_status = "ascend"
 				y_impulse = 3
 			end
-			local height_from_ground = mobkit.check_height(self) --returns 'false' if the mob flies higher that max_height, otherwise returns the height from the ground
+			local height_from_ground = petz.check_height(self) --returns 'false' if the mob flies higher that max_height, otherwise returns the height from the ground
 			--minetest.chat_send_player("singleplayer", tostring(height_from_ground))
-			if not(height_from_ground) or mobkit.node_name_in(self, "top") ~= "air" then --check if max height, then stand or descend, or a node above the petz
+			if not(height_from_ground) or petz.node_name_in(self, "top") ~= "air" then --check if max height, then stand or descend, or a node above the petz
 				random_num = math.random(1, 100)
 				if random_num < 70 then
 					fly_status = "descend"
@@ -67,7 +67,7 @@ function mobkit.lq_dumbfly(self, speed_factor)
 					fly_status = "stand"
 				end
 			else --check if water below, or near the ground, if yes ascend
-				local node_name = mobkit.node_name_in(self, "below")
+				local node_name = petz.node_name_in(self, "below")
 				if minetest.get_item_group(node_name, "water") >= 1  then
 					fly_status = "ascend"
 				end
@@ -76,7 +76,7 @@ function mobkit.lq_dumbfly(self, speed_factor)
 				end
 			end
 			--minetest.chat_send_player("singleplayer", status)
-			--local node_name_in_front = mobkit.node_name_in(self, "front")
+			--local node_name_in_front = petz.node_name_in(self, "front")
 			if fly_status == "stand" then -- stand
 				velocity = {
 					x= self.max_speed* speed_factor,
@@ -135,17 +135,17 @@ end
 -- 'Take Off' Behaviour ( 2 funtions)
 --
 
-function mobkit.hq_fly(self, prty)
-	local func=function(self)
+function petz.hq_fly(self, prty)
+	local func=function()
 		mobkit.animate(self, "fly")
-		mobkit.lq_fly(self)
+		petz.lq_fly(self)
 		mobkit.clear_queue_high(self)
 	end
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_fly(self)
-	local func=function(self)
+function petz.lq_fly(self)
+	local func=function()
 		self.object:set_acceleration({ x = 0, y = 1, z = 0 })
 	end
 	mobkit.queue_low(self,func)
@@ -153,8 +153,8 @@ end
 
 -- Function to recover flying mobs from water
 
-function mobkit.hq_liquid_recovery_flying(self, prty)
-	local func=function(self)
+function petz.hq_liquid_recovery_flying(self, prty)
+	local func=function()
 		self.object:set_acceleration({ x = 0.0, y = 0.125, z = 0.0 })
 		self.object:set_velocity({ x = 1.0, y = 1.0, z = 1.0 })
 		if not(petz.isinliquid(self)) then
@@ -169,13 +169,13 @@ end
 -- Alight Behaviour ( 2 funtions: HQ & LQ)
 --
 
-function mobkit.hq_alight(self, prty)
-	local func = function(self)
-		local node_name = mobkit.node_name_in(self, "below")
+function petz.hq_alight(self, prty)
+	local func = function()
+		local node_name = petz.node_name_in(self, "below")
 		if node_name == "air" then
-			mobkit.lq_alight(self)
+			petz.lq_alight(self)
 		elseif minetest.get_item_group(node_name, "water") >= 1  then
-			mobkit.hq_wanderfly(self, 0)
+			petz.hq_wanderfly(self, 0)
 			return true
 		else
 			--minetest.chat_send_player("singleplayer", "on ground")
@@ -188,8 +188,8 @@ function mobkit.hq_alight(self, prty)
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_alight(self)
-	local func=function(self)
+function petz.lq_alight(self)
+	local func=function()
 		--minetest.chat_send_player("singleplayer", "alight")
 		self.object:set_acceleration({ x = 0, y = -1, z = 0 })
 		return true

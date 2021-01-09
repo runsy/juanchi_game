@@ -12,12 +12,15 @@ petz.on_step = function(self, dtime)
 		if self.gallop == true then
 			petz.gallop(self, on_step_time)
 		end
-		if self.dreamcatcher then
+		if not(self.on_deactivate) then
 			petz.dreamcatcher_save_metadata(self)
 		end
 		local lifetime = petz.check_lifetime(self)
 		if lifetime then
 			petz.lifetime_timer(self, lifetime, on_step_time)
+		end
+		if self.dreamcatcher and self.back_home then
+			petz.back_home(self)
 		end
 		--Tamagochi
 		--Check the hungry

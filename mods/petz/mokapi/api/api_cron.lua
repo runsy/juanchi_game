@@ -1,6 +1,6 @@
 function mokapi.cron_clear(cron_time, modname)
 	if cron_time > 0 then
-		minetest.after(cron_time, function(cron_time, modname)
+		minetest.after(cron_time, function()
 			mokapi.cron_clear_mobs(cron_time, modname)
 		end, cron_time, modname)
 	end

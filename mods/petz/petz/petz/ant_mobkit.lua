@@ -47,7 +47,7 @@ for i=1, 3 do
 	end
 	local p1 = {x= -0.1875, y = -0.5, z = -0.3125}
 	local p2 = {x= 0.25, y = 0.0625, z = 0.3125}
-	local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+	local collisionbox = petz.get_collisionbox(p1, p2, scale_model, nil)
 
 	minetest.register_entity("petz:"..pet_name, {
 		--Petz specifics
@@ -110,6 +110,10 @@ for i=1, 3 do
 		on_activate = function(self, staticdata, dtime_s) --on_activate, required
 			mobkit.actfunc(self, staticdata, dtime_s)
 			petz.set_initial_properties(self, staticdata, dtime_s)
+		end,
+
+		on_deactivate = function(self)
+			petz.on_deactivate(self)
 		end,
 
 		on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)

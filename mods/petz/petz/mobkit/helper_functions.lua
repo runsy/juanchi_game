@@ -52,7 +52,7 @@ function petz.get_player_back_pos(player, pos)
 end
 
 
-function mobkit.check_height(self)
+function petz.check_height(self)
 	local yaw = self.object:get_yaw()
 	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -68,7 +68,7 @@ function mobkit.check_height(self)
 	return false
 end
 
-function mobkit.check_front_obstacle(self)
+function petz.check_front_obstacle(self)
 	local yaw = self.object:get_yaw()
 	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -81,7 +81,7 @@ function mobkit.check_front_obstacle(self)
 	return true
 end
 
-function mobkit.check_is_on_surface(self)
+function petz.check_is_on_surface(self)
 	local pos = self.object:get_pos()
 	if pos.y > 0 then
 		return true
@@ -109,7 +109,7 @@ function petz.is_jumping(self)
 end
 
 
-function mobkit.check_ground_suffocation(self)
+function petz.check_ground_suffocation(self)
 	local spos = mobkit.get_stand_pos(self)
 	spos.y = spos.y + 0.01
 	if self.type and mobkit.is_alive(self) and not(self.is_baby) then
@@ -139,7 +139,7 @@ function petz.set_velocity(self, velocity)
 	})
 end
 
-function mobkit.node_name_in(self, where)
+function petz.node_name_in(self, where)
 	local pos = self.object:get_pos()
 	local yaw = self.object:get_yaw()
 	if yaw then

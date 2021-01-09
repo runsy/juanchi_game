@@ -29,7 +29,7 @@ petz.on_rightclick = function(self, clicker)
 	local wielded_item = clicker:get_wielded_item()
 	local wielded_item_name = wielded_item:get_name()
 	local show_form = false
-	local context = {}
+	local buy
 
 	if ((self.is_pet == true) and is_owner and (self.can_be_brushed == true)) -- If brushing or spread beaver oil
 		and ((wielded_item_name == "petz:hairbrush") or (wielded_item_name == "petz:beaver_oil")) then
@@ -62,7 +62,7 @@ petz.on_rightclick = function(self, clicker)
 		petz.capture(self, clicker, true)
 		minetest.chat_send_player("singleplayer", S("Your").." "..S(pet_name).." "..S("has been captured")..".")
 	elseif self.breed and wielded_item_name == petz.settings[self.type.."_breed"] and not(self.is_baby) then
-		minetest.chat_send_all("test="..petz.settings[self.type.."_breed"])
+		--minetest.chat_send_all("test="..petz.settings[self.type.."_breed"])
 		petz.breed(self, clicker, wielded_item, wielded_item_name)
 	elseif (wielded_item_name == "petz:dreamcatcher") and (self.tamed == true) and (self.is_pet == true) and is_owner then
 		petz.put_dreamcatcher(self, clicker, wielded_item, wielded_item_name)
@@ -107,17 +107,16 @@ petz.on_rightclick = function(self, clicker)
 			show_form = true
 		end
 	elseif petz.settings.selling and not(minetest.is_singleplayer()) and self.for_sale and self.owner and not(self.owner == player_name) then --Buy Form
-		context.buy = true
+		buy = true
 		show_form = true
 	else --Else open the Form
 		if (self.is_pet == true) and ((self.tamed == true) and (self.owner == player_name)) then
-			context.buy = false
+			buy = false
 			show_form = true
 		end
 	end
 	if show_form then
-		context.tab_id = 1
 		petz.pet[player_name]= self
-		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, context))
+		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, buy))
 	end
 end

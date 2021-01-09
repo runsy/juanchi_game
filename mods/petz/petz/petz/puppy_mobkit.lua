@@ -9,7 +9,7 @@ local mesh = 'petz_puppy.b3d'
 local textures= {"petz_puppy.png", "petz_puppy2.png", "petz_puppy3.png"}
 local p1 = {x= -0.0625, y = -0.5, z = -0.125}
 local p2 = {x= 0.125, y = -0.1875, z = 0.25}
-local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+local collisionbox = petz.get_collisionbox(p1, p2, scale_model, nil)
 
 minetest.register_entity("petz:"..pet_name, {
 	--Petz specifics
@@ -57,7 +57,7 @@ minetest.register_entity("petz:"..pet_name, {
 		stand={
 			{range={x=26, y=46}, speed=5, loop=true},
 			{range={x=47, y=59}, speed=5, loop=true},
-			{range={x=81, y=94}, speed=5, loop=true},
+			{range={x=82, y=94}, speed=5, loop=true},
 		},
 		sit = {range={x=60, y=65}, speed=5, loop=false},
 		sleep = {range={x=94, y=113}, speed=10, loop=false},
@@ -72,6 +72,10 @@ minetest.register_entity("petz:"..pet_name, {
 	on_activate = function(self, staticdata, dtime_s) --on_activate, required
 		mobkit.actfunc(self, staticdata, dtime_s)
 		petz.set_initial_properties(self, staticdata, dtime_s)
+	end,
+
+	on_deactivate = function(self)
+		petz.on_deactivate(self)
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)

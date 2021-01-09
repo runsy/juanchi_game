@@ -147,6 +147,7 @@ minetest.register_node("ebony:creeper", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"ebony_creeper.png"},
+	use_texture_alpha = true,
 	inventory_image = "ebony_creeper.png",
 	wield_image = "ebony_creeper.png",
 	node_box = {
@@ -166,6 +167,7 @@ minetest.register_node("ebony:creeper_leaves", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"ebony_creeper_leaves.png"},
+	use_texture_alpha = true,
 	inventory_image = "ebony_creeper_leaves.png",
 	wield_image = "ebony_creeper_leaves.png",
 	node_box = {
@@ -185,6 +187,7 @@ minetest.register_node("ebony:liana", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"ebony_liana.png"},
+	use_texture_alpha = true,
 	inventory_image = "ebony_liana.png",
 	wield_image = "ebony_liana.png",
 	node_box = {

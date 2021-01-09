@@ -2,24 +2,3 @@
 *.obj
 *.blend1
 user.conf
-
-globals = {
-	"minetest",
-	"mobkit",
-	"stairs",
-	"bucket",
-	"armors",
-	"bonemeal"
-}
-
-read_globals = {
-    string = {fields = {"split"}},
-    table = {fields = {"copy", "getn"}},
-
-    -- Builtin
-    "vector", "ItemStack",
-    "dump", "DIR_DELIM", "VoxelArea", "Settings",
-
-    -- MTG
-    "default", "sfinv", "creative",
-}

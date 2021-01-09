@@ -586,6 +586,14 @@ minetest.register_craftitem("petz:ant_leg", {
 	inventory_image = "petz_ant_leg.png",
 })
 
+--Rabbit Hide
+
+minetest.register_craftitem("petz:rabbit_hide", {
+    description = S("Rabbit Hide"),
+    inventory_image = "petz_rabbit_hide.png",
+    wield_image = "petz_rabbit_hide.png"
+})
+
 --minetest.register_node("petz:squirrel_cage", {
 	--description = S("Squirrel Cage"),
 	--drawtype = "glasslike_framed",

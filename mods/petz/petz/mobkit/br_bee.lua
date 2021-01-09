@@ -36,7 +36,7 @@ function petz.bee_brain(self)
 		end
 	end
 
-	mobkit.check_ground_suffocation(self, pos)
+	petz.check_ground_suffocation(self, pos)
 
 	if mobkit.timer(self, 1) then
 
@@ -63,7 +63,7 @@ function petz.bee_brain(self)
 					{"group:flower"})
 				if #nearby_flowers >= 1 then
 					local tpos = 	nearby_flowers[1] --the first match
-					mobkit.hq_gotopollen(self, 20, tpos)
+					petz.hq_gotopollen(self, 20, tpos)
 					return
 				end
 			end
@@ -73,7 +73,7 @@ function petz.bee_brain(self)
 		if prty < 18 and behive_exists then
 			if not(self.queen) and self.pollen == true and (honey_count < petz.settings.max_honey_behive) then
 				if vector.distance(pos, self.behive) <= self.view_range then
-					mobkit.hq_gotobehive(self, 18, pos)
+					petz.hq_gotobehive(self, 18, pos)
 					return
 				end
 			end
@@ -84,7 +84,7 @@ function petz.bee_brain(self)
 			if not(self.queen) then
 			--minetest.chat_send_player("singleplayer", "testx")
 				if math.abs(pos.x - self.behive.x) > self.view_range and math.abs(pos.z - self.behive.z) > self.view_range then
-					mobkit.hq_approach_behive(self, pos, 15)
+					petz.hq_approach_behive(self, pos, 15)
 					return
 				end
 			end
@@ -109,7 +109,7 @@ function petz.bee_brain(self)
 
 		--Roam default
 		if mobkit.is_queue_empty_high(self) and not(self.status) then
-			mobkit.hq_wanderfly(self, 0)
+			petz.hq_wanderfly(self, 0)
 		end
 
 	end

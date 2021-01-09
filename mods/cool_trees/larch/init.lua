@@ -141,6 +141,7 @@ minetest.register_node("larch:moss", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"larch_moss.png"},
+	use_texture_alpha = true,
 	inventory_image = "larch_moss.png",
 	wield_image = "larch_moss.png",
 	node_box = {

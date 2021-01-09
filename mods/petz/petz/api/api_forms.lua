@@ -1,23 +1,33 @@
 local S = ...
 
-petz.create_form = function(player_name, context)
+local _context = {}
+
+minetest.register_on_leaveplayer(function(player)
+	_context[player:get_player_name()] = nil
+end)
+
+local function create_context(player_name, tab_id)
+	_context[player_name] = {}
+	_context[player_name].tab_id = tab_id
+end
+
+petz.create_form = function(player_name, buy)
     local pet = petz.pet[player_name]
     local form_size = {w = 4, h = 3}
     local buttonexit_pos = {x = 1, y = 6}
-    local hungrystuff_pos = {x= 0, y = 0}
-    local form_title = ""
-    local tamagochi_form_stuff = ''
+    local hungrystuff_pos
+    local form_title
+    local tamagochi_form_stuff
     local affinity_stuff = ''
     local form_orders = ''
     local more_form_orders = ''
     local tab_form = ''
-    local final_form = ''
-    if not context then
-		context = {}
-		context.tab_id = 1
+    if not _context[player_name] then
+		create_context(player_name, 1)
     end
+    local tab_id = _context[player_name].tab_id
     local pet_icon = "petz_spawnegg_"..pet.type..".png"
-	if context.tab_id == 1 and not(context.buy) then
+	if tab_id == 1 and not(buy) then
 		local pet_image_icon = "image[0.375,0.375;1,1;"..pet_icon.."]"
 		if pet.affinity == nil then
 			pet.affinity = 0
@@ -41,8 +51,8 @@ petz.create_form = function(player_name, context)
 				"label[1.375,3;".. form_title .."]"..
 				"image_button[".. (hungrystuff_pos.x+0.5) ..",".. (hungrystuff_pos.y +0.5)..";1,1;petz_pet_bowl_inv.png;btn_bowl;]"..
 				affinity_stuff
-			local hungry_label = ""
 			local health_label = S("Health").." = "..tostring(pet.hp)
+			local hungry_label
 			if pet.fed == false then
 				hungry_label = S("Hungry")
 			else
@@ -72,15 +82,15 @@ petz.create_form = function(player_name, context)
 				"checkbox[3.5,1.75;btn_muted;"..S("Muted")..";"..petz.vartostring(pet.muted).."]"..
 				"checkbox[3.5,2.25;btn_show_tag;"..S("Show tag")..";"..petz.vartostring(pet.show_tag).."]"
 		end
+		local gender
+		if pet.is_male == true then
+			gender = S("Male")
+		else
+			gender = S("Female")
+		end
+		tamagochi_form_stuff = tamagochi_form_stuff..
+			"label[3,0.875;"..gender.."]"
 		if pet.breed == true then --Show the Gender
-			local gender = ''
-			if pet.is_male == true then
-				gender = S("Male")
-			else
-				gender = S("Female")
-			end
-			tamagochi_form_stuff = tamagochi_form_stuff..
-				"label[3,0.875;"..gender.."]"
 			local pregnant_icon_x
 			local pregnant_icon_y
 			local pregnant_text_x
@@ -109,7 +119,7 @@ petz.create_form = function(player_name, context)
 					"label["..(pregnant_text_x+0.375)..","..(pregnant_text_y+1)..";"..S("Pregnant").." ("..tostring(pregnant_remain_time).."s)]"
 			elseif pet.is_male == false and pet.pregnant_count and pet.pregnant_count <= 0 then
 				tamagochi_form_stuff = tamagochi_form_stuff..
-					"label["..(pregnant_icon_x+0.5)..","..(infertile_text_y+1)..";"..S("Infertile").."]"
+					"label["..(infertile_text_x+0.5)..","..(infertile_text_y+1)..";"..S("Infertile").."]"
 			end
 			if pet.is_baby == true then
 				local growth_remain_time = petz.round(petz.settings.growth_time - pet.growth_time)
@@ -159,7 +169,7 @@ petz.create_form = function(player_name, context)
 			form_orders =	form_orders .. "button_exit[3.375,5.5;2,1;btn_guard;"..S("Guard").."]"
 		end
 		tab_form = tamagochi_form_stuff.. form_orders
-	elseif context.tab_id == 1 and context.buy then
+	elseif tab_id == 1 and buy then
 		form_size.w = form_size.w + 1
 		form_size.h = form_size.h + 2
 		buttonexit_pos.x = buttonexit_pos.x + 1
@@ -175,7 +185,7 @@ petz.create_form = function(player_name, context)
 			"label[2,2.5;"..tostring(item_amount).."]"..
 			"style_type[button_exit;bgcolor=#333600;textcolor=white]"..
 			"button_exit[2,3.25;2,1;btn_buy;"..S("Buy").."]"
-	elseif context.tab_id == 2 and not(context.buy) then
+	elseif tab_id == 2 and not(buy) then
 		form_size.w = form_size.w + 1
 		form_size.h = form_size.h + 2
 		buttonexit_pos.y = buttonexit_pos.y - 2
@@ -188,7 +198,20 @@ petz.create_form = function(player_name, context)
 				tab_form = tab_form .. "image[2,0.375;1,1;petz_lifetime.png]" .. "label[3,0.75;"..S("Lifetime").."]".."label[3,1;"..tostring(pet.lifetime).."]"
 			end
 		end
-	elseif context.tab_id == 3 and petz.settings.selling and not(context.buy) then
+	elseif (tab_id == 3 and not(buy) and pet.dreamcatcher) then
+		form_size.w = form_size.w + 2
+		form_size.h = form_size.h + 1
+		buttonexit_pos.y = buttonexit_pos.y - 3
+		tab_form = tab_form ..
+		"checkbox[0.25,1.5;btn_back_home;"..S("Automatic Go back home")..";"..petz.vartostring(pet.back_home).."]"..
+		"label[1.3,0.75;<< "..S("Click to set the home").."]"..
+		"image_button_exit[0.25,0.25;1,1;petz_kennel.png;btn_set_home;"..S("Set").."\n"..S("Home").."]"
+		if pet.home_pos then
+			tab_form = tab_form ..
+			"label[0.25,2.0;"..S("Home Pos")..": x="..tostring(petz.truncate(pet.home_pos.x,1))
+			..", y="..petz.truncate(pet.home_pos.y,1)..", z="..petz.truncate(pet.home_pos.z,1).."]"
+		end
+	elseif (tab_id ==3 or tab_id ==4) and petz.settings.selling and not(buy) then
 		form_size.w = form_size.w + 1
 		form_size.h = form_size.h + 2
 		buttonexit_pos.y = buttonexit_pos.y - 2
@@ -219,20 +242,24 @@ petz.create_form = function(player_name, context)
 	local tab_main = S("Main")
 	local tab_other = S("Other")
 	local tab_shop = S("Shop")
+	local tab_home = S("Home")
 	local tab_header
-	if context.buy then
+	if buy then
 		tab_header = tab_shop
 	else
-		tab_header =tab_main..","..tab_other
+		tab_header = tab_main..","..tab_other
+		if pet.dreamcatcher then
+			tab_header = tab_header..","..tab_home
+		end
 		if not(minetest.is_singleplayer()) then
 			tab_header = tab_header..","..tab_shop
 		end
 	end
 	--minetest.chat_send_player("singleplayer", tab_header)
-	final_form =
+	local final_form =
 		"size["..(form_size.w+0.875)..","..(form_size.h+1)..";]"..
 		"real_coordinates[true]"..
-		"tabheader[0,0;tabheader;"..tab_header..";"..tostring(context.tab_id)..";true;false]"..
+		"tabheader[0,0;tabheader;"..tab_header..";"..tostring(tab_id)..";true;false]"..
 		tab_form..
 		"style_type[button_exit;bgcolor=#006699;textcolor=white]"..
 		"button_exit["..(buttonexit_pos.x+0.5)..","..(buttonexit_pos.y+0.75)..";1,1;btn_close;"..S("Close").."]"
@@ -248,9 +275,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.tabheader then
 		local tab_id = tonumber(fields.tabheader)
 		if tab_id > 0 then
-			local context = {}
-			context.tab_id = tab_id
-			minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, context))
+			create_context(player_name, tab_id)
+			minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, false))
 		end
 		return
 	end
@@ -271,8 +297,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			mobkit.clear_queue_low(pet)
 			mobkit.clear_queue_high(pet)
 			pet.status = nil
-			mobkit.hq_fly(pet, 0)
-			minetest.after(2.5, function(pet)
+			petz.hq_fly(pet, 0)
+			minetest.after(2.5, function()
 				if mobkit.is_alive(pet) then
 					mobkit.clear_queue_low(pet)
 					pet.object:set_acceleration({ x = 0, y = 0, z = 0 })
@@ -290,7 +316,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			end
 			pet.object:set_attach(player, "Arm_Left", shoulder_pos, {x=0, y=0, z=180})
 			pet.object:set_properties({physical = false,})
-			minetest.after(120.0, function(pet)
+			minetest.after(120.0, function()
 				if mobkit.is_alive(pet) then
 					pet.object:set_detach()
 					pet.object:set_properties({physical = true,})
@@ -339,6 +365,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			pet.exchange_item_amount = mobkit.remember(pet, "exchange_item_amount", mokapi.delimit_number( tonumber(fields.fld_exchange_item_amount), {min=1, max=99}) or 1)
 		elseif fields.btn_buy then
 			petz.buy(pet, player)
+		elseif fields.btn_back_home then
+			pet.back_home= mobkit.remember(pet, "back_home", minetest.is_yes(fields.btn_back_home))
+		elseif fields.btn_set_home then
+			pet.home_pos= mobkit.remember(pet, "home_pos", pet.object:get_pos())
+			create_context(player_name, 3)
+			minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, false))
 		end
 		if fields.ipt_name then
 			pet.tag = minetest.formspec_escape(string.sub(fields.ipt_name, 1 , 12))
@@ -350,8 +382,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			end
 		end
 		petz.update_nametag(pet)
+		_context[player_name] = nil
 		return true
 	else
+		_context[player_name] = nil
 		return false
 	end
 end)
@@ -419,14 +453,13 @@ petz.create_food_form = function(self)
 			items_desc = items_desc .. ", "
 		end
 	end
-	local formspec = ""
 	local form_size = {w= 3, h= 3}
 	local button_exit = {x= 1, y= 2}
 	if self.breed == true then
 		form_size.h = form_size.h + 1
 		button_exit.y = button_exit.y + 1
 	end
-	formspec =
+	local formspec =
 		"size["..form_size.w..","..form_size.h.."]"..
 		"image[0,0;1,1;petz_spawnegg_"..self.type..".png]"..
 		"label[1,0;"..S("Food").."]"..
@@ -450,7 +483,6 @@ petz.create_food_form = function(self)
 end
 
 petz.create_affinity_form = function(self)
-	local formspec = ""
 	local form_size = {w= 3, h= 4}
 	local button_exit = {x= 1, y= 3}
 	local feed_status, feed_status_color
@@ -469,7 +501,7 @@ petz.create_affinity_form = function(self)
 		brushing_status = S("Not brushed")..": " .. tostring(petz.calculate_affinity_change(-petz.settings.tamagochi_brush_rate))
 		brushing_status_color = petz.colors["red"]
 	end
-	formspec =
+	local formspec =
 		"size["..form_size.w..","..form_size.h.."]"..
 		"image[0,0;1,1;petz_affinity_heart.png]"..
 		"label[1,0;"..S("Affinity").."]"..
@@ -487,7 +519,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local player_name = player:get_player_name()
 	local pet = petz.pet[player_name]
 	if pet and (mobkit.is_alive(pet)) then
-		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, context))
+		create_context(player_name, 1)
+		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, false))
 	end
 	return true
 end)
@@ -517,9 +550,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			petz.abandon_pet(pet, msg)
 		end
 	else
-		local context = {}
-		context.tab_id = 2
-		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, context))
+		create_context(player_name, 2)
+		minetest.show_formspec(player_name, "petz:form_orders", petz.create_form(player_name, false))
 	end
 	return true
 end)

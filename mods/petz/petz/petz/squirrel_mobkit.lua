@@ -9,7 +9,7 @@ local mesh = 'petz_squirrel.b3d'
 local textures = {"petz_squirrel.png", "petz_squirrel2.png", "petz_squirrel3.png"}
 local p1 = {x= -0.1875, y = -0.375, z = -0.125}
 local p2 = {x= 0.125, y = -0.0, z = 0.375}
-local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+local collisionbox = petz.get_collisionbox(p1, p2, scale_model, nil)
 
 minetest.register_entity("petz:"..pet_name,{
 	--Petz specifics
@@ -65,6 +65,10 @@ minetest.register_entity("petz:"..pet_name,{
 	on_activate = function(self, staticdata, dtime_s) --on_activate, required
 		mobkit.actfunc(self, staticdata, dtime_s)
 		petz.set_initial_properties(self, staticdata, dtime_s)
+	end,
+
+	on_deactivate = function(self)
+		petz.on_deactivate(self)
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)

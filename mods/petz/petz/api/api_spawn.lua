@@ -187,15 +187,17 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 				else
 					spawn_pos.z = spawn_pos.z - 2
 				end
+				--[[
 				if i > 1 then
-					local height, liquidflag = mobkit.get_terrain_height(spawn_pos, 32)
-					if height or (liquidflag and ent.can_swin) then
-						local node = petz.get_node_below(spawn_pos)
-						if not(mokapi.item_in_itemlist(node.name, petz.settings[random_mob.."_spawn_nodes"])) then
+					local height, liquidflag2 = mobkit.get_terrain_height(spawn_pos, 32)
+					if height or (liquidflag2 and ent.can_swin) then
+						local node_below = petz.get_node_below(spawn_pos)
+						if not(mokapi.item_in_itemlist(node_below.name, petz.settings[random_mob.."_spawn_nodes"])) then
 							spawn = false
 						end
 					end
 				end
+				]]
 				if spawn == true then
 					spawn_pos = petz.pos_to_spawn(random_mob_name, spawn_pos) --recalculate pos.y for bigger mobs
 					minetest.add_entity(spawn_pos, random_mob_name)
@@ -211,7 +213,7 @@ minetest.register_globalstep(function(dtime)
 	local abr = tonumber(minetest.get_mapgen_setting('active_block_range')) or 3
 	local radius =  abr * 16 --recommended
 	local interval = petz.settings.spawn_interval
-	local spawn_pos, liquidflag, cave = mobkit.get_spawn_pos_abr(dtime, interval, radius, petz.settings.spawn_chance, 0.2)
+	local spawn_pos, liquidflag = mobkit.get_spawn_pos_abr(dtime, interval, radius, petz.settings.spawn_chance, 0.2)
 	if spawn_pos then
 		petz.spawn_mob(spawn_pos, true, abr, liquidflag)
 	end

@@ -13,7 +13,7 @@ function petz.bh_start_follow(self, pos, player, prty)
 		if mokapi.item_in_itemlist(wielded_item_name, self.follow) and vector.distance(pos, tpos) <= self.view_range then
 			self.status = mobkit.remember(self, "status", "follow")
 			if (self.can_fly) or (self.can_swin and self.isinliquid) then
-				mobkit.hq_followliquidair(self, prty, player)
+				petz.hq_followliquidair(self, prty, player)
 			else
 				mobkit.hq_follow(self, prty, player)
 			end
@@ -42,14 +42,14 @@ end
 -- Follow Fly/Water Behaviours (2 functions: HQ & LQ)
 --
 
-function mobkit.hq_followliquidair(self, prty, player)
-	local func=function(self)
+function petz.hq_followliquidair(self, prty, player)
+	local func=function()
 		local pos = mobkit.get_stand_pos(self)
 		local tpos = player:get_pos()
 		if self.can_swin then
 			if not(petz.isinliquid(self)) then
 				--check if water below, dolphins
-				local node_name = mobkit.node_name_in(self, "below")
+				local node_name = petz.node_name_in(self, "below")
 				if minetest.get_item_group(node_name, "water") == 0  then
 					petz.ownthing(self)
 					return true
@@ -62,7 +62,7 @@ function mobkit.hq_followliquidair(self, prty, player)
 				return
 			elseif (distance < self.view_range) then
 				if mobkit.is_queue_empty_low(self) then
-					mobkit.lq_followliquidair(self, player)
+					petz.lq_followliquidair(self, player)
 				end
 			elseif distance >= self.view_range then
 				petz.ownthing(self)
@@ -75,15 +75,15 @@ function mobkit.hq_followliquidair(self, prty, player)
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_followliquidair(self, target)
-	local func = function(self)
-		mobkit.flyto(self, target)
+function petz.lq_followliquidair(self, target)
+	local func = function()
+		petz.flyto(self, target)
 		return true
 	end
 	mobkit.queue_low(self,func)
 end
 
-function mobkit.flyto(self, target)
+function petz.flyto(self, target)
 	local pos = self.object:get_pos()
 	local tpos = target:get_pos()
 	local tgtbox = target:get_properties().collisionbox

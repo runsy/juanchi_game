@@ -6,7 +6,7 @@ function petz.bh_create_beehive(self, pos)
 	if not self.create_beehive then
 		return false
 	end
-	local node_name = mobkit.node_name_in(self, "front")
+	local node_name = petz.node_name_in(self, "front")
 	if minetest.get_item_group(node_name, "wood") > 0 or minetest.get_item_group(node_name, "leaves") > 0 then
 		local minp = {
 			x = pos.x - (self.max_height*4),
@@ -30,21 +30,21 @@ function petz.bh_create_beehive(self, pos)
 	end
 end
 
-function mobkit.hq_gotopollen(self, prty, tpos)
-	local func = function(self)
+function petz.hq_gotopollen(self, prty, tpos)
+	local func = function()
 		if self.pollen == true then
 			--mobkit.clear_queue_low(self)
 			--mobkit.clear_queue_high(self)
 			return true
 		end
 		mobkit.animate(self, "fly")
-		mobkit.lq_search_flower(self, tpos)
+		petz.lq_search_flower(self, tpos)
 	end
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_search_flower(self, tpos)
-	local func = function(self)
+function petz.lq_search_flower(self, tpos)
+	local func = function()
 		local pos = self.object:get_pos()
 		if not(pos) or not(tpos) then
 			return true
@@ -63,19 +63,19 @@ function mobkit.lq_search_flower(self, tpos)
 	mobkit.queue_low(self, func)
 end
 
-function mobkit.hq_gotobehive(self, prty, pos)
-	local func = function(self)
+function petz.hq_gotobehive(self, prty, pos)
+	local func = function()
 		if self.pollen == false or not(self.behive) then
 			return true
 		end
 		mobkit.animate(self, "fly")
-		mobkit.lq_search_behive(self)
+		petz.lq_search_behive(self)
 	end
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_search_behive(self)
-	local func = function(self)
+function petz.lq_search_behive(self)
+	local func = function()
 		local tpos
 		if self.behive then
 			tpos = self.behive
@@ -104,20 +104,20 @@ function mobkit.lq_search_behive(self)
 	mobkit.queue_low(self, func)
 end
 
-function mobkit.hq_approach_behive(self, pos, prty)
-	local func = function(self)
+function petz.hq_approach_behive(self, pos, prty)
+	local func = function()
 		if math.abs(pos.x - self.behive.x) <= (self.view_range / 2) or math.abs(pos.z - self.behive.z) <= (self.view_range / 2) then
 			mobkit.clear_queue_low(self)
 			mobkit.clear_queue_high(self)
 			return true
 		end
-		mobkit.lq_approach_behive(self)
+		petz.lq_approach_behive(self)
 	end
 	mobkit.queue_high(self, func, prty)
 end
 
-function mobkit.lq_approach_behive(self)
-	local func = function(self)
+function petz.lq_approach_behive(self)
+	local func = function()
 		local tpos
 		if self.behive then
 			tpos = self.behive

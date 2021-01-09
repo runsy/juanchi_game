@@ -141,6 +141,7 @@ minetest.register_node("baldcypress:dry_branches", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"baldcypress_dry_branches.png"},
+	use_texture_alpha = true,
 	inventory_image = "baldcypress_dry_branches.png",
 	wield_image = "baldcypress_dry_branches.png",
 	node_box = {
@@ -160,6 +161,7 @@ minetest.register_node("baldcypress:liana", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"baldcypress_liana.png"},
+	use_texture_alpha = true,
 	inventory_image = "baldcypress_liana.png",
 	wield_image = "baldcypress_liana.png",
 	is_ground_content = false,

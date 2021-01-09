@@ -7,6 +7,7 @@ closet.register_container("closet", {
 	tiles = {
 		"closet_closet.png",
 	},
+	use_texture_alpha = true,
 	selection_box = {
 		type = "fixed",
 		fixed = { -1/2, -1/2, 0.062500, 1/2, 1.5, 1/2 },

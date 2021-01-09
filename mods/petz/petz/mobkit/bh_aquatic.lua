@@ -2,8 +2,8 @@
 --- Aquatic Behaviours
 ---
 
-function mobkit.hq_aqua_jump(self, prty)
-	local func = function(self)
+function petz.hq_aqua_jump(self, prty)
+	local func = function()
 		local vel_impulse = 2.5
 		local velocity = {
 			x = self.max_speed * (vel_impulse/3),
@@ -14,7 +14,7 @@ function mobkit.hq_aqua_jump(self, prty)
 		self.object:set_acceleration({x=1.0, y=vel_impulse, z=1.0})
 		self.status = "jump"
 		mokapi.make_sound("object", self.object, "petz_splash", petz.settings.max_hear_distance)
-		minetest.after(0.5, function(self, velocity)
+		minetest.after(0.5, function()
 			if mobkit.is_alive(self.object) then
 				self.status = nil
 				mobkit.clear_queue_high(self)

@@ -10,7 +10,7 @@ function petz.bh_look_at(self, player_pos, prty)
 end
 
 function petz.hq_look_at(self, player_pos, prty)
-	local func = function(self)
+	local func = function()
 		if not(self.looking) then
 			local random_time = math.random(1, 2)
 			petz.move_head(self, player_pos)
@@ -18,7 +18,7 @@ function petz.hq_look_at(self, player_pos, prty)
 				--self.object:set_yaw(body_yaw)
 			--end
 			mobkit.animate(self, "idle")
-			minetest.after(random_time, function(self)
+			minetest.after(random_time, function()
 				if mobkit.is_alive(self) then
 					mobkit.clear_queue_low(self)
 					mobkit.clear_queue_high(self)

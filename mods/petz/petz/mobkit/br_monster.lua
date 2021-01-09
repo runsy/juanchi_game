@@ -13,7 +13,7 @@ function petz.monster_brain(self)
 		return
 	end
 
-	mobkit.check_ground_suffocation(self, pos)
+	petz.check_ground_suffocation(self, pos)
 
 	if mobkit.timer(self, 1) then
 
@@ -23,8 +23,6 @@ function petz.monster_brain(self)
 			mobkit.hq_liquid_recovery(self, 40)
 			return
 		end
-
-		local pos = self.object:get_pos() --pos of the petz
 
 		local player = mobkit.get_nearby_player(self) --get the player close
 

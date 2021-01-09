@@ -31,7 +31,7 @@ function petz.herbivore_brain(self)
 		self.object:set_acceleration({x=0, y=0, z=0})
 	end
 
-	mobkit.check_ground_suffocation(self, pos)
+	petz.check_ground_suffocation(self, pos)
 
 	if mobkit.timer(self, 1) then
 
@@ -43,7 +43,7 @@ function petz.herbivore_brain(self)
 
 		if prty < 25 then
 			if self.driver then
-				mobkit.hq_mountdriver(self, 25)
+				petz.hq_mountdriver(self, 25)
 				return
 			end
 		end
@@ -53,7 +53,7 @@ function petz.herbivore_brain(self)
 				if not self.can_fly then
 					mobkit.hq_liquid_recovery(self, 20)
 				else
-					mobkit.hq_liquid_recovery_flying(self, 20)
+					petz.hq_liquid_recovery_flying(self, 20)
 				end
 				return
 			end
@@ -118,6 +118,17 @@ function petz.herbivore_brain(self)
 				--return
 			--end
 		--end
+
+		if prty < 8 then
+			if (self.can_jump) and not(self.status) then
+				local random_number = math.random(1, self.jump_ratio)
+				if random_number == 1 then
+					--minetest.chat_send_player("singleplayer", "jump")
+					mobkit.clear_queue_high(self)
+					petz.hq_terrestial_jump(self, 8)
+				end
+			end
+		end
 
 		--Poop
 		if prty < 7 then
@@ -218,7 +229,7 @@ function petz.herbivore_brain(self)
 			if not(self.can_fly) then
 				mobkit.hq_roam(self, 0)
 			else
-				mobkit.hq_wanderfly(self, 0)
+				petz.hq_wanderfly(self, 0)
 			end
 		end
 

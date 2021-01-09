@@ -70,7 +70,7 @@ petz.force_detach = function(player)
 	player:set_detach()
 	player_api.player_attached[player:get_player_name()] = false
 	player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
-	minetest.after(0.25, function(player) --to avoid tiny player
+	minetest.after(0.25, function() --to avoid tiny player
 		if player then
 			player:set_properties({
 				visual_size = {x = 1.0, y = 1.0},
@@ -99,7 +99,7 @@ function petz.gallop(self, dtime)
 		self.gallop = false
 		self.gallop_time = 0
 		self.gallop_exhausted = true
-		minetest.after(petz.settings.gallop_recover_time, function(self)
+		minetest.after(petz.settings.gallop_recover_time, function()
 			if mobkit.is_alive(self) then
 				self.gallop_exhausted = false
 			end

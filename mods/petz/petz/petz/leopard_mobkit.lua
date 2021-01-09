@@ -7,12 +7,12 @@ local scale_model = 2.0
 local mesh = 'petz_leopard.b3d'
 local p1 = {x= -0.0625, y = -0.5, z = -0.375}
 local p2 = {x= 0.125, y = 0.0, z = 0.375}
-local collisionbox, collisionbox_baby = petz.get_collisionbox(p1, p2, scale_model, nil)
+local collisionbox = petz.get_collisionbox(p1, p2, scale_model, nil)
 
 for i=1, 2 do
 	local type
 	local description
-	local textures = {}
+	local textures
 	if i == 1 then --if male
 		type = "leopard"
 		description = "Leopard"
@@ -82,6 +82,10 @@ for i=1, 2 do
 		on_activate = function(self, staticdata, dtime_s) --on_activate, required
 			mobkit.actfunc(self, staticdata, dtime_s)
 			petz.set_initial_properties(self, staticdata, dtime_s)
+		end,
+
+		on_deactivate = function(self)
+			petz.on_deactivate(self)
 		end,
 
 		on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
