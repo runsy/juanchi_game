@@ -1,6 +1,7 @@
 -- player/init.lua
 
 dofile(minetest.get_modpath("player_api") .. "/api.lua")
+dofile(minetest.get_modpath("player_api") .. "/base_texture.lua")
 dofile(minetest.get_modpath("player_api") .. "/cloths.lua")
 
 -- Default player appearance
@@ -56,7 +57,7 @@ minetest.register_on_joinplayer(function(player)
 	player_api.player_attached[player_name] = false
 	local gender = player:get_meta():get_string("gender")
 	if gender == "" then
-		player_api.select_gender(player_name)
+		player_api.select_gender(player_name) --select the gender
 	else
 		local cloth = player_api.compose_cloth(player)
 		player_api.registered_models[player_api.get_gender_model(gender)].textures[1] = cloth

@@ -71,6 +71,11 @@ function player_api.get_gender_model(gender)
 	return model
 end
 
+function player_api.set_base_texture(player, gender)
+	local meta = player:get_meta()
+	meta:set_string("base_texture", gender)
+end
+
 minetest.register_chatcommand("toggle_gender", {
 	description = S("Change the gender, from male to female or viceversa"),
     func = function(name, param)
@@ -315,6 +320,20 @@ function player_api.select_gender(player_name)
     minetest.show_formspec(player_name, "player_api:gender", player_api.get_gender_formspec(player_name))
 end
 
+function player_api.set_texture(player)
+	local cloth = player_api.compose_cloth(player)
+	local gender = player_api.get_gender(player)
+	local gender_model = player_api.get_gender_model(gender)
+	player_api.registered_models[gender_model].textures[1] = cloth
+	player_api.set_model(player, gender_model)
+	if minetest.get_modpath("3d_armor")~=nil then
+		--armor.default_skin = cloth
+		local player_name = player:get_player_name()
+		armor.textures[player_name].skin = cloth
+	end
+	player_api.set_textures(player, models[gender_model].textures)
+end
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "player_api:gender" then
 		return
@@ -328,17 +347,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 		player_api.set_gender(player, gender)
 	else
-		gender = player_api.set_gender(player, "random")
+		player_api.set_gender(player, "random")
 	end
-	player_api.set_cloths(player)
-	local cloth = player_api.compose_cloth(player)
-	local gender_model = player_api.get_gender_model(gender)
-	player_api.registered_models[gender_model].textures[1] = cloth
-	player_api.set_model(player, gender_model)
-	if minetest.get_modpath("3d_armor")~=nil then
-		--armor.default_skin = cloth
-		local player_name = player:get_player_name()
-		armor.textures[player_name].skin = cloth
-		player_api.set_textures(player, models[gender_model].textures)
-	end
+	player_api.set_base_textures(player) --set the default base_texture
+	player_api.set_cloths(player) --set the default clothes
+	player_api.set_texture(player)
 end)

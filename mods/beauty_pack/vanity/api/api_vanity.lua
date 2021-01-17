@@ -34,17 +34,13 @@ function closet.compose_preview(clicker, gender)
 	if not(underwear) then
 		lower = "cloth_lower_underwear_preview.png"
 	end
-	local base_texture = player_api.compose_base_texture(clicker, {
-		canvas_size ="32x64",
-		skin_texture = "closet_player_preview.png",
-		eyebrowns_pos = "8,0",
-		eye_right_pos = "10,8",
-		eye_left_pos = "18,8",
-		mouth_pos = "8,12",
-		hair_preview = true,
-		hair_pos = "8,0",
-	})
-	local preview= base_texture
+	local preview, texture_base
+	if gender == "male" then
+		texture_base= "closet_player_preview.png"
+	else
+		texture_base = "closet_female_preview.png"
+	end
+	preview="[combine:32x64:0,0="..texture_base
 	if head then
 		preview= preview .. ":8,0="..head
 	end
@@ -90,7 +86,7 @@ function closet.container.get_container_formspec(pos, clicker)
 	local formspec =
 		"size[8,8.25]" ..
 		--5.4--"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195;;;0,79]"..
-		"image[0.5,0.5;2,4;"..minetest.formspec_escape(preview).."]" ..
+		"image[0.5,0.5;2,4;"..preview.."]" ..
 		"list[current_player;cloths;2.5,0.25;2,4]" ..
 		get_bg(2.5,0.25,3,1,"closet_gui_clothes_bg.png")..
 		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
@@ -236,7 +232,14 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	player_api.set_texture(player)
+	local cloth = player_api.compose_cloth(player)
+	local gender = player:get_meta():get_string("gender")
+	player_api.registered_models[player_api.get_gender_model(gender)].textures[1] = cloth
+	local player_name = player:get_player_name()
+	if minetest.get_modpath("3d_armor")~=nil then
+		armor.textures[player_name].skin = cloth
+	end
+	player_api.set_textures(player, player_api.registered_models[player_api.get_gender_model(gender)].textures)
 
 	closet.container.container_lid_close(pn)
 	return true
