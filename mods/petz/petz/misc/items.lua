@@ -131,7 +131,8 @@ minetest.register_craftitem("petz:leather", {
 minetest.register_craftitem("petz:beaver_fur", {
     description = S("Beaver Fur"),
     inventory_image = "petz_beaver_fur.png",
-    wield_image = "petz_beaver_fur.png"
+    wield_image = "petz_beaver_fur.png",
+    groups = {leather = 1, flammable = 2}
 })
 
 minetest.register_craftitem("petz:ducky_feather", {
@@ -151,6 +152,7 @@ minetest.register_craftitem("petz:wolf_jaw", {
 minetest.register_craftitem("petz:wolf_fur", {
 	description = S("Wolf Fur"),
 	inventory_image = "petz_wolf_fur.png",
+	groups = {leather = 1, flammable = 2}
 })
 
 --Material for Lion's Cage
@@ -324,7 +326,7 @@ end
 minetest.register_craftitem("petz:saddle", {
 	description = S("Saddle"),
 	inventory_image = "petz_saddle.png",
-	groups = {flammable = 2},
+	groups = {flammable = 2, saddle = 1}
 })
 
 minetest.register_craft({
@@ -434,8 +436,9 @@ minetest.register_craftitem("petz:honey_bottle", {
 	description = S("Honey Bottle"),
 	inventory_image = "petz_honey_bottle.png",
 	on_use = function (itemstack, user, pointed_thing)
-        return minetest.do_item_eat(7, "vessels:glass_bottle", itemstack, user, pointed_thing)
-    end,
+	   return minetest.do_item_eat(7, "vessels:glass_bottle", itemstack, user, pointed_thing)
+	end,
+	groups = {food_honey = 1, food_sugar = 1}
 })
 
 minetest.register_craftitem("petz:honeycomb", {
@@ -562,11 +565,13 @@ minetest.register_craftitem("petz:spider_eye", {
 minetest.register_craftitem("petz:leopard_skin", {
 	description = S("Leopard Skin"),
 	inventory_image = "petz_leopard_skin.png",
+	groups = {leather = 1, flammable = 2}
 })
 
 minetest.register_craftitem("petz:snow_leopard_skin", {
 	description = S("Snow Leopard Skin"),
 	inventory_image = "petz_snow_leopard_skin.png",
+	groups = {leather = 1, flammable = 2}
 })
 
 --Ant Drops
@@ -591,7 +596,8 @@ minetest.register_craftitem("petz:ant_leg", {
 minetest.register_craftitem("petz:rabbit_hide", {
     description = S("Rabbit Hide"),
     inventory_image = "petz_rabbit_hide.png",
-    wield_image = "petz_rabbit_hide.png"
+    wield_image = "petz_rabbit_hide.png",
+    groups = {leather = 1, flammable = 2}
 })
 
 --minetest.register_node("petz:squirrel_cage", {

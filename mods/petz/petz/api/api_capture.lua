@@ -96,7 +96,7 @@ petz.capture = function(self, clicker, put_in_inventory)
 	end
 	if self.breed then
 		local genre
-		if self.is_male == true then
+		if self.is_male then
 			genre = "Male"
 		else
 			genre = "Female"

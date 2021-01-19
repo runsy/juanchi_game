@@ -18,7 +18,7 @@ petz.breed = function(self, clicker, wielded_item, wielded_item_name)
 end
 
 petz.pony_breed = function(self, clicker, wielded_item, wielded_item_name)
-	if wielded_item_name == "petz:glass_syringe" and self.is_male== true then
+	if wielded_item_name == "petz:glass_syringe" and self.is_male then
 		local new_wielded_item = ItemStack("petz:glass_syringe_sperm")
 		local meta = new_wielded_item:get_meta()
 		local speedup = (self.horseshoes or 0) * petz.settings.horseshoe_speedup
@@ -38,10 +38,10 @@ petz.pony_breed = function(self, clicker, wielded_item, wielded_item_name)
 		else
 			clicker:set_wielded_item(new_wielded_item)
 		end
-	elseif wielded_item_name == "petz:glass_syringe_sperm" and self.is_male== false then
+	elseif wielded_item_name == "petz:glass_syringe_sperm" and not(self.is_male) then
 		local meta = wielded_item:get_meta()
 		local petz_type = meta:get_string("petz_type")
-		if self.is_pregnant == false and self.pregnant_count > 0 and self.type == petz_type then
+		if not(self.is_pregnant) and self.pregnant_count > 0 and self.type == petz_type then
 			self.is_pregnant = mobkit.remember(self, "is_pregnant", true)
 			local pregnant_count = self.pregnant_count - 1
 			mobkit.remember(self, "pregnant_count", pregnant_count)

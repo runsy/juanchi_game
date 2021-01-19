@@ -553,7 +553,7 @@ minetest.register_node("petz:poop", {
     description = S("Poop"),
     inventory_image = "petz_poop_inv.png",
     tiles = {"petz_poop.png"},
-    groups = {crumbly=1, falling_node=1},
+    groups = {crumbly=3, falling_node=1},
     sounds = default.node_sound_stone_defaults(),
     paramtype = "light",
 	walkable = false,
