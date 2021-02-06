@@ -32,7 +32,7 @@ end
 
 function petz.hq_gotopollen(self, prty, tpos)
 	local func = function()
-		if self.pollen == true then
+		if self.pollen then
 			--mobkit.clear_queue_low(self)
 			--mobkit.clear_queue_high(self)
 			return true
@@ -65,7 +65,7 @@ end
 
 function petz.hq_gotobehive(self, prty, pos)
 	local func = function()
-		if self.pollen == false or not(self.behive) then
+		if not(self.pollen) or not(self.behive) then
 			return true
 		end
 		mobkit.animate(self, "fly")

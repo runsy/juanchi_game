@@ -114,7 +114,7 @@ function petz.lq_mountdriver(self)
 		end
 		--Gallop
 		if ctrl.up and ctrl.sneak and not(self.gallop_exhausted) then
-			if self.gallop == false then
+			if not self.gallop then
 				self.gallop = true
 				mokapi.make_sound("object", self.object, "petz_horse_whinny", petz.settings.max_hear_distance)
 				mokapi.make_sound("object", self.object, "petz_horse_gallop", petz.settings.max_hear_distance)

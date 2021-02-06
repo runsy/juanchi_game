@@ -51,7 +51,7 @@ function petz.ant_brain(self)
 
 		if prty < 10 then
 			if player then
-				if petz.bh_attack_player(self, pos, 10, player) == true then
+				if petz.bh_attack_player(self, pos, 10, player) then
 					return
 				end
 			end

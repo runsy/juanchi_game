@@ -14,10 +14,10 @@ function petz.bh_attack_player(self, pos, prty, player)
 			werewolf = true
 		end
 	end
-	if (self.tamed == false and werewolf == false) or (self.tamed == true and self.status == "guard" and player:get_player_name() ~= self.owner) then
+	if (not(self.tamed) and not(werewolf)) or (self.tamed and self.status == "guard" and player:get_player_name() ~= self.owner) then
 		local player_pos = player:get_pos()
 		if vector.distance(pos, player_pos) <= self.view_range then	-- if player close
-			if (self.attack_player and not(self.avoid_player)) or (self.warn_attack == true) then --attack player
+			if (self.attack_player and not(self.avoid_player)) or (self.warn_attack) then --attack player
 				if self.can_swin then
 					mobkit.hq_aqua_attack(self, prty, player, 6)
 				elseif self.can_fly then

@@ -1,7 +1,7 @@
 local S = ...
 
 petz.breed = function(self, clicker, wielded_item, wielded_item_name)
-	if self.is_rut == false and self.is_pregnant == false then
+	if not(self.is_rut) and not(self.is_pregnant) then
 		wielded_item:take_item()
 		clicker:set_wielded_item(wielded_item)
 		self.is_rut = true
@@ -104,7 +104,7 @@ petz.pregnant_timer = function(self, dtime)
 	self.pregnant_time = mobkit.remember(self, "pregnant_time", self.pregnant_time + dtime)
 	if self.pregnant_time >= petz.settings.pregnancy_time then
 		local baby_entity = petz.childbirth(self)
-		if self.is_mountable == true then
+		if self.is_mountable then
 			--Set the genetics accordingly the father and the mother
 			local speedup = (self.horseshoes or 0) * petz.settings.horseshoe_speedup
 			local random_number = math.random(-1, 1)

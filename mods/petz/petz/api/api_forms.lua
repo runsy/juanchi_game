@@ -32,9 +32,9 @@ petz.create_form = function(player_name, buy)
 		if pet.affinity == nil then
 			pet.affinity = 0
 		end
-		if petz.settings.tamagochi_mode == true then
+		if petz.settings.tamagochi_mode then
 			form_size.w= form_size.w + 1
-			if pet.has_affinity == true then
+			if pet.has_affinity then
 				form_title = S("Orders")
 				hungrystuff_pos = {x= 3, y = 2}
 				affinity_stuff =
@@ -53,7 +53,7 @@ petz.create_form = function(player_name, buy)
 				affinity_stuff
 			local health_label = S("Health").." = "..tostring(pet.hp)
 			local hungry_label
-			if pet.fed == false then
+			if not pet.fed then
 				hungry_label = S("Hungry")
 			else
 				hungry_label = S("Satiated")
@@ -61,19 +61,19 @@ petz.create_form = function(player_name, buy)
 			hungry_label = hungry_label.."\n"..health_label
 			tamagochi_form_stuff = tamagochi_form_stuff .. "label[".. hungrystuff_pos.x +1.5 ..",".. (hungrystuff_pos.y+0.75) ..";"..hungry_label.."]"
 		else
-			if pet.has_saddlebag == true and pet.saddlebag == true then
+			if pet.has_saddlebag and pet.saddlebag then
 				form_size.w= form_size.w + 1
 			end
 			tamagochi_form_stuff = pet_image_icon
-			if pet.has_affinity == true then
+			if pet.has_affinity then
 				tamagochi_form_stuff = tamagochi_form_stuff .. "label[1,2;".. S("Orders") .."]"
 			end
 		end
-		if pet.is_pet == true and pet.tamed == true then
+		if pet.is_pet and pet.tamed then
 			if not(pet.tag) then
 				pet.tag = ""
 			end
-			if pet.dreamcatcher == true then
+			if pet.dreamcatcher then
 				tamagochi_form_stuff = tamagochi_form_stuff..
 				"image_button_exit[4,0.375;1,1;petz_dreamcatcher.png;btn_dreamcatcher;]"
 			end
@@ -83,21 +83,21 @@ petz.create_form = function(player_name, buy)
 				"checkbox[3.5,2.25;btn_show_tag;"..S("Show tag")..";"..petz.vartostring(pet.show_tag).."]"
 		end
 		local gender
-		if pet.is_male == true then
+		if pet.is_male then
 			gender = S("Male")
 		else
 			gender = S("Female")
 		end
 		tamagochi_form_stuff = tamagochi_form_stuff..
 			"label[3,0.875;"..gender.."]"
-		if pet.breed == true then --Show the Gender
+		if pet.breed then --Show the Gender
 			local pregnant_icon_x
 			local pregnant_icon_y
 			local pregnant_text_x
 			local pregnant_text_y
 			local infertile_text_x
 			local infertile_text_y
-			if pet.is_mountable == true or pet.give_orders == true then
+			if pet.is_mountable or pet.give_orders then
 				pregnant_icon_x = 3
 				pregnant_icon_y = 5
 				pregnant_text_x = 4
@@ -112,16 +112,16 @@ petz.create_form = function(player_name, buy)
 				infertile_text_x = 3
 				infertile_text_y = 3
 			end
-			if pet.is_male == false and pet.is_pregnant == true then
+			if not(pet.is_male) and pet.is_pregnant then
 				local pregnant_remain_time = petz.round(petz.settings.pregnancy_time - pet.pregnant_time)
 				tamagochi_form_stuff = tamagochi_form_stuff..
 					"image["..(pregnant_icon_x+0.375)..","..(pregnant_icon_y+0.5)..";1,1;petz_"..pet.type.."_pregnant_icon.png]"..
 					"label["..(pregnant_text_x+0.375)..","..(pregnant_text_y+1)..";"..S("Pregnant").." ("..tostring(pregnant_remain_time).."s)]"
-			elseif pet.is_male == false and pet.pregnant_count and pet.pregnant_count <= 0 then
+			elseif not(pet.is_male) and pet.pregnant_count and pet.pregnant_count <= 0 then
 				tamagochi_form_stuff = tamagochi_form_stuff..
 					"label["..(infertile_text_x+0.5)..","..(infertile_text_y+1)..";"..S("Infertile").."]"
 			end
-			if pet.is_baby == true then
+			if pet.is_baby then
 				local growth_remain_time = petz.round(petz.settings.growth_time - pet.growth_time)
 				tamagochi_form_stuff = tamagochi_form_stuff..
 					"label["..(pregnant_text_x-0.5)..","..(pregnant_text_y+1)..";"..S("To adult").." ("..tostring(growth_remain_time).."s)]"
@@ -139,16 +139,16 @@ petz.create_form = function(player_name, buy)
 			"button_exit[0.375,6.5;1,1;btn_alight;"..S("Alight").."]"	..
 			"button_exit[1.375,6.5;1,1;btn_fly;"..S("Fly").."]"..
 			"button_exit[2.375,6.5;2,1;btn_perch_shoulder;"..S("Perch on shoulder").."]"
-		elseif pet.is_mountable == true then
+		elseif pet.is_mountable then
 			more_form_orders = more_form_orders..
 				"image[3.5,4.5;1,1;petz_"..pet.type.."_velocity_icon.png]"..
 				"label[4.5,5;".. tostring(pet.max_speed_forward).."/"..tostring(pet.max_speed_reverse)..'/'..tostring(pet.accel).."]"
-			if pet.has_saddlebag == true and pet.saddlebag == true then
+			if pet.has_saddlebag and pet.saddlebag then
 				more_form_orders = more_form_orders..
 					"image_button[5,0.375;1,1;petz_saddlebag.png;btn_saddlebag;]"
 			end
 		end
-		if pet.give_orders == true then
+		if pet.give_orders then
 			form_size.h= form_size.h + 4
 			form_size.w= form_size.w + 1
 			form_orders =
@@ -157,7 +157,7 @@ petz.create_form = function(player_name, buy)
 				"button_exit[0.375,5.5;3,1;btn_ownthing;"..S("Do your own thing").."]"..
 				more_form_orders
 		else
-			if petz.settings.tamagochi_mode == true then
+			if petz.settings.tamagochi_mode then
 				buttonexit_pos.y = buttonexit_pos.y - 2
 				form_size.h= form_size.h + 1
 			else
@@ -165,7 +165,7 @@ petz.create_form = function(player_name, buy)
 				form_size.w= form_size.w + 1
 			end
 		end
-		if pet.is_wild == true then
+		if pet.is_wild then
 			form_orders =	form_orders .. "button_exit[3.375,5.5;2,1;btn_guard;"..S("Guard").."]"
 		end
 		tab_form = tamagochi_form_stuff.. form_orders
@@ -455,7 +455,7 @@ petz.create_food_form = function(self)
 	end
 	local form_size = {w= 3, h= 3}
 	local button_exit = {x= 1, y= 2}
-	if self.breed == true then
+	if self.breed then
 		form_size.h = form_size.h + 1
 		button_exit.y = button_exit.y + 1
 	end
@@ -465,7 +465,7 @@ petz.create_food_form = function(self)
 		"label[1,0;"..S("Food").."]"..
 		"label[0,1;"..S("It likes")..": ".. items_desc .."]"..
 		"button_exit["..button_exit.x..","..button_exit.y..";1,1;btn_exit;"..S("Close").."]"
-	if self.breed == true then
+	if self.breed then
 		local breed_item = minetest.registered_items[petz.settings[self.type.."_breed"]]
 		local breed_item_desc
 		if not(breed_item) then
@@ -486,7 +486,7 @@ petz.create_affinity_form = function(self)
 	local form_size = {w= 3, h= 4}
 	local button_exit = {x= 1, y= 3}
 	local feed_status, feed_status_color
-	if self.fed == true then
+	if self.fed then
 		feed_status = S("Fed")
 		feed_status_color = petz.colors["green"]
 	else

@@ -1,5 +1,5 @@
 function petz.bh_hunt(self, prty, force)
-	if self.tamed == true and not(force) then
+	if self.tamed and not(force) then
 		return
 	end
 	local preys_list = petz.settings[self.type.."_preys"]

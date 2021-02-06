@@ -29,7 +29,7 @@ end
 --The Tamagochi Timer
 
 petz.init_tamagochi_timer = function(self)
-    if (petz.settings.tamagochi_mode == true) and (self.tamed == true) and (self.init_tamagochi_timer == true) then
+    if petz.settings.tamagochi_mode and self.tamed and self.init_tamagochi_timer then
         petz.timer(self)
         return true
     else
@@ -44,8 +44,8 @@ end
 petz.timer = function(self)
     minetest.after(petz.settings.tamagochi_check_time, function()
         if mobkit.is_alive(self) then
-			if (not(minetest.is_singleplayer())) and (petz.settings.tamagochi_check_if_player_online == true) then
-				if minetest.player_exists(self.owner) == false then --if pet owner is not online
+			if (not(minetest.is_singleplayer())) and (petz.settings.tamagochi_check_if_player_online) then
+				if not minetest.player_exists(self.owner) then --if pet owner is not online
 					return
 				end
 			end
@@ -71,10 +71,10 @@ petz.timer = function(self)
                 return
             end
             --Decrease health if pet has not fed
-            if self.fed == false then
+            if not self.fed then
 				mokapi.set_health(self, -petz.settings.tamagochi_feed_hunger_rate)
 				petz.update_nametag(self)
-                if (self.hp > 0)  and (self.has_affinity == true) then
+                if (self.hp > 0)  and self.has_affinity then
 					petz.set_affinity(self, -petz.settings.tamagochi_feed_hunger_rate)
 				end
             else
@@ -82,9 +82,9 @@ petz.timer = function(self)
                 mobkit.remember(self, "fed", self.fed) --Reset the variable
             end
             --If the pet has not brushed
-            if self.can_be_brushed == true then
-				if self.brushed == false then
-					if self.has_affinity == true then
+            if self.can_be_brushed then
+				if not(self.brushed) then
+					if self.has_affinity then
 						petz.set_affinity(self, -petz.settings.tamagochi_brush_rate)
 					end
 				else
@@ -94,7 +94,7 @@ petz.timer = function(self)
 			end
             --If the petz is a lion had to been lashed
             if self.type== "lion" then
-                if self.lashed == false then
+                if not self.lashed then
                     petz.set_affinity(self, -petz.settings.tamagochi_lashing_rate)
                 else
                     self.lashed = false
@@ -106,7 +106,7 @@ petz.timer = function(self)
                 minetest.chat_send_player(self.owner, S("Your").. " "..self.type.." "..S("has starved to death!!!"))
                 self.init_tamagochi_timer  = false -- no more timing
             --If the pet get bored of you
-            elseif (self.has_affinity == true) and (self.affinity == 0) then
+            elseif self.has_affinity and (self.affinity == 0) then
 				local msg = S("Your").." "..self.type.." "..S("has abandoned you!!!")
 				petz.abandon_pet(self, msg)
             else  --else reinit the timer, to check again in the future

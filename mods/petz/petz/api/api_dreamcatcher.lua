@@ -28,7 +28,7 @@ minetest.register_craft({
 })
 
 petz.put_dreamcatcher = function(self, clicker, wielded_item, wielded_item_name)
-	if self.dreamcatcher == true then
+	if self.dreamcatcher then
 		minetest.chat_send_player(clicker:get_player_name(), S("This pet already has a Dreamcatcher."))
 		return
 	end
@@ -41,7 +41,7 @@ petz.put_dreamcatcher = function(self, clicker, wielded_item, wielded_item_name)
 end
 
 petz.drop_dreamcatcher = function(self)
-	if self.dreamcatcher == true then --drop the dreamcatcher
+	if self.dreamcatcher then --drop the dreamcatcher
 		minetest.add_item(self.object:get_pos(), "petz:dreamcatcher")
 		mokapi.make_sound("object", self.object, "petz_pop_sound", petz.settings.max_hear_distance)
 		self.dreamcatcher = false
@@ -90,7 +90,7 @@ petz.create_form_list_by_owner_dreamcatcher = function(user_name, user_pos)
 				pet_pos =  pet.object:get_pos()
 				--text_color = petz.colors["green"]
 				list_pet = true
-			elseif pet_table.metadata.dreamcatcher == true then
+			elseif pet_table.metadata.dreamcatcher then
 				pet_tag = pet_table.metadata.tag
 				pet_type = pet_table.metadata.type
 				pet_pos = pet_table.metadata.last_pos

@@ -24,7 +24,7 @@ petz.behive_exists = function(self)
 	else
 		behive_exists = false
 	end
-	if behive_exists == true then
+	if behive_exists then
 		return true
 	else
 		self.behive = nil

@@ -101,7 +101,7 @@ function petz.is_standing(self)
 end
 
 function petz.is_jumping(self)
-	if self.isonground == true then
+	if self.isonground then
 		return false
 	else
 		return true

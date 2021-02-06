@@ -32,13 +32,13 @@ function petz.predator_brain(self)
 
 		--Follow Behaviour
 		if prty < 16 then
-			if petz.bh_start_follow(self, pos, player, 16) == true then
+			if petz.bh_start_follow(self, pos, player, 16) then
 				return
 			end
 		end
 
 		if prty == 16 then
-			if petz.bh_stop_follow(self, player) == true then
+			if petz.bh_stop_follow(self, player) then
 				return
 			end
 		end
@@ -50,7 +50,7 @@ function petz.predator_brain(self)
 
 		if prty < 10 then
 			if player then
-				if petz.bh_attack_player(self, pos, 10, player) == true then
+				if petz.bh_attack_player(self, pos, 10, player) then
 					return
 				end
 			end

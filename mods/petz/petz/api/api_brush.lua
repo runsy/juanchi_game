@@ -1,9 +1,9 @@
 local S = ...
 
 petz.brush = function(self, wielded_item_name, pet_name)
-    if petz.settings.tamagochi_mode == true then
+    if petz.settings.tamagochi_mode then
         if wielded_item_name == "petz:hairbrush" then
-            if self.brushed == false then
+            if not self.brushed then
                 petz.set_affinity(self, petz.settings.tamagochi_brush_rate)
                 self.brushed = true
                 mobkit.remember(self, "brushed", self.brushed)
@@ -11,7 +11,7 @@ petz.brush = function(self, wielded_item_name, pet_name)
                 minetest.chat_send_player(self.owner, S("Your").." "..S(pet_name).." "..S("had already been brushed."))
             end
         else --it's beaver_oil
-            if self.beaver_oil_applied == false then
+            if not self.beaver_oil_applied then
                 petz.set_affinity(self, petz.settings.tamagochi_beaver_oil_rate)
                 self.beaver_oil_applied = true
                 mobkit.remember(self, "beaver_oil_applied", self.beaver_oil_applied)

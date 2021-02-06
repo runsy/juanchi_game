@@ -2,10 +2,12 @@
 ---Refill lamb or milk
 ---
 
+local S = ...
+
 petz.refill = function(self)
 	if self.type == "lamb" then
 		petz.lamb_wool_regrow(self)
-	elseif self.milkable == true then
+	elseif self.milkable then
 		petz.milk_refill(self)
 	end
 end
@@ -15,7 +17,7 @@ end
 --
 
 petz.lamb_wool_regrow = function(self)
-	if self.shaved == false then --only count if the lamb is shaved
+	if not self.shaved then --only count if the lamb is shaved
 		return
 	end
 	local food_count_wool = self.food_count_wool + 1
@@ -66,12 +68,16 @@ petz.milk_refill = function(self)
 end
 
 petz.milk_milk = function(self, clicker)
+	if not self.is_male then
+		minetest.chat_send_player(clicker:get_player_name(), S("Milk only female animals!"))
+		return
+	end
 	local inv = clicker:get_inventory()
+	local wielded_item = clicker:get_wielded_item()
+	wielded_item:take_item()
+	clicker:set_wielded_item(wielded_item)
 	if inv:room_for_item("main", "petz:bucket_milk") then
-		local wielded_item = clicker:get_wielded_item()
-		wielded_item:take_item()
-		clicker:set_wielded_item("petz:bucket_milk")
-		inv:add_item("main", wielded_item)
+		inv:add_item("main","petz:bucket_milk")
 		mokapi.make_sound("object", self.object, "petz_"..self.type.."_moaning", petz.settings.max_hear_distance)
 	else
 		minetest.add_item(self.object:get_pos(), "petz:bucket_milk")

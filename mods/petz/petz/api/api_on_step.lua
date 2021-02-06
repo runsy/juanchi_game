@@ -1,15 +1,15 @@
 petz.on_step = function(self, dtime)
 	local on_step_time = 1
 	if mobkit.timer(self, on_step_time) and not(self.dead) then --Only check every 1 sec, not every step!
-		if self.init_tamagochi_timer == true then
+		if self.init_tamagochi_timer then
 			petz.init_tamagochi_timer(self)
 		end
-		if self.is_pregnant == true then
+		if self.is_pregnant then
 			petz.pregnant_timer(self, on_step_time)
-		elseif self.is_baby == true then
+		elseif self.is_baby then
 			petz.growth_timer(self, on_step_time)
 		end
-		if self.gallop == true then
+		if self.gallop then
 			petz.gallop(self, on_step_time)
 		end
 		if not(self.on_deactivate) then
@@ -24,7 +24,7 @@ petz.on_step = function(self, dtime)
 		end
 		--Tamagochi
 		--Check the hungry
-		if petz.settings.tamagochi_mode == true and self.owner and self.is_pet and petz.settings.tamagochi_hungry_warning > 0 and not(self.status=="sleep") and petz.settings[self.type.."_follow"] then
+		if petz.settings.tamagochi_mode and self.owner and self.is_pet and petz.settings.tamagochi_hungry_warning > 0 and not(self.status=="sleep") and petz.settings[self.type.."_follow"] then
 			if not(self.tmp_follow_texture) then
 				local items = string.split(petz.settings[self.type.."_follow"], ',')
 				local item = petz.str_remove_spaces(items[1]) --the first one

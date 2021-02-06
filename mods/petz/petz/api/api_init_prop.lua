@@ -71,11 +71,11 @@ petz.compose_texture= function(self)
 	local texture
 	if self.type == "lamb" then
 		local shaved_string = ""
-		if self.shaved == true then
+		if self.shaved then
 			shaved_string = "_shaved"
 		end
 		texture = "petz_lamb".. shaved_string .."_"..self.skin_colors[self.texture_no]..".png"
-	elseif self.is_mountable == true then
+	elseif self.is_mountable then
 		if self.saddle then
 			texture = "petz_"..self.type.."_"..self.skin_colors[self.texture_no]..".png" .. "^petz_"..self.type.."_saddle.png"
 		else
@@ -170,14 +170,14 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 	--<
 	if static_data_table and static_data_table[static_table_name] and static_data_table[static_table_name]["captured"] then
 		captured_mob = true
-	elseif static_data_table and static_data_table["baby_born"] and static_data_table["baby_born"] == true then
+	elseif static_data_table and static_data_table["baby_born"] then
 		baby_born = true
 	end
 	--
 	--1. NEW MOBS
 	--
 	--dtime_s == 0 differenciates between loaded and new created mobs
-	if dtime_s == 0 and captured_mob == false then	--set some vars
+	if dtime_s == 0 and not captured_mob then	--set some vars
 		--Load default settings ->
 		for key, value in pairs(petz.dyn_prop) do
 			self[key] = value["default"]
@@ -185,8 +185,8 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		--Define some settings ->
 		--Set a random gender for all the mobs (not defined in the entity definition)
 		self.is_male = mobkit.remember(self, "is_male", petz.set_random_gender())
-		if self.is_mountable == true then
-			if baby_born == false then
+		if self.is_mountable then
+			if not(baby_born) then
 				self.max_speed_forward= mobkit.remember(self, "max_speed_forward", math.random(2, 4)) --set a random velocity for walk and run
 				self.max_speed_reverse= 	mobkit.remember(self, "max_speed_reverse", math.random(1, 2))
 				self.accel= mobkit.remember(self, "accel", math.random(2, 4))
@@ -196,14 +196,14 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 			self.is_baby = mobkit.remember(self, "is_baby", true)
 		end
 		--Mobs that can have babies
-		if self.breed == true then
+		if self.breed then
 			--Genetics
 			local genes_mutation = false
 			if self.mutation and (self.mutation > 0) and math.random(1, 200) == 1 then
 				genes_mutation = true
 			end
-			if genes_mutation == false then
-				if baby_born == false then
+			if not genes_mutation then
+				if not baby_born then
 					self.genes["gen1"] = petz.get_gen(self)
 					self.genes["gen2"] = petz.get_gen(self)
 					--minetest.chat_send_player("singleplayer", tostring(self.genes["gen1"]))
@@ -237,7 +237,7 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		end
 		--ALL the mobs
 		--Get a texture
-		if not(self.texture_no) then
+		if not self.texture_no then
 			if self.skin_colors then
 				local textures_count
 				if self.mutation and (self.mutation > 0) then
@@ -253,14 +253,14 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		if petz.settings[self.type.."_convert_count"] then
 			self.convert_count = mobkit.remember(self, "convert_count", petz.settings[self.type.."_convert_count"])
 		end
-		if self.init_tamagochi_timer== true then
+		if self.init_tamagochi_timer then
 			petz.init_tamagochi_timer(self)
 		end
 		petz.calculate_sleep_times(self) --Sleep behaviour
 	--
 	--2. ALREADY EXISTING MOBS
 	--
-	elseif captured_mob == false then
+	elseif not captured_mob then
 		petz.load_vars(self) --Load memory variables
 	--
 	--3. CAPTURED MOBS
@@ -285,7 +285,7 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 	end
 
 	--Custom textures
-	if captured_mob == true or self.breed == true then
+	if captured_mob or self.breed then
 		local texture= petz.compose_texture(self)	--compose the texture
 		mobkit.remember(self, "texture_no", self.texture_no)
 		petz.set_properties(self, {textures = {texture}})
@@ -304,7 +304,7 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		end, self)
 	end
 	if self.colorized then
-		if not(self.shaved) then
+		if not self.shaved then
 			petz.colorize(self, self.colorized)
 		end
 	end
@@ -315,14 +315,14 @@ function petz.set_initial_properties(self, staticdata, dtime_s)
 		petz.set_properties(self, {textures = {self.textures[1]}})
 	end
 	--<<<
-	if self.horseshoes and captured_mob == false then
+	if self.horseshoes and not captured_mob then
 		petz.horseshoes_speedup(self)
 	end
-	if self.breed == true then
-		if baby_born == true then
+	if self.breed then
+		if baby_born then
 			self.is_baby = mobkit.remember(self, "is_baby", true)
 		end
-		if self.is_baby == true then
+		if self.is_baby then
 			petz.set_properties(self, {
 				visual_size = self.visual_size_baby,
 				collisionbox = self.collisionbox_baby

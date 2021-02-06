@@ -67,7 +67,7 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 			if can_spawn and petz.settings[pet_name.."_disable_spawn"] then
 				can_spawn = false
 			end
-			if can_spawn and ((ent.is_monster and peaceful == true) or (not(ent.is_monster) and peaceful == false)) then
+			if can_spawn and ((ent.is_monster and peaceful) or (not(ent.is_monster) and not(peaceful))) then
 				can_spawn = false
 			end
 			if can_spawn and ent.spawn_max_height then --check max_height
@@ -98,7 +98,7 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 			end
 			--Check if monsters are disabled
 			if can_spawn and ent.is_monster then
-				if petz.settings.disable_monsters == true then
+				if petz.settings.disable_monsters then
 					can_spawn = false
 				end
 			end
@@ -117,7 +117,7 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 				end
 			end
 		end
-		if can_spawn and mokapi.item_in_itemlist(node.name, petz.settings[pet_name.."_spawn_nodes"]) == true then
+		if can_spawn and mokapi.item_in_itemlist(node.name, petz.settings[pet_name.."_spawn_nodes"]) then
 			table.insert(candidates_list, pet_name)
 		end
 	end --end for
@@ -163,7 +163,7 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 				end
 			end
 		end
-		if (limit_max_mobs) == false or (mob_count < petz.settings.max_mobs) then --check for bigger mobs:
+		if not(limit_max_mobs) or (mob_count < petz.settings.max_mobs) then --check for bigger mobs:
 			local spawn_herd = petz.settings[random_mob.."_spawn_herd"]
 			if spawn_herd then
 				--minetest.chat_send_player("singleplayer", tonumber(spawn_herd))
@@ -198,7 +198,7 @@ petz.spawn_mob = function(spawn_pos, limit_max_mobs, abr, liquidflag)
 					end
 				end
 				]]
-				if spawn == true then
+				if spawn then
 					spawn_pos = petz.pos_to_spawn(random_mob_name, spawn_pos) --recalculate pos.y for bigger mobs
 					minetest.add_entity(spawn_pos, random_mob_name)
 					--minetest.chat_send_player("singleplayer", random_mob.. " spawned!!!")

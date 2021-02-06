@@ -9,7 +9,7 @@ petz.on_die = function(self)
 	end
 	local pos = self.object:get_pos()
 	--Specific of each mob-->
-	if self.is_mountable == true then
+	if self.is_mountable then
 		if self.saddle then -- drop saddle when petz is killed while riding
 			minetest.add_item(pos, "petz:saddle")
 		end
@@ -39,7 +39,7 @@ petz.on_die = function(self)
 			petz.force_detach(self.driver)
 		end
 	elseif self.type == "puppy" then
-		if self.square_ball_attached == true and self.attached_squared_ball then
+		if self.square_ball_attached and self.attached_squared_ball then
 			self.attached_squared_ball.object:set_detach()
 		end
 	end
@@ -66,7 +66,7 @@ petz.on_die = function(self)
 		minetest.close_formspec(self.owner, "petz:form_orders")
 	end
 	--Remove this petz from the list of the player pets-->
-	if self.tamed == true then
+	if self.tamed then
 		petz.remove_tamed_by_owner(self, false)
 	end
 	--Make Sound-->

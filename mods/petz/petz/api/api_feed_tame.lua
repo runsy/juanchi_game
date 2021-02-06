@@ -14,7 +14,7 @@ petz.insert_tamed_by_owner = function(self)
 			break
 		end
 	end
-	if insert == true then --if not yet
+	if insert then --if not yet
 		table.insert(petz.tamed_by_owner[self.owner], {["pet"] = self, metadata = {["tag"] = self.tag, ["type"] = self.type, ["last_pos"] = nil}})
 	end
 end
@@ -51,7 +51,7 @@ end
 
 petz.after_tame = function(self)
 	petz.insert_tamed_by_owner(self)
-	if petz.settings.tamagochi_mode == true then
+	if petz.settings.tamagochi_mode then
 		self.init_tamagochi_timer = true
 	end
 end
@@ -63,7 +63,7 @@ end
 -- Whip/lashing behaviour
 
 petz.do_lashing = function(self)
-    if self.lashed == false then
+    if not self.lashed then
         self.lashed = mobkit.remember(self, "lashed", true)
     end
     mokapi.make_sound("object", self.object, "petz_"..self.type.."_moaning", petz.settings.max_hear_distance)
@@ -72,7 +72,7 @@ end
 petz.tame_whip= function(self, hitter)
 		local wielded_item_name= hitter:get_wielded_item():get_name()
 		if (wielded_item_name == "petz:whip") then
-			if self.tamed == false then
+			if not self.tamed then
 				--The mob can be tamed lashed with a whip
 				self.lashing_count = self.lashing_count + 1
 				if self.lashing_count >= petz.settings.lashing_tame_count then
@@ -83,7 +83,7 @@ petz.tame_whip= function(self, hitter)
 					mobkit.clear_queue_high(self) -- do not attack
 				end
 			else
-				if (petz.settings.tamagochi_mode == true) and (self.owner == hitter:get_player_name()) then
+				if (petz.settings.tamagochi_mode) and (self.owner == hitter:get_player_name()) then
 					petz.do_lashing(self)
 				end
 			end
@@ -94,7 +94,7 @@ end
 --Ants
 petz_feed_queen_ant= function(self, clicker, player_name, wielded_item)
 	local creative_mode = minetest.settings:get_bool("creative_mode")
-	if creative_mode == false then -- if not in creative, take item
+	if not creative_mode then -- if not in creative, take item
 		wielded_item:take_item()
 		clicker:set_wielded_item(wielded_item)
 	end

@@ -34,7 +34,7 @@ petz.punch_tamagochi = function (self, puncher)
 	if self.affinity == nil then
 		return
     end
-    if petz.settings.tamagochi_mode == true then
+    if petz.settings.tamagochi_mode then
         if self.owner == puncher:get_player_name() then
             petz.set_affinity(self, -petz.settings.tamagochi_punch_rate)
         end
@@ -95,7 +95,7 @@ function petz.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 		petz.force_detach(self.driver)
 	end
 	--Lashing?-->
-	if self.is_wild == true then
+	if self.is_wild then
 		petz.tame_whip(self, puncher)
 	end
 	--Warn Attack?-->

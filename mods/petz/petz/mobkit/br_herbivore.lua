@@ -11,7 +11,7 @@ function petz.herbivore_brain(self)
 
 	if self.hp <= 0 then
 		die = true
-	elseif not(petz.is_night()) and self.die_at_daylight == true then --it dies when sun rises up
+	elseif not(petz.is_night()) and self.die_at_daylight then --it dies when sun rises up
 		if pos then
 			local node_light = minetest.get_node_light(pos, minetest.get_timeofday())
 			if node_light and self.max_daylight_level then
@@ -22,7 +22,7 @@ function petz.herbivore_brain(self)
 		end
 	end
 
-	if die == true then
+	if die then
 		petz.on_die(self)
 		return
 	end
@@ -65,31 +65,31 @@ function petz.herbivore_brain(self)
 
 		--Runaway from predator
 		if prty < 18  then
-			if petz.bh_runaway_from_predator(self, pos) == true then
+			if petz.bh_runaway_from_predator(self, pos) then
 				return
 			end
 		end
 
 		--Follow Behaviour
 		if prty < 16 then
-			if petz.bh_start_follow(self, pos, player, 16) == true then
+			if petz.bh_start_follow(self, pos, player, 16) then
 				return
 			end
 		end
 
 		if prty == 16 then
-			if petz.bh_stop_follow(self, player) == true then
+			if petz.bh_stop_follow(self, player) then
 				return
 			end
 		end
 
 		--Runaway from Player
 		if prty < 14 then
-			if not(self.can_fly) and self.tamed == false then --if no tamed
+			if not(self.can_fly) and not(self.tamed) then --if no tamed
 				if player then
 					local player_pos = player:get_pos()
 					local wielded_item_name = player:get_wielded_item():get_name()
-					if self.is_pet == false and self.follow ~= wielded_item_name and vector.distance(pos, player_pos) <= self.view_range then
+					if not(self.is_pet) and self.follow ~= wielded_item_name and vector.distance(pos, player_pos) <= self.view_range then
 						mobkit.hq_runfrom(self, 14, player)
 						return
 					end
@@ -153,7 +153,7 @@ function petz.herbivore_brain(self)
 			end
 		end
 		--search for a petz:pet_bowl or a bale
-		if prty < 4 and self.tamed == true then
+		if prty < 4 and self.tamed then
 			local view_range = self.view_range
 			local nearby_nodes = minetest.find_nodes_in_area(
 				{x = pos.x - view_range, y = pos.y - 1, z = pos.z - view_range},
@@ -165,7 +165,7 @@ function petz.herbivore_brain(self)
 				if distance > 3.0 then
 					mobkit.hq_goto(self, 4, tpos)
 				elseif distance <= 3.0 then
-					if (petz.settings.tamagochi_mode == true) and not(self.fed) then
+					if petz.settings.tamagochi_mode and not(self.fed) then
 						petz.do_feed(self)
 						if self.eat_hay then
 							local node = minetest.get_node_or_nil(tpos)
@@ -206,7 +206,7 @@ function petz.herbivore_brain(self)
 		mokapi.make_misc_sound(self, petz.settings.misc_sound_chance, petz.settings.max_hear_distance)
 
 		if prty < 3 then
-			if self.is_arboreal == true then
+			if self.is_arboreal then
 				if petz.bh_climb(self, pos, 3) then
 					return
 				end

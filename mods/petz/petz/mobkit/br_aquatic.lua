@@ -13,7 +13,7 @@ function petz.aquatic_brain(self)
 	if self.hp <= 0 then
 		petz.on_die(self)
 		return
-	elseif not(petz.is_night()) and self.die_at_daylight == true then --it dies when sun rises up
+	elseif not(petz.is_night()) and self.die_at_daylight then --it dies when sun rises up
 		if minetest.get_node_light(pos, minetest.get_timeofday()) >= self.max_daylight_level then
 			petz.on_die(self)
 			return
@@ -33,20 +33,20 @@ function petz.aquatic_brain(self)
 
 		--Follow Behaviour
 		if prty < 16 then
-			if petz.bh_start_follow(self, pos, player, 16) == true then
+			if petz.bh_start_follow(self, pos, player, 16) then
 				return
 			end
 		end
 
 		if prty == 16 then
-			if petz.bh_stop_follow(self, player) == true then
+			if petz.bh_stop_follow(self, player) then
 				return
 			end
 		end
 
 		if prty < 10 then
-			if player and (self.attack_player == true) then
-				if petz.bh_attack_player(self, pos, 10, player) == true then
+			if player and self.attack_player then
+				if petz.bh_attack_player(self, pos, 10, player) then
 					return
 				end
 			end

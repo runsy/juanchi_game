@@ -13,7 +13,7 @@ function petz.semiaquatic_brain(self)
 	if self.hp <= 0 then
 		petz.on_die(self)
 		return
-	elseif not(petz.is_night()) and self.die_at_daylight == true then --it dies when sun rises up
+	elseif not(petz.is_night()) and self.die_at_daylight then --it dies when sun rises up
 		if minetest.get_node_light(pos, minetest.get_timeofday()) >= self.max_daylight_level then
 			petz.on_die(self)
 			return
@@ -37,23 +37,23 @@ function petz.semiaquatic_brain(self)
 
 		--Follow Behaviour
 		if prty < 16 then
-			if petz.bh_start_follow(self, pos, player, 16) == true then
+			if petz.bh_start_follow(self, pos, player, 16) then
 				return
 			end
 		end
 
 		if prty == 16 then
-			if petz.bh_stop_follow(self, player) == true then
+			if petz.bh_stop_follow(self, player) then
 				return
 			end
 		end
 
 		if prty < 10 then
 			if player then
-				if (self.tamed == false) or (self.tamed == true and self.status == "guard" and player:get_player_name() ~= self.owner) then
+				if not(self.tamed) or (self.tamed and self.status == "guard" and player:get_player_name() ~= self.owner) then
 					local player_pos = player:get_pos()
 					if vector.distance(pos, player_pos) <= self.view_range then	-- if player close
-						if self.warn_attack == true then --attack player
+						if self.warn_attack then --attack player
 							mobkit.clear_queue_high(self)							-- abandon whatever they've been doing
 							if petz.isinliquid(self) then
 								mobkit.hq_aqua_attack(self, 10, player, 6)				-- get revenge

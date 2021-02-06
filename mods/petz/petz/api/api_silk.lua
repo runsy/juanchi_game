@@ -27,7 +27,7 @@ minetest.register_node("petz:cocoon", {
 		if not minetest.registered_entities["petz:moth"] then
 			return
 		end
-		if pos and petz.is_night() == true then --only spawn at night, to it does not die
+		if pos and petz.is_night() then --only spawn at night, to it does not die
 			minetest.add_entity(pos, "petz:moth")
 			minetest.set_node(pos, {name= "air"})
 			return false
@@ -204,7 +204,7 @@ petz.init_lay_eggs = function(self)
 					spawn_egg = true
 				end
 			end
-			if spawn_egg == true then
+			if spawn_egg then
 				minetest.set_node(pos, {name= "petz:silkworm_eggs"})
 				self.eggs_count = mobkit.remember(self, "eggs_count", (self.eggs_count+1)) --increase the count of eggs
 			else
