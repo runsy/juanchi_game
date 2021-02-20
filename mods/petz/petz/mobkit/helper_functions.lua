@@ -110,6 +110,9 @@ end
 
 
 function petz.check_ground_suffocation(self)
+	if self.can_fly then --some fying mobs can escape from cages by the roof
+		return
+	end
 	local spos = mobkit.get_stand_pos(self)
 	spos.y = spos.y + 0.01
 	if self.type and mobkit.is_alive(self) and not(self.is_baby) then

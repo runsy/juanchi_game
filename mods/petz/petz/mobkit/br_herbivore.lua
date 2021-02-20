@@ -1,4 +1,4 @@
--- 1. HERBIBORE/FLYING MOBS BRAIN
+-- 1. HERBIBORE MOBS BRAIN
 --
 
 function petz.herbivore_brain(self)
@@ -27,7 +27,8 @@ function petz.herbivore_brain(self)
 		return
 	end
 
-	if self.can_fly or self.status == "climb" then
+	--no gravity
+	if self.status == "climb" then
 		self.object:set_acceleration({x=0, y=0, z=0})
 	end
 
@@ -50,11 +51,7 @@ function petz.herbivore_brain(self)
 
 		if prty < 20 then
 			if self.isinliquid then
-				if not self.can_fly then
-					mobkit.hq_liquid_recovery(self, 20)
-				else
-					petz.hq_liquid_recovery_flying(self, 20)
-				end
+				mobkit.hq_liquid_recovery(self, 20)
 				return
 			end
 		end
@@ -85,7 +82,7 @@ function petz.herbivore_brain(self)
 
 		--Runaway from Player
 		if prty < 14 then
-			if not(self.can_fly) and not(self.tamed) then --if no tamed
+			if not(self.tamed) then --if no tamed
 				if player then
 					local player_pos = player:get_pos()
 					local wielded_item_name = player:get_wielded_item():get_name()
@@ -226,11 +223,7 @@ function petz.herbivore_brain(self)
 
 		--Roam default
 		if mobkit.is_queue_empty_high(self) and not(self.status) then
-			if not(self.can_fly) then
-				mobkit.hq_roam(self, 0)
-			else
-				petz.hq_wanderfly(self, 0)
-			end
+			mobkit.hq_roam(self, 0)
 		end
 
 	end

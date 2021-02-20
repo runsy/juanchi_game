@@ -60,11 +60,11 @@ petz.follow = function(self, player)
 	end
 end
 
-petz.alight = function(self)
+petz.alight = function(self, prty, end_status)
 	mobkit.clear_queue_low(self)
 	mobkit.clear_queue_high(self)
 	if not(petz.node_name_in(self, "below") == "air") then
 		mobkit.animate(self, "fly")
 	end
-	petz.hq_alight(self, 0)
+	petz.hq_alight(self, prty, end_status)
 end

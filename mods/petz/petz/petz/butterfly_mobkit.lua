@@ -54,7 +54,7 @@ minetest.register_entity("petz:"..pet_name,{
 		stand_fly={range={x=0, y=6}, speed=25, loop=true},
 	},
 
-	logic = petz.herbivore_brain,
+	logic = petz.flying_brain,
 
 	on_activate = function(self, staticdata, dtime_s) --on_activate, required
 		mobkit.actfunc(self, staticdata, dtime_s)

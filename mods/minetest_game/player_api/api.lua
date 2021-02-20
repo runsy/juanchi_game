@@ -101,6 +101,36 @@ minetest.register_chatcommand("toggle_gender", {
     end,
 })
 
+--converts yaw to degrees
+local function yaw_to_degrees(yaw)
+	return(yaw * 180.0 / math.pi)
+end
+
+local last_look_at_dir
+
+local function move_head(player, on_water)
+	local look_at_dir = player:get_look_dir()
+	--apply change only if the pitch changed
+	if last_look_at_dir and look_at_dir.y == last_look_at_dir.y then
+		return
+	else
+		last_look_at_dir = look_at_dir
+	end
+	local pitch = yaw_to_degrees(math.asin(look_at_dir.y))
+	if on_water then
+		pitch = pitch + 70
+	end
+	local head_rotation = {x= pitch, y= 0, z= 0} --the head movement {pitch, yaw, roll}
+	local head_offset
+	if minetest.get_modpath("3d_armor")~=nil then
+		head_offset = 6.75
+	else
+		head_offset = 6.3
+	end
+	local head_position = {x=0, y=head_offset, z=0}
+	player:set_bone_position("Head", head_position, head_rotation) --set the head movement
+end
+
 -- Called when a player's appearance needs to be updated
 function player_api.set_model(player, model_name)
 	local name = player:get_player_name()
@@ -237,6 +267,13 @@ minetest.register_globalstep(function(dtime)
 						on_water = false
 				end
 			end
+
+			--Set head pitch if not on singleplayer and first person view
+			--minetest.chat_send_all(tostring(player:get_fov()))
+			--if not(minetest.is_singleplayer() and (player:get_fov() == 0)) then
+				--minetest.chat_send_all("test")
+				move_head(player, on_water)
+			--end
 
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then

@@ -1,4 +1,4 @@
-local S = unified_inventory.gettext
+local S = minetest.get_translator("unified_inventory")
 local F = minetest.formspec_escape
 
 -- Create detached creative inventory after loading all mods
@@ -16,8 +16,8 @@ minetest.after(0.01, function()
 			table.insert(unified_inventory.items_list, name)
 			local all_names = rev_aliases[name] or {}
 			table.insert(all_names, name)
-			for _, name in ipairs(all_names) do
-				local recipes = minetest.get_all_craft_recipes(name)
+			for _, player_name in ipairs(all_names) do
+				local recipes = minetest.get_all_craft_recipes(player_name)
 				if recipes then
 					for _, recipe in ipairs(recipes) do
 
@@ -187,8 +187,10 @@ end
 function unified_inventory.go_home(player)
 	local pos = unified_inventory.home_pos[player:get_player_name()]
 	if pos then
-		player:setpos(pos)
+		player:set_pos(pos)
+		return true
 	end
+	return false
 end
 
 -- register_craft
@@ -305,4 +307,3 @@ function unified_inventory.is_creative(playername)
 	return minetest.check_player_privs(playername, {creative=true})
 		or minetest.settings:get_bool("creative_mode")
 end
-

@@ -21,6 +21,9 @@ minetest.register_entity("petz:"..pet_name,{
 	give_orders = false,
 	can_be_brushed = false,
 	capture_item = "net",
+	can_jump = true,
+	jump_ratio = 10,
+	jump_impulse = 4.0,
 	follow = petz.settings.frog_follow,
 	drops = {
 		{name = "petz:frog_leg", chance = 1, min = 1, max = 1,},
@@ -48,6 +51,7 @@ minetest.register_entity("petz:"..pet_name,{
 	animation = {
 		walk={range={x=26, y=38}, speed=25, loop=true},
 		run={range={x=26, y=38}, speed=30, loop=true},
+		jump={range={x=26, y=38}, speed=10, loop=true},
 		stand={
 			{range={x=0, y=12}, speed=5, loop=true},
 		},

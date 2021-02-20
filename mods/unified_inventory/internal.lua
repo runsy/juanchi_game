@@ -1,4 +1,4 @@
-local S = unified_inventory.gettext
+local S = minetest.get_translator("unified_inventory")
 local F = minetest.formspec_escape
 
 -- This pair of encoding functions is used where variable text must go in
@@ -58,26 +58,26 @@ function unified_inventory.get_formspec(player, page)
 	unified_inventory.current_page[player_name] = page
 	local pagedef = unified_inventory.pages[page]
 
+	if not pagedef then
+		return "" -- Invalid page name
+	end
+
 	local formspec = {
 		"size[14,10]",
+		pagedef.formspec_prepend and "" or "no_prepend[]",
 		"background[-0.19,-0.25;14.4,10.75;ui_form_bg.png]" -- Background
 	}
-	local n = 3
+	local n = 4
 
 	if draw_lite_mode then
 		formspec[1] = "size[11,7.7]"
-		formspec[2] = "background[-0.19,-0.2;11.4,8.4;ui_form_bg.png]"
+		formspec[3] = "background[-0.19,-0.2;11.4,8.4;ui_form_bg.png]"
 	end
 
 	if unified_inventory.is_creative(player_name)
 	and page == "craft" then
 		formspec[n] = "background[0,"..(ui_peruser.formspec_y + 2)..";1,1;ui_single_slot.png]"
 		n = n+1
-	end
-
-	-- Current page
-	if not unified_inventory.pages[page] then
-		return "" -- Invalid page name
 	end
 
 	local perplayer_formspec = unified_inventory.get_per_player_formspec(player_name)
@@ -215,15 +215,15 @@ function unified_inventory.get_formspec(player, page)
 	else
 		local dir = unified_inventory.active_search_direction[player_name]
 		local list_index = unified_inventory.current_index[player_name]
-		local page = math.floor(list_index / (ui_peruser.items_per_page) + 1)
+		local page2 = math.floor(list_index / (ui_peruser.items_per_page) + 1)
 		local pagemax = math.floor(
 			(#unified_inventory.filtered_items_list[player_name] - 1)
 				/ (ui_peruser.items_per_page) + 1)
-		local item = {}
 		for y = 0, ui_peruser.pagerows - 1 do
 			for x = 0, ui_peruser.pagecols - 1 do
 				local name = unified_inventory.filtered_items_list[player_name][list_index]
-				if minetest.registered_items[name] then
+				local item = minetest.registered_items[name]
+				if item then
 					-- Clicked on current item: Flip crafting direction
 					if name == unified_inventory.current_item[player_name] then
 						local cdir = unified_inventory.current_craft_direction[player_name]
@@ -236,18 +236,24 @@ function unified_inventory.get_formspec(player, page)
 					-- Default: use active search direction by default
 						dir = unified_inventory.active_search_direction[player_name]
 					end
-					formspec[n] = "item_image_button["
-						..(8.2 + x * 0.7)..","
-						..(ui_peruser.formspec_y + ui_peruser.page_y + y * 0.7)..";.81,.81;"
-						..name..";item_button_"..dir.."_"
-						..unified_inventory.mangle_for_formspec(name)..";]"
-					n = n+1
+
+					local button_name = "item_button_" .. dir .. "_"
+						.. unified_inventory.mangle_for_formspec(name)
+					formspec[n] = ("item_image_button[%f,%f;.81,.81;%s;%s;]"):format(
+						8.2 + x * 0.7, ui_peruser.formspec_y + ui_peruser.page_y + y * 0.7,
+						name, button_name
+					)
+					formspec[n + 1] = ("tooltip[%s;%s \\[%s\\]]"):format(
+						button_name, minetest.formspec_escape(item.description),
+						item.mod_origin or "??"
+					)
+					n = n + 2
 					list_index = list_index + 1
 				end
 			end
 		end
 		formspec[n] = "label[8.2,"..ui_peruser.form_header_y..";"..F(S("Page")) .. ": "
-			.. S("%s of %s"):format(page,pagemax).."]"
+			.. S("@1 of @2",page2,pagemax).."]"
 	end
 	n= n+1
 
@@ -284,21 +290,23 @@ function unified_inventory.apply_filter(player, filter, search_dir)
 			return true
 		end
 	else
+		local lang = minetest.get_player_information(player_name).lang_code
 		ffilter = function(name, def)
 			local lname = string.lower(name)
 			local ldesc = string.lower(def.description)
+			local llocaldesc = minetest.get_translated_string
+				and string.lower(minetest.get_translated_string(lang, def.description))
 			return string.find(lname, lfilter, 1, true) or string.find(ldesc, lfilter, 1, true)
+				or llocaldesc and string.find(llocaldesc, lfilter, 1, true)
 		end
 	end
-	local is_creative = unified_inventory.is_creative(player_name)
 	unified_inventory.filtered_items_list[player_name]={}
 	for name, def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory
 			or def.groups.not_in_creative_inventory == 0)
 		and def.description
 		and def.description ~= ""
-		and ffilter(name, def)
-		and (is_creative or unified_inventory.crafts_for.recipe[def.name]) then
+		and ffilter(name, def) then
 			table.insert(unified_inventory.filtered_items_list[player_name], name)
 		end
 	end

@@ -183,7 +183,7 @@ petz.init_lay_eggs = function(self)
 		if self.eggs_count > 0 then
 			return
 		end
-		petz.alight(self)
+		petz.alight(self, 0, "stand")
 		minetest.after(10.0, function()
 			if not(mobkit.is_alive(self)) then
 				return

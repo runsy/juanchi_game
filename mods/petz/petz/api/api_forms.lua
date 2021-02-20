@@ -292,7 +292,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			mobkit.clear_queue_low(pet)
 			petz.ownthing(pet)
 		elseif fields.btn_alight then
-			petz.alight(pet)
+			petz.alight(pet, 0, "stand")
 		elseif fields.btn_fly then
 			mobkit.clear_queue_low(pet)
 			mobkit.clear_queue_high(pet)

@@ -1,7 +1,7 @@
 function petz.hq_terrestial_jump(self, prty)
 	--Check igf not water or air (cliff)
 	local node_name = petz.node_name_in(self, "front_below")
-	if minetest.registered_nodes[node_name]["liquidtype"] == "source" or
+	if not(node_name) or minetest.registered_nodes[node_name]["liquidtype"] == "source" or
 		minetest.registered_nodes[node_name]["liquidtype"] == "flowing" or
 			node_name == "air" then
 				return

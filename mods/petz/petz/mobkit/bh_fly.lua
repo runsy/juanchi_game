@@ -169,7 +169,7 @@ end
 -- Alight Behaviour ( 2 funtions: HQ & LQ)
 --
 
-function petz.hq_alight(self, prty)
+function petz.hq_alight(self, prty, end_status)
 	local func = function()
 		local node_name = petz.node_name_in(self, "below")
 		if node_name == "air" then
@@ -179,9 +179,9 @@ function petz.hq_alight(self, prty)
 			return true
 		else
 			--minetest.chat_send_player("singleplayer", "on ground")
-			mobkit.animate(self, "stand")
+			mobkit.animate(self, end_status)
 			mobkit.lq_idle(self, 2400)
-			self.status = "stand"
+			self.status = end_status
 			return true
 		end
 	end
